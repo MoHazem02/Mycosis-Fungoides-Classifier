@@ -1,0 +1,72 @@
+
+MODEL EVALUATION REPORT
+================================================================================
+
+Evaluation Date: 2025-11-28 23:06:11
+Models Evaluated:
+  - x10: tf_efficientnet_b2
+  - x20: tf_efficientnet_b2
+
+================================================================================
+PERFORMANCE METRICS
+================================================================================
+
+x10 Model:
+  Overall Accuracy: 0.7778
+  Weighted F1-Score: 0.7796
+  ROC AUC: 1.0000
+  
+  MF Class:
+    Precision: 1.0000
+    Recall: 0.6471
+    F1-Score: 0.7857
+  
+  Non-MF Class:
+    Precision: 0.6250
+    Recall: 1.0000
+    F1-Score: 0.7692
+
+x20 Model:
+  Overall Accuracy: 0.8095
+  Weighted F1-Score: 0.8231
+  ROC AUC: 1.0000
+  
+  MF Class:
+    Precision: 1.0000
+    Recall: 0.7500
+    F1-Score: 0.8571
+  
+  Non-MF Class:
+    Precision: 0.5556
+    Recall: 1.0000
+    F1-Score: 0.7143
+
+================================================================================
+WEIGHTED PREDICTION CONFIGURATION
+================================================================================
+
+For combined x10 + x20 predictions:
+  x20 weight: 2.0 (66.7% influence)
+  x10 weight: 1.0 (33.3% influence)
+
+Rationale:
+  - x20 model shows higher accuracy
+  - x20 provides more detailed tissue information
+  - 2:1 weighting gives precedence to x20 while still considering x10
+
+================================================================================
+GENERATED FILES
+================================================================================
+
+Visualizations:
+  - confusion_matrices.png
+  - roc_curves.png
+  - precision_recall_curves.png
+  - metrics_comparison.png
+  - class_distribution.png
+
+Data:
+  - model_evaluation_results.json
+  - model_evaluation_report.txt (this file)
+
+================================================================================

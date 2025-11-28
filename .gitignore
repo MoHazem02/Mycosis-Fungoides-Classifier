@@ -1,2 +1,2 @@
 /patch_cache
-/Trained Models
+*.pth

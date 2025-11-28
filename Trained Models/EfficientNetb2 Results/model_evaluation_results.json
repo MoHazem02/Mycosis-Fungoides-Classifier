@@ -1,0 +1,95 @@
+{
+  "x10_model": {
+    "magnification": "x10",
+    "num_images": 27,
+    "accuracy": 0.7777777777777778,
+    "precision_per_class": [
+      1.0,
+      0.625
+    ],
+    "recall_per_class": [
+      0.6470588235294118,
+      1.0
+    ],
+    "f1_per_class": [
+      0.7857142857142857,
+      0.7692307692307693
+    ],
+    "support_per_class": [
+      17,
+      10
+    ],
+    "precision_weighted": 0.8611111111111112,
+    "recall_weighted": 0.7777777777777778,
+    "f1_weighted": 0.7796092796092796,
+    "confusion_matrix": [
+      [
+        11,
+        6
+      ],
+      [
+        0,
+        10
+      ]
+    ],
+    "roc_auc": 1.0,
+    "avg_precision": 0.9999999999999999,
+    "roc_curve": {
+      "computed": true
+    },
+    "pr_curve": {
+      "computed": true
+    }
+  },
+  "x20_model": {
+    "magnification": "x20",
+    "num_images": 42,
+    "accuracy": 0.8095238095238095,
+    "precision_per_class": [
+      1.0,
+      0.5555555555555556
+    ],
+    "recall_per_class": [
+      0.75,
+      1.0
+    ],
+    "f1_per_class": [
+      0.8571428571428571,
+      0.7142857142857143
+    ],
+    "support_per_class": [
+      32,
+      10
+    ],
+    "precision_weighted": 0.8941798941798942,
+    "recall_weighted": 0.8095238095238095,
+    "f1_weighted": 0.8231292517006802,
+    "confusion_matrix": [
+      [
+        24,
+        8
+      ],
+      [
+        0,
+        10
+      ]
+    ],
+    "roc_auc": 1.0,
+    "avg_precision": 1.0,
+    "roc_curve": {
+      "computed": true
+    },
+    "pr_curve": {
+      "computed": true
+    }
+  },
+  "model_paths": {
+    "x10": "model_tf_efficientnet_b2_x10.pth",
+    "x20": "model_tf_efficientnet_b2_x20.pth"
+  },
+  "weighted_prediction_config": {
+    "x20_weight": 2.0,
+    "x10_weight": 1.0,
+    "rationale": "x20 model has higher accuracy and reliability"
+  }
+}
