@@ -1,0 +1,72 @@
+
+MODEL EVALUATION REPORT
+================================================================================
+
+Evaluation Date: 2025-11-29 03:11:06
+Models Evaluated:
+  - x10: resnet50
+  - x20: resnet50
+
+================================================================================
+PERFORMANCE METRICS
+================================================================================
+
+x10 Model:
+  Overall Accuracy: 0.8148
+  Weighted F1-Score: 0.8174
+  ROC AUC: 1.0000
+  
+  MF Class:
+    Precision: 1.0000
+    Recall: 0.7059
+    F1-Score: 0.8276
+  
+  Non-MF Class:
+    Precision: 0.6667
+    Recall: 1.0000
+    F1-Score: 0.8000
+
+x20 Model:
+  Overall Accuracy: 0.8810
+  Weighted F1-Score: 0.8878
+  ROC AUC: 1.0000
+  
+  MF Class:
+    Precision: 1.0000
+    Recall: 0.8438
+    F1-Score: 0.9153
+  
+  Non-MF Class:
+    Precision: 0.6667
+    Recall: 1.0000
+    F1-Score: 0.8000
+
+================================================================================
+WEIGHTED PREDICTION CONFIGURATION
+================================================================================
+
+For combined x10 + x20 predictions:
+  x20 weight: 2.0 (66.7% influence)
+  x10 weight: 1.0 (33.3% influence)
+
+Rationale:
+  - x20 model shows higher accuracy
+  - x20 provides more detailed tissue information
+  - 2:1 weighting gives precedence to x20 while still considering x10
+
+================================================================================
+GENERATED FILES
+================================================================================
+
+Visualizations:
+  - confusion_matrices.png
+  - roc_curves.png
+  - precision_recall_curves.png
+  - metrics_comparison.png
+  - class_distribution.png
+
+Data:
+  - model_evaluation_results.json
+  - model_evaluation_report.txt (this file)
+
+================================================================================
