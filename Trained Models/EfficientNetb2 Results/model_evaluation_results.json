@@ -1,39 +1,39 @@
 {
   "x10_model": {
     "magnification": "x10",
-    "num_images": 27,
-    "accuracy": 0.7777777777777778,
+    "num_images": 41,
+    "accuracy": 0.5121951219512195,
     "precision_per_class": [
-      1.0,
-      0.625
+      0.875,
+      0.28
     ],
     "recall_per_class": [
-      0.6470588235294118,
-      1.0
+      0.4375,
+      0.7777777777777778
     ],
     "f1_per_class": [
-      0.7857142857142857,
-      0.7692307692307693
+      0.5833333333333334,
+      0.4117647058823529
     ],
     "support_per_class": [
-      17,
-      10
+      32,
+      9
     ],
-    "precision_weighted": 0.8611111111111112,
-    "recall_weighted": 0.7777777777777778,
-    "f1_weighted": 0.7796092796092796,
+    "precision_weighted": 0.744390243902439,
+    "recall_weighted": 0.5121951219512195,
+    "f1_weighted": 0.5456719273075085,
     "confusion_matrix": [
       [
-        11,
-        6
+        14,
+        18
       ],
       [
-        0,
-        10
+        2,
+        7
       ]
     ],
-    "roc_auc": 1.0,
-    "avg_precision": 0.9999999999999999,
+    "roc_auc": 0.4513888888888889,
+    "avg_precision": 0.20691986762807196,
     "roc_curve": {
       "computed": true
     },
@@ -43,39 +43,39 @@
   },
   "x20_model": {
     "magnification": "x20",
-    "num_images": 42,
-    "accuracy": 0.8095238095238095,
+    "num_images": 77,
+    "accuracy": 0.6103896103896104,
     "precision_per_class": [
-      1.0,
-      0.5555555555555556
+      0.8536585365853658,
+      0.3333333333333333
     ],
     "recall_per_class": [
-      0.75,
-      1.0
+      0.5932203389830508,
+      0.6666666666666666
     ],
     "f1_per_class": [
-      0.8571428571428571,
-      0.7142857142857143
+      0.7,
+      0.4444444444444444
     ],
     "support_per_class": [
-      32,
-      10
+      59,
+      18
     ],
-    "precision_weighted": 0.8941798941798942,
-    "recall_weighted": 0.8095238095238095,
-    "f1_weighted": 0.8231292517006802,
+    "precision_weighted": 0.7320240734874881,
+    "recall_weighted": 0.6103896103896104,
+    "f1_weighted": 0.6402597402597402,
     "confusion_matrix": [
       [
-        24,
-        8
+        35,
+        24
       ],
       [
-        0,
-        10
+        6,
+        12
       ]
     ],
-    "roc_auc": 1.0,
-    "avg_precision": 1.0,
+    "roc_auc": 0.5677966101694916,
+    "avg_precision": 0.25100388164661047,
     "roc_curve": {
       "computed": true
     },

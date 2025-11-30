@@ -2,7 +2,7 @@
 MODEL EVALUATION REPORT
 ================================================================================
 
-Evaluation Date: 2025-11-28 23:06:11
+Evaluation Date: 2025-11-30 02:30:00
 Models Evaluated:
   - x10: tf_efficientnet_b2
   - x20: tf_efficientnet_b2
@@ -12,34 +12,34 @@ PERFORMANCE METRICS
 ================================================================================
 
 x10 Model:
-  Overall Accuracy: 0.7778
-  Weighted F1-Score: 0.7796
-  ROC AUC: 1.0000
+  Overall Accuracy: 0.5122
+  Weighted F1-Score: 0.5457
+  ROC AUC: 0.4514
   
   MF Class:
-    Precision: 1.0000
-    Recall: 0.6471
-    F1-Score: 0.7857
+    Precision: 0.8750
+    Recall: 0.4375
+    F1-Score: 0.5833
   
   Non-MF Class:
-    Precision: 0.6250
-    Recall: 1.0000
-    F1-Score: 0.7692
+    Precision: 0.2800
+    Recall: 0.7778
+    F1-Score: 0.4118
 
 x20 Model:
-  Overall Accuracy: 0.8095
-  Weighted F1-Score: 0.8231
-  ROC AUC: 1.0000
+  Overall Accuracy: 0.6104
+  Weighted F1-Score: 0.6403
+  ROC AUC: 0.5678
   
   MF Class:
-    Precision: 1.0000
-    Recall: 0.7500
-    F1-Score: 0.8571
+    Precision: 0.8537
+    Recall: 0.5932
+    F1-Score: 0.7000
   
   Non-MF Class:
-    Precision: 0.5556
-    Recall: 1.0000
-    F1-Score: 0.7143
+    Precision: 0.3333
+    Recall: 0.6667
+    F1-Score: 0.4444
 
 ================================================================================
 WEIGHTED PREDICTION CONFIGURATION
