@@ -2,44 +2,44 @@
 MODEL EVALUATION REPORT
 ================================================================================
 
-Evaluation Date: 2025-11-30 22:08:42
+Evaluation Date: 2025-11-30 21:45:38
 Models Evaluated:
-  - x10: resnet50
-  - x20: resnet50
+  - x10: swin_base_patch4_window12_384
+  - x20: swin_base_patch4_window12_384
 
 ================================================================================
 PERFORMANCE METRICS
 ================================================================================
 
 x10 Model:
-  Overall Accuracy: 0.5610
-  Weighted F1-Score: 0.5981
-  ROC AUC: 0.5382
+  Overall Accuracy: 0.3902
+  Weighted F1-Score: 0.4382
+  ROC AUC: 0.3819
   
   MF Class:
-    Precision: 0.8500
-    Recall: 0.5312
-    F1-Score: 0.6538
+    Precision: 0.6400
+    Recall: 0.5000
+    F1-Score: 0.5614
   
   Non-MF Class:
-    Precision: 0.2857
-    Recall: 0.6667
-    F1-Score: 0.4000
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-Score: 0.0000
 
 x20 Model:
-  Overall Accuracy: 0.5065
-  Weighted F1-Score: 0.5435
-  ROC AUC: 0.4520
+  Overall Accuracy: 0.3896
+  Weighted F1-Score: 0.4360
+  ROC AUC: 0.3842
   
   MF Class:
-    Precision: 0.7838
-    Recall: 0.4915
-    F1-Score: 0.6042
+    Precision: 0.6579
+    Recall: 0.4237
+    F1-Score: 0.5155
   
   Non-MF Class:
-    Precision: 0.2500
-    Recall: 0.5556
-    F1-Score: 0.3448
+    Precision: 0.1282
+    Recall: 0.2778
+    F1-Score: 0.1754
 
 ================================================================================
 WEIGHTED PREDICTION CONFIGURATION

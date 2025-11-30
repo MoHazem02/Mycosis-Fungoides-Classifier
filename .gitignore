@@ -1,2 +1,3 @@
 /patch_cache
+/patch_cache_swin
 *.pth
