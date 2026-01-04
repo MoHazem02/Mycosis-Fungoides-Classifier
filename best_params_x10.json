@@ -1,0 +1,11 @@
+{
+  "best_params": {
+    "learning_rate": 3.950910421310083e-05,
+    "weight_decay": 0.0009839492851857485,
+    "dropout": 0.3979527105843245,
+    "batch_size": 8,
+    "model_architecture": "resnet50"
+  },
+  "best_value": 0.7036485480268057,
+  "n_trials": 31
+}

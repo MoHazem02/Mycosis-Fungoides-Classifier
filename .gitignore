@@ -1,3 +1,4 @@
 /patch_cache
 /patch_cache_swin
 *.pth
+optuna_mf.db
