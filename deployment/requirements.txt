@@ -10,14 +10,17 @@ timm==0.9.12
 
 # GUI
 customtkinter==5.2.1
+packaging
 
 # Image processing
 Pillow>=10.0.0
 opencv-python-headless>=4.8.0
-numpy>=1.24.0
+numpy<2.0.0
 
 # PDF generation
 reportlab>=4.0.0
 
 # Packaging
-pyinstaller>=6.0.0
+pyinstaller==6.17.0
+
+
