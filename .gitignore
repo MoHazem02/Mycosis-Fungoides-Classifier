@@ -2,3 +2,4 @@
 /patch_cache_swin
 *.pth
 optuna_mf.db
+deployment/__pycache__/*
