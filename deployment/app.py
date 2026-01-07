@@ -2,14 +2,14 @@
 Mycosis Fungoides Classifier - Desktop Application
 CustomTkinter GUI for patient histology classification.
 """
-
-import customtkinter as ctk
+import customtkinter as ctk 
 from tkinter import filedialog, messagebox
 from pathlib import Path
 import threading
 from typing import Optional
 import sys
 import os
+from PIL import Image, ImageTk
 
 # Add current directory to path for imports when bundled
 if getattr(sys, 'frozen', False):
@@ -18,7 +18,6 @@ if getattr(sys, 'frozen', False):
 
 from classifier import MFClassifier
 from report_generator import generate_report
-import config
 
 
 # Configure appearance
@@ -34,8 +33,8 @@ class MFClassifierApp(ctk.CTk):
         
         # Window configuration
         self.title("Mycosis Fungoides Classifier")
-        self.geometry("800x700")
-        self.minsize(700, 600)
+        self.geometry("800x950")
+        self.minsize(700, 850) 
         
         # Initialize classifier
         self.classifier: Optional[MFClassifier] = None
@@ -54,6 +53,30 @@ class MFClassifierApp(ctk.CTk):
         # Main container
         self.main_frame = ctk.CTkFrame(self)
         self.main_frame.pack(fill="both", expand=True, padx=20, pady=20)
+        
+        # Header frame with logos
+        self.header_frame = ctk.CTkFrame(self.main_frame, fg_color="transparent")
+        self.header_frame.pack(fill="x", pady=(0, 10))
+        
+        # Load and display logos
+        try:
+            # CU logo on the left
+            cu_path = Path(__file__).parent / "assets" / "CUFE.png"
+            if cu_path.exists():
+                cu_image = Image.open(cu_path)
+                cu_photo = ctk.CTkImage(light_image=cu_image, dark_image=cu_image, size=(90, 90))
+                self.cu_label = ctk.CTkLabel(self.header_frame, image=cu_photo, text="")
+                self.cu_label.pack(side="left", padx=10)
+            
+            # Kasr logo on the right
+            kasr_path = Path(__file__).parent / "assets" / "Kasr.png"
+            if kasr_path.exists():
+                kasr_image = Image.open(kasr_path)
+                kasr_photo = ctk.CTkImage(light_image=kasr_image, dark_image=kasr_image, size=(90, 90))
+                self.kasr_label = ctk.CTkLabel(self.header_frame, image=kasr_photo, text="")
+                self.kasr_label.pack(side="right", padx=10)
+        except Exception as e:
+            print(f"Could not load logos: {e}")
         
         # Title
         self.title_label = ctk.CTkLabel(

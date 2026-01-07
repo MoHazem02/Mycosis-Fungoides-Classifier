@@ -36,5 +36,6 @@ MODEL_X10_FILENAME = "model_resnet50_x10.pth"
 MODEL_X20_FILENAME = "model_resnet50_x20.pth"
 
 # PDF Report Settings
-PDF_TITLE = "Mycosis Fungoides Classification Report"
-PDF_INSTITUTION = "CLPD - Dermatopathology AI System"
+PDF_TITLE = "AI-Assisted Mycosis Fungoides Classification Report"
+PDF_INSTITUTION = ("Faculty of Engineering, Cairo University <br/>"
+                          "Department of Dermatology, Kasr Al-Ainy Hospitals")

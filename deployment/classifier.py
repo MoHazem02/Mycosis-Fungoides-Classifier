@@ -10,10 +10,8 @@ from PIL import Image
 from torchvision import transforms
 from torchvision.transforms import InterpolationMode
 from pathlib import Path
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict
 import sys
-import os
-
 import config
 from preprocessing import extract_patches_from_folder, validate_patient_folder
 

@@ -3,7 +3,7 @@ PDF Report Generator for MF Classification Results.
 """
 
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter, A4
+from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
@@ -187,11 +187,11 @@ def generate_report(results: Dict, output_path: Path) -> Path:
         ["Parameter", "Value"],
         ["x10 Model MF Probability", f"{x10_mf_prob:.1f}%"],
         ["x20 Model MF Probability", f"{x20_mf_prob:.1f}%"],
-        ["Fusion Weight (x10 : x20)", f"{fusion_weight:.2f} : {1-fusion_weight:.2f}"],
         ["x10 Images Analyzed", str(results['n_x10_images'])],
         ["x20 Images Analyzed", str(results['n_x20_images'])],
         ["x10 Patches Extracted", str(results['n_x10_patches'])],
         ["x20 Patches Extracted", str(results['n_x20_patches'])],
+        ["Fusion Weight (x10 : x20)", f"{fusion_weight:.2f} : {1-fusion_weight:.2f}"],
     ]
     
     details_table = Table(details_data, colWidths=[3*inch, 2*inch])

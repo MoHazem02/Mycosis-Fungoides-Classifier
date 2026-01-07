@@ -44,8 +44,7 @@ def extract_patches_from_image(
             saturation = hsv_img[:, :, 1]
             fg_ratio = (saturation > 20).mean()
             
-            if fg_ratio < min_foreground_ratio:
-                continue
+            if fg_ratio < min_foreground_ratio: continue
             
             patches.append(arr)
             

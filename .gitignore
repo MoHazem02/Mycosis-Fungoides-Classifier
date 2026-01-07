@@ -3,3 +3,4 @@
 *.pth
 optuna_mf.db
 deployment/__pycache__/*
+deployment/test_report.py
