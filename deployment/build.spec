@@ -20,6 +20,9 @@ a = Analysis(
         # Include model files
         ('models/model_resnet50_x10.pth', 'models'),
         ('models/model_resnet50_x20.pth', 'models'),
+        # Include logo images
+        ('assets/CUFE.png', 'assets'),
+        ('assets/Kasr.png', 'assets'),
         # Include config
         ('config.py', '.'),
         ('classifier.py', '.'),
