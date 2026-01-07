@@ -51,7 +51,7 @@ class MFClassifierApp(ctk.CTk):
         """Create all UI widgets."""
         
         # Main container
-        self.main_frame = ctk.CTkFrame(self)
+        self.main_frame = ctk.CTkScrollableFrame(self)
         self.main_frame.pack(fill="both", expand=True, padx=20, pady=20)
         
         # Header frame with logos
