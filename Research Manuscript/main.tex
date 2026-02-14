@@ -139,27 +139,8 @@ The models were trained using the AdamW optimizer with Automatic Mixed Precision
 \subsubsection{Validation Protocol and Aggregation Performance}
 To bridge the gap between model training and clinical utility, we adopted a hierarchical evaluation strategy. While the models were optimized using patch-level objectives, the final diagnostic performance was assessed at the patient level on a held-out validation cohort comprising 35 patients (totaling 8,077 patches at 10$\times$ and 15,996 patches at 20$\times$).
 
-Table \ref{tab:val_results} illustrates the critical role of aggregation. At the patch level, individual predictions are noisy, with accuracies of approximately 67\%. However, clinical diagnosis relies on the holistic assessment of tissue architecture rather than isolated fields of view. We experimentally validated the efficacy of pooling patch predictions to form a single patient-level diagnosis.
-
 Our experiments demonstrated that \textit{Mean Aggregation} significantly enhanced diagnostic performance. For the 10$\times$ model, aggregating predictions improved the F2-score from 0.7134 (patch-level) to 0.8482 (patient-level), achieving a balanced sensitivity and specificity of 86.36\%. Similarly, the 20$\times$ model achieved a patient-level ROC-AUC of 0.7972, up from 0.7420 at the patch level. These results confirm that utilizing the collective signal from multiple tissue regions mitigates local ambiguities, justifying the adoption of mean aggregation for the final pipeline.
 
-\begin{table}[H]
-\caption{Performance Comparison: Patch-Level vs. Patient-Level (Mean Aggregation) on Validation Set ($N=35$)}
-\label{tab:val_results}
-\centering  % Use \centering instead of \begin{center} to remove extra vertical whitespace
-% \resizebox{width}{height}{content} -> "!" means keep aspect ratio
-\resizebox{\columnwidth}{!}{%
-    \begin{tabular}{l|ccc|ccc}
-    \toprule
-    & \multicolumn{3}{c|}{\textbf{Patch-Level}} & \multicolumn{3}{c}{\textbf{Patient-Level}} \\
-    \textbf{Model} & \textbf{Acc} & \textbf{F2 (MF)} & \textbf{AUC} & \textbf{Acc} & \textbf{F2 (MF)} & \textbf{AUC} \\
-    \midrule
-    ResNet50 ($10\times$) & 0.671 & 0.713 & 0.724 & \textbf{0.771} & \textbf{0.848} & 0.787 \\
-    ResNet50 ($20\times$) & 0.666 & 0.691 & 0.742 & 0.743 & 0.748 & \textbf{0.797} \\
-    \bottomrule
-    \end{tabular}%
-}
-\end{table}
 
 \subsection{Patient-Level Prediction via Mean Aggregation}
 Model inference was initially performed at the patch level. To obtain clinically meaningful predictions at the patient level, patch-level probabilities corresponding to the same patient were aggregated using mean aggregation.
@@ -204,26 +185,26 @@ As illustrated in Figure \ref{fig:fusion_analysis}, we performed a grid search f
 
 The proposed deep learning framework was evaluated on a held-out test set of 35 patients, comprising 8,077 patches at 10$\times$ magnification and 15,996 patches at 20$\times$ magnification. As summarized in Table \ref{tab:results}, the system achieved a maximum patient-level accuracy of 77.14\% and an F$_2$-score of 84.82\% using the 10$\times$ model.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \caption{Quantitative Performance Summary (Test Set, N=35)}
 \label{tab:results}
 \centering
-% \arraystretch increases the vertical space between rows (1.2 is usually perfect)
+% Increase row height for readability
 \renewcommand{\arraystretch}{1.2}
-% \tabcolsep adjusts the white space between columns
-\setlength{\tabcolsep}{6pt} 
+% Adjust column spacing to fit the extra column
+\setlength{\tabcolsep}{4pt} 
 
-\begin{tabular}{l c c c c}
+\begin{tabular}{l c c c c c}
 \toprule
- & \multicolumn{2}{c}{\textbf{10$\times$ Model}} & \multicolumn{2}{c}{\textbf{20$\times$ Model}} \\
-\cmidrule(lr){2-3} \cmidrule(lr){4-5}
-\textbf{Metric} & \textit{Patch} & \textit{Patient} & \textit{Patch} & \textit{Patient} \\
+ & \multicolumn{2}{c}{\textbf{10$\times$ Model}} & \multicolumn{2}{c}{\textbf{20$\times$ Model}} & \textbf{Late Fusion} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-6}
+\textbf{Metric} & \textit{Patch} & \textit{Patient} & \textit{Patch} & \textit{Patient} & \textit{Patient} \\
 \midrule
-Accuracy & 0.6714 & \textbf{0.7714} & 0.6657 & 0.7429 \\
-F$_2$-Score (MF) & 0.7134 & \textbf{0.8482} & 0.6907 & 0.7477 \\
-Sensitivity & 0.7030 & \textbf{0.8636} & 0.6670 & 0.7273 \\
-Specificity & 0.7030 & 0.8636 & 0.6670 & 0.7273 \\
-ROC-AUC & 0.7236 & 0.7867 & 0.7420 & \textbf{0.7972} \\
+Accuracy & 0.6714 & \textbf{0.7714} & 0.6657 & 0.7429 & \textbf{0.7714} \\
+F$_2$-Score & 0.7134 & \textbf{0.8482} & 0.6907 & 0.7477 & \textbf{0.8482} \\
+Sensitivity & 0.7030 & \textbf{0.8636} & 0.6670 & 0.7273 & \textbf{0.8636} \\
+Specificity & 0.7030 & 0.8636 & 0.6670 & 0.7273 & 0.6154 \\
+ROC-AUC & 0.7236 & 0.7867 & 0.7420 & \textbf{0.7972} & \textbf{0.7972} \\
 \bottomrule
 \end{tabular}
 \end{table}

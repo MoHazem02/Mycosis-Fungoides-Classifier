@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.1.25)  13 FEB 2026 11:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.1.25)  14 FEB 2026 21:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -327,57 +327,57 @@ Underfull \hbox (badness 1540) in paragraph at lines 86--87
 \OT1/ptm/m/n/10 informative back-ground re-gions prior to model train-ing.
  []
 
-<HSV_Ratio.png, id=13, 1934.22626pt x 1149.29375pt>
+<HSV_Ratio.png, id=13, 1438.173pt x 858.5676pt>
 File: HSV_Ratio.png Graphic file (type png)
 <use HSV_Ratio.png>
 Package pdftex.def Info: HSV_Ratio.png  used on input line 92.
-(pdftex.def)             Requested size: 252.0pt x 149.7291pt.
+(pdftex.def)             Requested size: 252.0pt x 150.43498pt.
 [2 <./HSV_Ratio.png>]
 <fusion_weight_analysis.png, id=22, 1004.553pt x 716.9184pt>
 File: fusion_weight_analysis.png Graphic file (type png)
 <use fusion_weight_analysis.png>
-Package pdftex.def Info: fusion_weight_analysis.png  used on input line 193.
+Package pdftex.def Info: fusion_weight_analysis.png  used on input line 174.
 (pdftex.def)             Requested size: 252.0pt x 179.84175pt.
- [3]
-<Comprehensive Metrics Dashboard.png, id=34, 1618.045pt x 1102.1175pt>
+<Comprehensive Metrics Dashboard.png, id=23, 1618.045pt x 1102.1175pt>
 File: Comprehensive Metrics Dashboard.png Graphic file (type png)
 <use Comprehensive Metrics Dashboard.png>
-Package pdftex.def Info: Comprehensive Metrics Dashboard.png  used on input line 235.
+Package pdftex.def Info: Comprehensive Metrics Dashboard.png  used on input line 216.
 (pdftex.def)             Requested size: 252.0pt x 171.63365pt.
+ [3]
 <Confusion Matrix.png, id=35, 1419.3025pt x 752.8125pt>
 File: Confusion Matrix.png Graphic file (type png)
 <use Confusion Matrix.png>
-Package pdftex.def Info: Confusion Matrix.png  used on input line 244.
+Package pdftex.def Info: Confusion Matrix.png  used on input line 225.
 (pdftex.def)             Requested size: 252.0pt x 133.66248pt.
 <F2 Figure Comparisons.png, id=36, 992.70876pt x 721.69624pt>
 File: F2 Figure Comparisons.png Graphic file (type png)
 <use F2 Figure Comparisons.png>
-Package pdftex.def Info: F2 Figure Comparisons.png  used on input line 254.
+Package pdftex.def Info: F2 Figure Comparisons.png  used on input line 235.
 (pdftex.def)             Requested size: 252.0pt x 183.19868pt.
- [4 <./fusion_weight_analysis.png> <./Comprehensive Metrics Dashboard.png> <./Confusion Matrix.png>]
-<ROC Graphs.png, id=43, 1696.3375pt x 706.64pt>
+<ROC Graphs.png, id=37, 1696.3375pt x 706.64pt>
 File: ROC Graphs.png Graphic file (type png)
 <use ROC Graphs.png>
-Package pdftex.def Info: ROC Graphs.png  used on input line 263.
+Package pdftex.def Info: ROC Graphs.png  used on input line 244.
 (pdftex.def)             Requested size: 252.0pt x 104.96709pt.
-<Precision Recall Curves.png, id=44, 1696.3375pt x 706.64pt>
+ [4 <./fusion_weight_analysis.png> <./Comprehensive Metrics Dashboard.png> <./Confusion Matrix.png> <./F2 Figure Comparisons.png>]
+<Precision Recall Curves.png, id=45, 1696.3375pt x 706.64pt>
 File: Precision Recall Curves.png Graphic file (type png)
 <use Precision Recall Curves.png>
-Package pdftex.def Info: Precision Recall Curves.png  used on input line 270.
+Package pdftex.def Info: Precision Recall Curves.png  used on input line 251.
 (pdftex.def)             Requested size: 252.0pt x 104.96709pt.
-<Patient Level Aggreg.png, id=45, 1795.70876pt x 1402.23875pt>
+<Patient Level Aggreg.png, id=46, 1795.70876pt x 1402.23875pt>
 File: Patient Level Aggreg.png Graphic file (type png)
 <use Patient Level Aggreg.png>
-Package pdftex.def Info: Patient Level Aggreg.png  used on input line 280.
+Package pdftex.def Info: Patient Level Aggreg.png  used on input line 261.
 (pdftex.def)             Requested size: 252.0pt x 196.76141pt.
- [5 <./F2 Figure Comparisons.png> <./ROC Graphs.png> <./Precision Recall Curves.png> <./Patient Level Aggreg.png>] [6] (./main.bbl
+ [5 <./ROC Graphs.png> <./Precision Recall Curves.png> <./Patient Level Aggreg.png>] (./main.bbl
 ** WARNING: IEEEtran.bst: No hyphenation pattern has been
 ** loaded for the language `en'. Using the pattern for
 ** the default language instead.
 ** WARNING: IEEEtran.bst: No hyphenation pattern has been
 ** loaded for the language `en'. Using the pattern for
 ** the default language instead.
-)
+[6])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -398,15 +398,15 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4477 strings out of 467533
- 70124 string characters out of 5423668
- 498492 words of memory out of 5000000
- 33331 multiletter control sequences out of 15000+600000
+ 4476 strings out of 467533
+ 70107 string characters out of 5423668
+ 497916 words of memory out of 5000000
+ 33330 multiletter control sequences out of 15000+600000
  667476 words of font info for 115 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,10n,65p,1002b,337s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (7 pages, 4067598 bytes).
+Output written on main.pdf (7 pages, 5055461 bytes).
 PDF statistics:
  136 PDF objects out of 1000 (max. 8388607)
  74 compressed objects within 1 object stream

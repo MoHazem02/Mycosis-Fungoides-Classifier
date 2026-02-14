@@ -177,15 +177,15 @@ INPUT ./fusion_weight_analysis.png
 INPUT ./fusion_weight_analysis.png
 INPUT ./fusion_weight_analysis.png
 INPUT ./fusion_weight_analysis.png
+INPUT ./Comprehensive Metrics Dashboard.png
+INPUT ./Comprehensive Metrics Dashboard.png
+INPUT ./Comprehensive Metrics Dashboard.png
+INPUT ./Comprehensive Metrics Dashboard.png
+INPUT ./Comprehensive Metrics Dashboard.png
 INPUT d:/texlive/2025/texmf-dist/fonts/vf/adobe/times/ptmrc7t.vf
 INPUT d:/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT d:/texlive/2025/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT d:/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
-INPUT ./Comprehensive Metrics Dashboard.png
-INPUT ./Comprehensive Metrics Dashboard.png
-INPUT ./Comprehensive Metrics Dashboard.png
-INPUT ./Comprehensive Metrics Dashboard.png
-INPUT ./Comprehensive Metrics Dashboard.png
 INPUT ./Confusion Matrix.png
 INPUT ./Confusion Matrix.png
 INPUT ./Confusion Matrix.png
@@ -196,13 +196,13 @@ INPUT ./F2 Figure Comparisons.png
 INPUT ./F2 Figure Comparisons.png
 INPUT ./F2 Figure Comparisons.png
 INPUT ./F2 Figure Comparisons.png
+INPUT ./ROC Graphs.png
+INPUT ./ROC Graphs.png
+INPUT ./ROC Graphs.png
+INPUT ./ROC Graphs.png
+INPUT ./ROC Graphs.png
 INPUT d:/texlive/2025/texmf-dist/fonts/vf/adobe/times/ptmri7t.vf
 INPUT d:/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmri8r.tfm
-INPUT ./ROC Graphs.png
-INPUT ./ROC Graphs.png
-INPUT ./ROC Graphs.png
-INPUT ./ROC Graphs.png
-INPUT ./ROC Graphs.png
 INPUT ./Precision Recall Curves.png
 INPUT ./Precision Recall Curves.png
 INPUT ./Precision Recall Curves.png
@@ -213,11 +213,11 @@ INPUT ./Patient Level Aggreg.png
 INPUT ./Patient Level Aggreg.png
 INPUT ./Patient Level Aggreg.png
 INPUT ./Patient Level Aggreg.png
-INPUT d:/texlive/2025/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
-INPUT d:/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
 INPUT ./main.bbl
 INPUT ./main.bbl
 INPUT main.bbl
+INPUT d:/texlive/2025/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
+INPUT d:/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
 INPUT main.aux
 INPUT d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 INPUT d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
