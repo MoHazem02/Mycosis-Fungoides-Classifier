@@ -1,22 +1,22 @@
 # Fdb version 4
-["bibtex main"] 1770975384.93278 "main.aux" "main.bbl" "main" 1770975387.36095 0
+["bibtex main"] 1771096349.37717 "main.aux" "main.bbl" "main" 1771096351.85199 0
   "./references.bib" 1769378468 5481 cad738f97676a630dce33b26bf849a93 ""
   "d:/texlive/2025/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1769324320 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "main.aux" 1770975386 7444 ba7d2c6e237466722fab236be4e72fca "pdflatex"
+  "main.aux" 1771096351 7191 8a5b1dbe7d1f9d7ecd3bbf2eea5390a2 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1770975385.29457 "c:/Users/Mohamed Hazem/Desktop/IEEE_Conference_Research_Paper_MF/main.tex" "main.pdf" "main" 1770975387.36138 0
+["pdflatex"] 1771096349.66156 "c:/Users/Mohamed Hazem/Desktop/IEEE_Conference_Research_Paper_MF/main.tex" "main.pdf" "main" 1771096351.85248 0
   "Comprehensive Metrics Dashboard.png" 1769378468 176918 7dc10443c78a9bdd123e36f1600bb01d ""
   "Confusion Matrix.png" 1769378468 120576 e698b1a4a34ebab1e9c4aa575102e97f ""
   "F2 Figure Comparisons.png" 1769378468 64957 fd313e2bb40d29dea1026a0b84b098dc ""
-  "HSV_Ratio.png" 1769378468 3109266 6b24161f9cdda6391e9063e3cbc59698 ""
+  "HSV_Ratio.png" 1771083478 3173687 83bfacfd5f1b941c2f4ee3a7704791f5 ""
   "IEEEtran.cls" 1769378468 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
   "Patient Level Aggreg.png" 1769378469 167480 a2a511b3b1f783d8b29e77614691e459 ""
   "Precision Recall Curves.png" 1769378469 144246 f76c8bde359fbf992cc2f24edf5bdb71 ""
   "ROC Graphs.png" 1769378468 171979 861434523aeeb548686c9374554fc84e ""
-  "c:/Users/Mohamed Hazem/Desktop/IEEE_Conference_Research_Paper_MF/main.tex" 1770975380 31890 b88894af7744e31953daf8da8610b7a3 ""
+  "c:/Users/Mohamed Hazem/Desktop/IEEE_Conference_Research_Paper_MF/main.tex" 1771096346 30737 464721dc8ba0161d48c0e29b4ccd3cc4 ""
   "d:/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc" 1769322428 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "d:/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1769323328 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "d:/texlive/2025/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1769321807 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -104,9 +104,9 @@
   "d:/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1769331628 3636153 ce30dbc8b71c742a49e620b8b348555b ""
   "d:/texlive/2025/texmf.cnf" 1769331468 713 e69b156964470283e0530f5060668171 ""
   "fusion_weight_analysis.png" 1769378468 217625 b7a3456302a9eceb52a77cb013618b4b ""
-  "main.aux" 1770975386 7444 ba7d2c6e237466722fab236be4e72fca "pdflatex"
-  "main.bbl" 1770975385 2531 dedd6eae25ae02954f34462b2474fa9d "bibtex main"
-  "main.tex" 1770975380 31890 b88894af7744e31953daf8da8610b7a3 ""
+  "main.aux" 1771096351 7191 8a5b1dbe7d1f9d7ecd3bbf2eea5390a2 "pdflatex"
+  "main.bbl" 1771096349 2531 dedd6eae25ae02954f34462b2474fa9d "bibtex main"
+  "main.tex" 1771096346 30737 464721dc8ba0161d48c0e29b4ccd3cc4 ""
   (generated)
   "main.aux"
   "main.log"
