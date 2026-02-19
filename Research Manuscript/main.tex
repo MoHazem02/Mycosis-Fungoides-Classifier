@@ -19,17 +19,35 @@
 \title{Context Over Detail: A Deep Learning Approach for Mycosis Fungoides using Low-Magnification Histopathology
 }
 
-\author{\IEEEauthorblockN{Mahmoud Amr, Mohamed Hazem, Nada Omar, Omar Khaled, Tarek Waleed and Muhammad Rushdi}
-\IEEEauthorblockA{\textit{Department of Systems and Biomedical Engineering} \\
-\textit{Faculty of Engineering, Cairo University}\\
-Giza, Egypt \\
-Email: \{mahmoud.abdelhalim03, mohamed.abdelmaksood021, nada.mohammad03, \\omar.mohamed043, tarek.mohamed041\}@eng-st.cu.edu.eg, mrushdi@eng1.cu.edu.eg}
+\author{
+\IEEEauthorblockN{
+Mahmoud Amr\textsuperscript{1}, 
+Mohamed Hazem\textsuperscript{1}, 
+Nada Omar\textsuperscript{1}, 
+Omar Khaled\textsuperscript{1}, 
+Tarek Waleed\textsuperscript{1}, \\
+Marwa Mohamed Fawzy\textsuperscript{2}, 
+Rania M. Mogawer\textsuperscript{2}, 
+Ahmed Mourad\textsuperscript{2}, 
+Kariman Mansour\textsuperscript{2}, and 
+Muhammad Rushdi\textsuperscript{1}
+}
+\vspace{0.15cm} % Adds a tiny bit of breathing room before the affiliations
+\IEEEauthorblockA{\textsuperscript{1}\textit{Department of Systems and Biomedical Engineering, Faculty of Engineering} \\
+\textit{Cairo University}, Giza, Egypt}
+\vspace{0.1cm}
+\IEEEauthorblockA{\textsuperscript{2}\textit{Dermatology Department, Faculty of Medicine} \\
+\textit{Cairo University}, Cairo, Egypt}
 }
 
 \maketitle
 
 \begin{abstract}
-Mycosis Fungoides (MF) is a rare form of cutaneous T-cell lymphoma that is often misdiagnosed in early stages due to its visual similarity to benign inflammatory dermatoses. Early and accurate diagnosis is critical for improving patient outcomes. In this study, we propose a deep learning-based framework for automated MF classification from clinical skin images. The proposed approach leverages convolutional neural networks to distinguish MF from non-malignant skin conditions. Experimental results demonstrate promising performance, achieving competitive accuracy and sensitivity, highlighting the potential of CNNs as a supportive tool for dermatological decision-making. \\
+Mycosis Fungoides (MF) is a rare form of cutaneous T-cell lymphoma that is often misdiagnosed in early stages \cite{beatty2025_early_mf_diagnosis} due to 
+its visual similarity to benign inflammatory dermatoses. Early and accurate diagnosis is critical for improving patient outcomes. 
+In this study, we propose a deep learning-based framework for automated MF classification from histopathological skin images. 
+The proposed approach leverages convolutional neural networks to distinguish MF from other lymphoproliferative skin conditions. 
+Experimental results demonstrate promising performance, achieving competitive accuracy and sensitivity, highlighting the potential of CNNs as a supportive tool for dermatological decision-making. \\
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -39,16 +57,23 @@ Mycosis Fungoides, Deep Learning, Histopathology, Medical Image Analysis, Clinic
 % 1. Introduction
 % =====================
 \section{Introduction}
-Mycosis Fungoides (MF) is a type of skin lymphoma (cancer) that affects the body’s T cells, characterized by malignant proliferation of skin-homing T lymphocytes and is considered the most common primary cutaneous lymphoma (CL), making up almost 50\% of all cases \cite{willemze2005}. Despite its prevalence among CTCLs, MF remains challenging to diagnose, particularly in early stages, where clinical presentation often mimics benign skin disorders such as eczema or psoriasis.
+Mycosis Fungoides (MF) is a type of skin lymphoma characterized by malignant proliferation of skin-homing T 
+lymphocytes and is considered the most common primary cutaneous lymphoma (CL), making up almost 50\% of all cases \cite{willemze2005}. Despite its prevalence among Cutaneous 
+T-cell Lymphomas (CTCLs), MF remains a rare disease with an estimated incidence of 0.5 cases per 100,000 person-years \cite{willemze2005}. 
+The clinical presentation of MF is highly variable, often manifesting as erythematous patches, plaques, or tumors that can easily be mistaken for 
+benign inflammatory skin conditions such as eczema or psoriasis. This diagnostic ambiguity contributes to significant delays in accurate diagnosis, 
+with studies reporting an average time to diagnosis of 3-6 years from symptom onset \cite{beatty2025_early_mf_diagnosis}.
+MF remains challenging to diagnose, particularly in early stages, where clinical presentation often mimics benign skin disorders such as eczema or psoriasis.
 
-Recent advances in deep learning have shown significant promise in medical image analysis, particularly in dermatology. However, most existing studies focus on common skin cancers such as melanoma, while rare diseases like MF remain underexplored. This work aims to address this gap by developing and evaluating a deep learning-based system for MF classification using clinical images.
+Recent advances in deep learning have shown significant promise in medical image analysis, particularly in dermatology. However, most existing studies 
+focus on common skin cancers such as melanoma, while rare diseases like MF remain underexplored. This work aims to address this gap by developing and evaluating a 
+deep learning-based system for MF classification using clinical images.
 
 The main contributions of this work are summarized as follows:
 \begin{itemize}
-    \item A desktop application built on a deep learning-based framework for automated Mycosis Fungoides classification from clinical images collected through hospital collaboration.
     \item A multi-scale modeling approach leveraging ResNet50 architectures trained on images at 10$\times$ and 20$\times$ magnifications.
     \item A patient-level prediction strategy based on mean aggregation of patch-level outputs.
-    \item A weighted fusion scheme for multi-magnification decision integration, with fusion weights calibrated using Brier score analysis.
+    \item A weighted late-fusion model for multi-magnification decision integration using Brier score analysis.
     \item Evaluation using recall-oriented metrics, with model selection driven by validation F$_2$-score to prioritize sensitivity in malignant disease detection.
 \end{itemize}
 
@@ -56,11 +81,20 @@ The main contributions of this work are summarized as follows:
 % 2. Related Work
 % =====================
 \section{Related Work}
-Previous research in dermatological image analysis has primarily focused on melanoma detection and benign versus malignant lesion classification. Studies employing convolutional neural networks (CNNs) have demonstrated dermatologist-level performance in some tasks \cite{Doeleman2024-MF}. However, literature addressing MF specifically remains limited, largely due to dataset scarcity, subtle histopathological features, and high inter-observer variability.
+Previous research in dermatological image analysis has primarily focused on melanoma detection and benign versus malignant lesion classification. 
+Studies employing convolutional neural networks (CNNs) have demonstrated dermatologist-level performance in some tasks \cite{Doeleman2024-MF}. 
+However, literature addressing MF specifically remains limited, largely due to dataset scarcity, subtle histopathological features, 
+and high inter-observer variability.
 
-Recent works have explored AI-based approaches for inflammatory skin diseases, yet MF is often excluded or significantly underrepresented, underscoring the need for targeted investigation into AI-assisted MF diagnosis.
+Recent works have explored AI-based approaches for lymphoproliferative skin diseases, yet MF is often excluded or significantly underrepresented, underscoring the 
+need for targeted investigation into AI-assisted MF diagnosis.
 
-Almost all recent studies rely on digitized Whole-Slide Images (WSIs) for histopathological analysis. In contrast, due to budgetary constraints and the limited availability of digital slide scanners in public government hospitals, our work operates on conventional microscopic images acquired at fixed magnifications rather than WSIs. This setting reflects real-world clinical constraints and represents a novel direction that is largely absent from recent literature. Contemporary approaches predominantly employ weakly supervised deep learning frameworks, such as clustering-constrained attention multiple instance learning (CLAM) \cite{Lu2021} or toolkits such as Trident \cite{zhang2025standardizing, vaidya2025molecular}, which are designed to leverage WSIs. Our approach diverges from these paradigms by focusing on magnification-specific image analysis under practical acquisition conditions.
+Almost all recent studies rely on digitized Whole-Slide Images (WSIs) for histopathological analysis. In contrast, to address the lack of digital slide 
+scanners prevalent in resource-limited countries, our framework operates on conventional microscopic images acquired at fixed magnifications rather than WSIs. 
+This setting reflects real-world clinical constraints and represents a novel direction that is largely absent from recent literature. 
+Contemporary approaches predominantly employ weakly supervised deep learning frameworks, such as clustering-constrained attention multiple instance 
+learning (CLAM) \cite{Lu2021} or toolkits such as Trident \cite{zhang2025standardizing, vaidya2025molecular}, which are designed to leverage WSIs. 
+Our approach diverges from these paradigms by focusing on magnification-specific image analysis under practical acquisition conditions.
 
 
 % =====================
@@ -69,11 +103,18 @@ Almost all recent studies rely on digitized Whole-Slide Images (WSIs) for histop
 \section{Materials and Methods}
 
 \subsection{Dataset}
-The dataset used in this study was collected through a clinical collaboration with Kasr Al-Ainy Hospitals and consists of approximately 40~GB of retrospective histopathological images acquired during routine dermatological assessment. The dataset comprises images from a total of 242 unique patients, yielding 3,755 images in total.
+The dataset used in this study was collected through a clinical collaboration with Dermatopathology unit, Dermatology Department,  Faculty of Medicine,  Cairo University  
+and consists of approximately 40~GB of retrospective histopathological images captured from regions of interest with salient histopathological features discernible to a junior dermatologist. 
+The dataset comprises images from a total of 242 unique patients, yielding 3,755 images in total.
 
-Cases were categorized into two primary classes: Mycosis Fungoides (MF) and non-MF. The MF cohort includes 149 patients, while the non-MF cohort comprises 93 patients spanning multiple clinically relevant subtypes, including B-cell lymphoma (291 images, 16 patients), pityriasis lichenoides et varioliformis acuta and chronica (PLEVA/PLC) (749 images, 57 patients), T-cell dyscrasia (122 images, 9 patients), and pseudolymphoma (160 images, 11 patients). This heterogeneous non-MF group reflects real-world diagnostic challenges encountered in clinical practice.
+Cases were categorized into two primary classes: Mycosis Fungoides (MF) and non-MF. The MF cohort includes 149 patients, 
+while the non-MF cohort comprises 93 patients spanning other lymphoproliferative skin disorders, including B-cell lymphoma (291 images, 16 patients), 
+pityriasis lichenoides et varioliformis acuta and chronica (PLEVA/PLC) (749 images, 57 patients), T-cell dyscrasia (122 images, 9 patients), and pseudolymphoma (160 images, 11 patients). 
+This heterogeneous non-MF group reflects real-world diagnostic challenges encountered in clinical practice.
 
-The dataset was partitioned at the patient level into training, validation, and test sets to prevent data leakage, with 171 patients allocated for training, 36 for validation, and 35 for testing. Images were available at two magnification levels, 10x and 20x, and were processed into patches for model training. The 20x dataset consisted of 88,974 training patches, 18,079 validation patches, and 15,996 test patches, while the 10x dataset comprised 44,865 training patches, 8,669 validation patches, and 8,077 test patches.
+The dataset was partitioned at the patient level into training, validation, and test sets to prevent data leakage, with 171 patients allocated for training, 36 for validation, and 35 for testing. 
+Images were available at two magnification levels, 10x and 20x, and were processed into patches for model training. 
+The 20x dataset consisted of 88,974 training patches, 18,079 validation patches, and 15,996 test patches, while the 10x dataset comprised 44,865 training patches, 8,669 validation patches, and 8,077 test patches.
 
 Due to the private nature of the dataset and institutional constraints, the images are not publicly available.
 
@@ -97,7 +138,7 @@ Data augmentation was applied exclusively to the training set to improve general
 \subsection{Model Architecture and Training Protocol}
 
 \subsubsection{Backbone Selection and Hyperparameter Optimization}
-To determine the optimal feature extractor for histopathological classification, we investigated two convolutional neural network architectures: ResNet50 and EfficientNet-B2.  To ensure robust convergence and generalization, we automated the model selection and hyperparameter tuning process using the Optuna framework.
+To determine the optimal feature extractor for histopathological classification, we investigated a convolutional neural network architecture: ResNet50.  To ensure robust convergence and generalization, we automated the model selection and hyperparameter tuning process using the Optuna framework.
 
 We employed a Tree-structured Parzen Estimator (TPE) sampler with a Median Pruner to efficiently search the hyperparameter space. The optimization process consisted of 30 trials performed on a stratified 15\% subset of the training data. The search space included learning rates ($10^{-5}$--$10^{-3}$), weight decay ($10^{-6}$--$10^{-3}$), dropout ratios (0.1--0.4), and batch sizes of $\{8, 16\}$.
 
@@ -134,7 +175,7 @@ Given the critical nature of cancer diagnosis, minimizing False Negatives is par
 The models saved for final testing were those that achieved the highest F2-score on the validation set (0.6412 for 10x and 0.7398 for 20x), ensuring the system is biased towards detecting malignant cases.
 
 \subsubsection{Training Strategy}
-The models were trained using the AdamW optimizer with Automatic Mixed Precision (AMP) to optimize GPU memory usage. To address the inherent class imbalance between Mycosis Fungoides (MF) and benign samples, we utilized a Weighted Cross-Entropy Loss, where class weights were assigned inversely proportional to their frequency in the training set.
+The models were trained using the AdamW optimizer with Automatic Mixed Precision (AMP) to optimize GPU memory usage. To address the inherent class imbalance between Mycosis Fungoides (MF) and Non-MF samples, we utilized a Weighted Cross-Entropy Loss, where class weights were assigned inversely proportional to their frequency in the training set.
 
 \subsubsection{Validation Protocol and Aggregation Performance}
 To bridge the gap between model training and clinical utility, we adopted a hierarchical evaluation strategy. While the models were optimized using patch-level objectives, the final diagnostic performance was assessed at the patient level on a held-out validation cohort comprising 35 patients (totaling 8,077 patches at 10$\times$ and 15,996 patches at 20$\times$).
@@ -157,7 +198,9 @@ Mean aggregation was selected due to its simplicity, robustness to noise, and in
 \subsubsection{Late Fusion Approach}
 To integrate complementary diagnostic features captured at different scales, we employed a \textit{late fusion} strategy. Unlike early fusion, which concatenates feature vectors prior to classification, late fusion aggregates the probabilistic predictions of independent models. This approach allows each network to specialize in the specific histological patterns visible at its respective magnification—capturing architectural disarray at $10\times$ and cellular atypia at $20\times$—without the risk of feature-space contamination.
 
-\subsubsection{Weighted Score Aggregation}
+\subsubsection{Weighted Score Aggregation and Clinical Justification}
+In clinical practice, dermatopathologists employ a multi-scale workflow: they initially scan tissue at low magnification to identify broad architectural abnormalities (e.g., epidermotropism) before zooming in to high magnification to assess individual cellular atypia. Our late-fusion approach mimics this workflow by integrating both perspectives. 
+
 Let $S_{p}^{10}$ and $S_{p}^{20}$ denote the mean-aggregated patient-level probabilities obtained from the $10\times$ and $20\times$ models, respectively. The final fused diagnostic score $S_{p}^{fused}$ was computed as a linear combination:
 \begin{equation}
 S_{p}^{fused} = \alpha S_{p}^{10} + (1 - \alpha) S_{p}^{20}
@@ -165,8 +208,7 @@ S_{p}^{fused} = \alpha S_{p}^{10} + (1 - \alpha) S_{p}^{20}
 where $\alpha \in [0, 1]$ represents the fusion weight governing the contribution of the $10\times$ model.
 
 \subsubsection{Optimization of Fusion Weight}
-The optimal weight $\alpha$ was determined empirically by minimizing the Brier Score on the validation set. The Brier Score measures the mean squared difference between predicted probabilities and actual outcomes, serving as a rigorous metric for model calibration.
-
+The optimal weight $\alpha$ was determined empirically by minimizing the Brier Score on the validation set. The optimization consistently assigned a higher weight to the $10\times$ model ($\alpha > 0.5$). Clinically, this is both acceptable and expected; Mycosis Fungoides is heavily defined by its architectural distribution across the epidermis and dermis. Therefore, the $10\times$ spatial context appropriately drives the primary diagnostic probability, while the $20\times$ model acts as a secondary calibrator that refines the prediction based on cellular features. This multi-scale synergy yields a more robust and clinically aligned outcome than relying on a single field of view.
 As illustrated in Figure \ref{fig:fusion_analysis}, we performed a grid search for $\alpha$ with a step size of 0.05. The analysis revealed a convex optimization landscape (top-left panel), with the global minimum Brier Score achieved at $\alpha = 0.65$. This weighting suggests that the architectural context provided by the $10\times$ magnification was slightly more predictive than the cellular details at $20\times$ for this cohort. Consequently, $\alpha = 0.65$ was adopted for all subsequent evaluations, yielding a stable balance between sensitivity (0.86) and specificity.
 
 \begin{figure}
@@ -183,7 +225,7 @@ As illustrated in Figure \ref{fig:fusion_analysis}, we performed a grid search f
 % =====================
 \section{Results}
 
-The proposed deep learning framework was evaluated on a held-out test set of 35 patients, comprising 8,077 patches at 10$\times$ magnification and 15,996 patches at 20$\times$ magnification. As summarized in Table \ref{tab:results}, the system achieved a maximum patient-level accuracy of 77.14\% and an F$_2$-score of 84.82\% using the 10$\times$ model.
+The proposed deep learning framework was evaluated on a held-out test set of 35 patients, comprising 8,077 patches at 10$\times$ magnification and 15,996 patches at 20$\times$ magnification. As summarized in Table \ref{tab:results}, the system achieved a maximum patient-level accuracy of 77.14\% and an F$_2$-score of 84.82\% using the late-fusion model.
 
 \begin{table}[htbp]
 \caption{Quantitative Performance Summary (Test Set, N=35)}
@@ -214,18 +256,19 @@ A key finding of this study is the significant performance gain achieved through
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{Comprehensive Metrics Dashboard.png}
-    \caption{Comprehensive Performance Dashboard. A side-by-side comparison of patch-level (light blue) vs. patient-level (dark blue/orange) metrics across both magnifications. Note the consistent improvement in F2-Score and Sensitivity after aggregation.}
+    \caption{Comprehensive Performance Dashboard. A side-by-side comparison of patch-level (dark blue) vs. patient-level (dark orange) metrics across both magnifications.}
     \label{fig:comprehensiveMetrics}
 \end{figure}
 
-This improvement is further detailed in the confusion matrices (Fig. \ref{fig:confusion}). At the patch level, the 10$\times$ model misclassified over 1,500 MF patches. However, via mean aggregation, the system correctly identified 19 out of 22 MF patients, reducing the false negative rate significantly. This confirms that while individual tissue patches may be ambiguous, the global slide context is robustly diagnostic.
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Confusion Matrix.png}
-    \caption{Confusion Matrices: Patch-Level vs. Patient-Level. The transition to patient-level mean aggregation drastically reduces misclassifications, particularly boosting the True Positive rate for the critical MF class.}
-    \label{fig:confusion}
+    \includegraphics[width=1\linewidth]{Late_fusion_dashboard.png}
+    \caption{Late fusion model performance comparing individual magnification models (10$\times$, 20$\times$) against the fused multi-scale approach. Late fusion combines predictions from both magnifications to leverage complementary information captured at different scales.}
+    \label{fig:aggregation_comparison}
 \end{figure}
+
+This improvement is further detailed in the comparative performance dashboard (Fig. \ref{fig:aggregation_comparison}), which illustrates the metric shifts across magnifications and aggregation levels. The transition from patch-level to patient-level inference yields substantial gains across the board. Notably, the late fusion strategy successfully synthesizes the diagnostic strengths of both individual models: it matches the peak sensitivity (0.8636) and F$_2$-score (0.8482) of the 10$\times$ patient-level model, while simultaneously achieving the highest ROC-AUC (0.7972) alongside the 20$\times$ model. Although this multi-scale fusion incurs a trade-off by lowering specificity (0.6154), it effectively maximizes the detection of True Positives. In the clinical context of Mycosis Fungoides screening, prioritizing sensitivity over specificity ensures that ambiguous but potentially malignant cases are not missed, confirming the robustness of integrating global slide context across multiple magnifications.
+
 
 \subsection{Sensitivity and Clinical Relevance}
 Given the clinical imperative to minimize missed diagnoses, we prioritized the F$_2$-score (which emphasizes recall). Figure \ref{fig:f2_analysis} highlights that the 10$\times$ model achieves a superior F$_2$-score of 0.848 compared to 0.748 for the 20$\times$ model. This suggests that architectural changes visible at lower magnification are highly indicative of MF.
@@ -233,7 +276,7 @@ Given the clinical imperative to minimize missed diagnoses, we prioritized the F
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{F2 Figure Comparisons.png}
-    \caption{F$_2$ Score Analysis ($\beta=2$). The 10$\times$ patient-level model achieves the highest F$_2$ score (0.848), indicating it is the most reliable configuration for minimizing false negatives.}
+    \caption{F$_2$ Score Analysis ($\beta=2$).}
     \label{fig:f2_analysis}
 \end{figure}
 
@@ -253,18 +296,6 @@ This result is corroborated by the Receiver Operating Characteristic (ROC) and P
     \label{fig:pr}
 \end{figure}
 
-\subsection{Ablation Study: Aggregation Strategies}
-Finally, we analyzed the impact of different aggregation functions. Figure \ref{fig:aggregation_comparison} compares "Mean" aggregation against "Top-30\%" and "Top-50\%" confidence pooling. The results clearly indicate that Mean aggregation outperforms max-pooling strategies (Top-N). 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{Patient Level Aggreg.png}
-    \caption{Comparison of Patient-Level Aggregation Methods. Mean aggregation (green) consistently outperforms Top-K\% pooling strategies (blue/orange) in terms of both F$_2$-Score and Sensitivity. This suggests that considering the entire slide's signal is more diagnostic than relying solely on the most confident patches.}
-    \label{fig:aggregation_comparison}
-\end{figure}
-
-For the 10$\times$ model, Mean aggregation achieved a sensitivity of 0.864, whereas Top-30\% aggregation dropped to 0.318. This sharp decline implies that Mycosis Fungoides features are often diffuse rather than focal; relying only on the "most confident" patches may inadvertently filter out subtle but widespread diagnostic signals.
-
 % =====================
 % 6. Discussion
 % =====================
@@ -275,13 +306,20 @@ A counter-intuitive finding of this study is the superior performance of the 10$
 Our results suggest that the wider field of view at 10$\times$ captures these broad architectural context cues more effectively than the granular but narrow view of 20$\times$. This phenomenon is likely exacerbated by the fixed patch size of $512 \times 512$ pixels used in this study. At 10$\times$, a $512 \times 512$ patch covers a sufficient physical area to encapsulate the dermo-epidermal junction and surrounding infiltrate. Conversely, at 20$\times$, the same pixel dimensions cover a significantly smaller physical area, potentially fragmenting these critical architectural features. While the 10$\times$ magnification proved optimal for this specific patch configuration, future work must explore larger patch sizes or multi-scale inputs to fully leverage the cellular details available at 20$\times$ magnification.
 
 \subsection{The Necessity of Whole-Slide Context}
-The ablation study on aggregation strategies highlights the diffuse nature of the disease. The failure of "Top-30\%" pooling indicates that MF features are not restricted to a few "hotspots" but are often spread subtly across the tissue. By utilizing mean aggregation, the model effectively integrates signal from the entire slide, acting as a digital analog to a pathologist scanning the whole tissue sample before making a decision.
+The success of the patient-level aggregation strategy highlights the diffuse nature of 
+Mycosis Fungoides. Because MF features are rarely restricted to a few isolated "hotspots" 
+and are instead spread subtly across the tissue, relying on the collective signal 
+of the entire sample is crucial. By utilizing mean aggregation, the model effectively 
+integrates the probabilistic signal from all extracted patches. This approach acts as a 
+digital analog to a pathologist comprehensively scanning the whole tissue slide before 
+making a final diagnostic decision, ensuring that widespread, subtle architectural cues 
+are fully leveraged.
 \subsection{Benchmarking and Clinical Reality}
 While our deep learning framework demonstrates high diagnostic potential, it is crucial to acknowledge that diagnosing Mycosis Fungoides solely from histopathological images is a simplified proxy for clinical reality. In practice, dermatologists and pathologists rely on a multimodal synthesis of visual data, patient history, and clinical presentation (e.g., lesion morphology, duration) to render a definitive diagnosis. The reliance on image data alone in this study likely imposes a performance ceiling; we hypothesize that integrating tabular clinical metadata in future iterations will significantly enhance diagnostic precision and reduce false positives.
 
-Despite this limitation, our model's performance is highly competitive with recent state-of-the-art benchmarks. Doeleman et al. \cite{Doeleman2024-MF} compared a weakly supervised deep learning model against three expert pathologists. They reported that their highest performance was achieved at $200\times$ magnification ($0.50$ $\mu$m/pixel), yielding a mean Area Under the Curve (AUC) of $0.827 \pm 0.044$ and a mean balanced accuracy of $76.2 \pm 3.9\%$, which closely matched the $77.7\%$ mean balanced accuracy of the expert pathologists.
+Despite this limitation, our model's performance is highly competitive with recent state-of-the-art benchmarks. Doeleman et al. \cite{Doeleman2024-MF} compared a weakly supervised deep learning model against three expert pathologists. They reported that their highest performance was achieved at $200\times$ magnification ($0.50$ $\mu$m/pixel), yielding a mean Area Under the Curve (AUC) of $0.827 \pm 0.044$ and a mean balanced accuracy of $76.2 \pm 3.9\%$.
 
-In comparison, our $10\times$ model achieved a patient-level accuracy of $77.1\%$ and a sensitivity of $86.4\%$. Notably, our framework effectively matches the accuracy of expert pathologists reported in \cite{Doeleman2024-MF} while utilizing a significantly lower magnification ($10\times$ vs. $200\times$). This indicates that our model is not only superior in terms of sensitivity—a critical metric for screening tools—but is also more computationally efficient and accessible for digital pathology systems with lower optical resolution requirements.
+In comparison, our $10\times$ model achieved a patient-level accuracy of $77.1\%$ and a sensitivity of $86.4\%$. Notably, our framework effectively matches the accuracy of expert pathologists reported in \cite{Doeleman2024-MF}. 
 % =====================
 % 7. Conlcusion
 % =====================
@@ -292,11 +330,21 @@ Our results demonstrate that effective diagnosis does not necessarily require hi
 
 Our key contributions include:
 \begin{enumerate}
-    \item \textbf{High-Efficiency Screening Tool:} We validated that a model operating at low magnification (10$\times$) yields competitive diagnostic accuracy comparable to benchmarks using significantly higher resolutions (e.g., 200$\times$). This reduces computational overhead and storage requirements, making the system fast to run and suitable for deployment on low-budget scanners or standard microscopes in resource-constrained settings.
+    \item \textbf{Efficient Initial Triage Tool:} We demonstrated that low magnification (10$\times$) effectively captures broad architectural 
+    features, yielding competitive accuracy for initial MF screening. While we acknowledge that higher magnifications remain clinically necessary for 
+    the definitive differential diagnosis between MF and morphologically similar inflammatory dermatoses, our 10$\times$ framework significantly reduces 
+    computational overhead. This makes the system fast to run and highly suitable as an accessible, first-pass triage tool in resource-constrained settings.
     
-    \item \textbf{Robustness Without Clinical Metadata:} We established that deep learning models can achieve high sensitivity solely based on histopathological features. While real-world diagnosis benefits from clinical history, our model serves as a powerful standalone triage tool for unannotated archival data or blind review scenarios.
+    \item \textbf{Robustness Without Clinical Metadata:} We established that deep learning models can achieve high sensitivity solely based on 
+    histopathological features. While real-world diagnosis benefits from clinical history, our model serves as a powerful standalone triage tool 
+    for unannotated archival data or blind review scenarios.
+
+    \item \textbf{Multi-Scale Patient-Level Late Fusion:} We designed a late-fusion aggregation protocol that integrates predictions across 
+    multiple magnifications. By systematically combining the broad architectural context captured at 10$\times$ with the cellular-level signals from 
+    the 20$\times$ model, our patient-level consensus approach achieved an optimal balance of performance. This fusion strategy maintained the high 
+    sensitivity of the low-power model while matching the superior discriminatory power (ROC-AUC) of the high-power model, confirming the necessity of 
+    multi-scale analysis in digital pathology.
     
-    \item \textbf{Optimal Aggregation Strategy:} We confirmed that simple mean aggregation significantly outperforms max-pooling strategies. This indicates that reliable diagnosis relies on the cumulative diagnostic signal across the entire tissue sample rather than isolated focal anomalies, ensuring consistent performance even in the presence of noise.
 \end{enumerate}
 % =====================
 % 8. Discussion
@@ -309,16 +357,9 @@ To evolve this framework from a promising prototype into a robust clinical decis
 
     \item \textbf{Multimodal Integration:} Diagnosing Mycosis Fungoides purely from imagery is clinically incomplete. We plan to integrate the visual backbone with a tabular data branch processing patient metadata (e.g., age, gender, lesion duration, and symptoms). This multimodal fusion is expected to significantly enhance specificity by mimicking the comprehensive work-up performed by dermatologists.
 
-    \item \textbf{Stain Normalization and Augmentation:} To ensure the model generalizes across different laboratories and scanners, we will implement rigorous stain normalization techniques (e.g., Macenko or Vahadane methods) in the preprocessing pipeline. This will mitigate the impact of color variations in H\&E staining that can currently confound the classifier.
+    \item \textbf{Stain Normalization and Augmentation:} To ensure the model generalizes across different laboratories and scanners, we will implement rigorous stain normalization techniques (e.g., Macenko \cite{macenko2009} or Vahadane \cite{vahadane2016_stainnorm} methods) in the preprocessing pipeline. This will mitigate the impact of color variations in H\&E staining that can currently confound the classifier.
 
-    \item \textbf{Explainable AI (XAI):} To facilitate clinical adoption, the "black box" nature of the model must be addressed. We will develop interpretability modules, such as attention maps or Grad-CAM visualizations, to highlight the specific histological features (e.g., atypical lymphocytes, Pautrier’s microabscesses) driving the model's predictions, thereby building trust with pathologists.
 \end{enumerate}
-
-% =====================
-% Acknowledgment
-% =====================
-\section*{Acknowledgment}
-The authors would like to express their sincere gratitude to the Department of Dermatology at Kasr Al-Ainy Hospital, Cairo University, for providing the histopathological dataset and clinical expertise essential for this study. 
 
 
 \bibliographystyle{IEEEtran}

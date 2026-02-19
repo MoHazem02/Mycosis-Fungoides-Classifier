@@ -20,6 +20,11 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{beatty2025_early_mf_diagnosis}
+\BIBentryALTinterwordspacing
+P.~Beatty, K.~Molloy \emph{et~al.}, ``The diagnosis of early-stage mycosis fungoides: Views held by experts and non-experts in cutaneous lymphoma,'' \emph{Journal der Deutschen Dermatologischen Gesellschaft}, 2025, pMCID: PMC12435154. [Online]. Available: \url{https://doi.org/10.1111/ddg.15799}
+\BIBentrySTDinterwordspacing
+
 \bibitem{willemze2005}
 R.~Willemze, E.~S. Jaffe, G.~Burg, L.~Cerroni, E.~Berti, S.~H. Swerdlow, and E.~Ralfkiaer, ``Who-eortc classification for cutaneous lymphomas,'' \emph{Blood}, vol. 105, no.~10, pp. 3768--3785, 2005.
 
@@ -36,5 +41,15 @@ A.~Zhang, G.~Jaume, A.~Vaidya, T.~Ding, and F.~Mahmood, ``Accelerating data proc
 
 \bibitem{vaidya2025molecular}
 A.~Vaidya, A.~Zhang, G.~Jaume, A.~H. Song, T.~Ding, S.~J. Wagner, M.~Y. Lu, P.~Doucet, H.~Robertson, C.~Almagro-Perez \emph{et~al.}, ``Molecular-driven foundation model for oncologic pathology,'' \emph{arXiv preprint arXiv:2501.16652}, 2025.
+
+\bibitem{macenko2009}
+\BIBentryALTinterwordspacing
+M.~Macenko, M.~Niethammer, J.~S. Marron, D.~Borland, J.~T. Woosley, X.~Guan, C.~Schmitt, and N.~E. Thomas, ``A method for normalizing histology slides for quantitative analysis,'' in \emph{2009 IEEE International Symposium on Biomedical Imaging: From Nano to Macro (ISBI)}, 2009, pp. 1107--1110. [Online]. Available: \url{https://doi.org/10.1109/ISBI.2009.5193250}
+\BIBentrySTDinterwordspacing
+
+\bibitem{vahadane2016_stainnorm}
+\BIBentryALTinterwordspacing
+A.~Vahadane, T.~Peng, A.~Sethi, S.~Albarqouni, L.~Wang, M.~Baust, K.~Steiger, A.~M. Schlitter, I.~Esposito, and N.~Navab, ``Structure-preserving color normalization and sparse stain separation for histological images,'' \emph{IEEE Transactions on Medical Imaging}, vol.~35, no.~8, pp. 1962--1971, 2016. [Online]. Available: \url{https://doi.org/10.1109/TMI.2016.2529665}
+\BIBentrySTDinterwordspacing
 
 \end{thebibliography}

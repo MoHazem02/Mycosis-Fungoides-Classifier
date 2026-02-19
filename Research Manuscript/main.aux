@@ -1,5 +1,8 @@
 \relax 
+\citation{beatty2025_early_mf_diagnosis}
 \citation{willemze2005}
+\citation{willemze2005}
+\citation{beatty2025_early_mf_diagnosis}
 \citation{Doeleman2024-MF}
 \citation{Lu2021}
 \citation{zhang2025standardizing,vaidya2025molecular}
@@ -21,42 +24,44 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Patient-Level Prediction via Mean Aggregation}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}Multi-Magnification Fusion Strategy}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-E}1}Late Fusion Approach}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-E}2}Weighted Score Aggregation}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-E}2}Weighted Score Aggregation and Clinical Justification}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-E}3}Optimization of Fusion Weight}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {IV}Results}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Patient-Level Aggregation Benefits}{3}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Optimization of the multi-magnification fusion weight ($\alpha $). The top-left panel demonstrates that the lowest Brier Score (indicating optimal calibration) is achieved at $\alpha =0.65$. The remaining panels illustrate the corresponding trade-offs in Accuracy, Sensitivity/Specificity, and ROC-AUC, confirming that this weight maintains high sensitivity while maximizing predictive reliability.}}{4}{}\protected@file@percent }
 \newlabel{fig:fusion_analysis}{{2}{4}{}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Results}{4}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Quantitative Performance Summary (Test Set, N=35)}}{4}{}\protected@file@percent }
 \newlabel{tab:results}{{II}{4}{}{table.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Comprehensive Performance Dashboard. A side-by-side comparison of patch-level (light blue) vs. patient-level (dark blue/orange) metrics across both magnifications. Note the consistent improvement in F2-Score and Sensitivity after aggregation.}}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Patient-Level Aggregation Benefits}{4}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Comprehensive Performance Dashboard. A side-by-side comparison of patch-level (dark blue) vs. patient-level (dark orange) metrics across both magnifications.}}{4}{}\protected@file@percent }
 \newlabel{fig:comprehensiveMetrics}{{3}{4}{}{figure.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Confusion Matrices: Patch-Level vs. Patient-Level. The transition to patient-level mean aggregation drastically reduces misclassifications, particularly boosting the True Positive rate for the critical MF class.}}{4}{}\protected@file@percent }
-\newlabel{fig:confusion}{{4}{4}{}{figure.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Sensitivity and Clinical Relevance}{4}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces F$_2$ Score Analysis ($\beta =2$). The 10$\times $ patient-level model achieves the highest F$_2$ score (0.848), indicating it is the most reliable configuration for minimizing false negatives.}}{4}{}\protected@file@percent }
-\newlabel{fig:f2_analysis}{{5}{4}{}{figure.5}{}}
-\citation{Doeleman2024-MF}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Late fusion model performance comparing individual magnification models (10$\times $, 20$\times $) against the fused multi-scale approach. Late fusion combines predictions from both magnifications to leverage complementary information captured at different scales.}}{4}{}\protected@file@percent }
+\newlabel{fig:aggregation_comparison}{{4}{4}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Sensitivity and Clinical Relevance}{5}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces F$_2$ Score Analysis ($\beta =2$).}}{5}{}\protected@file@percent }
+\newlabel{fig:f2_analysis}{{5}{5}{}{figure.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Receiver Operating Characteristic (ROC) Curves. The "step-like" nature of the patient-level curves is due to the discrete number of test patients (N=35), yet they show a clear improvement in Area Under the Curve (AUC) compared to patch-level inference.}}{5}{}\protected@file@percent }
 \newlabel{fig:roc}{{6}{5}{}{figure.6}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Precision-Recall Curves. The dominance of the patient-level curves (solid lines) confirms that the model maintains high precision even at higher recall levels, a critical trait for a screening tool.}}{5}{}\protected@file@percent }
 \newlabel{fig:pr}{{7}{5}{}{figure.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Ablation Study: Aggregation Strategies}{5}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Comparison of Patient-Level Aggregation Methods. Mean aggregation (green) consistently outperforms Top-K\% pooling strategies (blue/orange) in terms of both F$_2$-Score and Sensitivity. This suggests that considering the entire slide's signal is more diagnostic than relying solely on the most confident patches.}}{5}{}\protected@file@percent }
-\newlabel{fig:aggregation_comparison}{{8}{5}{}{figure.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Discussion}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Architectural vs. Cellular Features and Patch Resolution}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}The Necessity of Whole-Slide Context}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Benchmarking and Clinical Reality}{5}{}\protected@file@percent }
 \citation{Doeleman2024-MF}
+\citation{Doeleman2024-MF}
+\citation{macenko2009}
+\citation{vahadane2016_stainnorm}
 \bibstyle{IEEEtran}
 \bibdata{references}
-\bibcite{willemze2005}{1}
-\bibcite{Doeleman2024-MF}{2}
-\bibcite{Lu2021}{3}
-\bibcite{zhang2025standardizing}{4}
-\bibcite{vaidya2025molecular}{5}
+\bibcite{beatty2025_early_mf_diagnosis}{1}
+\bibcite{willemze2005}{2}
+\bibcite{Doeleman2024-MF}{3}
+\bibcite{Lu2021}{4}
+\bibcite{zhang2025standardizing}{5}
+\bibcite{vaidya2025molecular}{6}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{6}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Future Work}{6}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
+\bibcite{macenko2009}{7}
+\bibcite{vahadane2016_stainnorm}{8}
 \gdef \@abspage@last{7}

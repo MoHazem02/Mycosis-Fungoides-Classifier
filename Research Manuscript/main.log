@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.1.25)  14 FEB 2026 21:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.1.25)  19 FEB 2026 15:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"c:/Users/Mohamed Hazem/Desktop/IEEE_Conference_Research_Paper_MF/main.tex"
-(c:/Users/Mohamed Hazem/Desktop/IEEE_Conference_Research_Paper_MF/main.tex
+**"c:/Users/Mohamed Hazem/Graduation Project/Dr. Rushdy/CLPD Dr. Kariman/Mycosis-Fungoides-Classifier/Research Manuscript/main.tex"
+(c:/Users/Mohamed Hazem/Graduation Project/Dr. Rushdy/CLPD Dr. Kariman/Mycosis-Fungoides-Classifier/Research Manuscript/main.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (./IEEEtran.cls
@@ -297,80 +297,70 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (d:/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 29.
- (d:/texlive/2025/texmf-dist/tex/latex/psnfss/omsptm.fd
-File: omsptm.fd 
-)
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 29.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 48.
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 43.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 43.
  (d:/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 48.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 43.
  (d:/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1{d:/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{d:/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
 ]
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 82.
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 123.
  (d:/texlive/2025/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-Underfull \hbox (badness 5431) in paragraph at lines 86--87
+Underfull \hbox (badness 5431) in paragraph at lines 127--128
 []\OT1/ptm/m/n/10 Foreground ex-trac-tion was ap-plied to re-move non-
  []
 
 
-Underfull \hbox (badness 1540) in paragraph at lines 86--87
+Underfull \hbox (badness 1540) in paragraph at lines 127--128
 \OT1/ptm/m/n/10 informative back-ground re-gions prior to model train-ing.
  []
 
 <HSV_Ratio.png, id=13, 1438.173pt x 858.5676pt>
 File: HSV_Ratio.png Graphic file (type png)
 <use HSV_Ratio.png>
-Package pdftex.def Info: HSV_Ratio.png  used on input line 92.
+Package pdftex.def Info: HSV_Ratio.png  used on input line 133.
 (pdftex.def)             Requested size: 252.0pt x 150.43498pt.
 [2 <./HSV_Ratio.png>]
 <fusion_weight_analysis.png, id=22, 1004.553pt x 716.9184pt>
 File: fusion_weight_analysis.png Graphic file (type png)
 <use fusion_weight_analysis.png>
-Package pdftex.def Info: fusion_weight_analysis.png  used on input line 174.
+Package pdftex.def Info: fusion_weight_analysis.png  used on input line 216.
 (pdftex.def)             Requested size: 252.0pt x 179.84175pt.
-<Comprehensive Metrics Dashboard.png, id=23, 1618.045pt x 1102.1175pt>
+ [3]
+<Comprehensive Metrics Dashboard.png, id=34, 941.4372pt x 821.469pt>
 File: Comprehensive Metrics Dashboard.png Graphic file (type png)
 <use Comprehensive Metrics Dashboard.png>
-Package pdftex.def Info: Comprehensive Metrics Dashboard.png  used on input line 216.
-(pdftex.def)             Requested size: 252.0pt x 171.63365pt.
- [3]
-<Confusion Matrix.png, id=35, 1419.3025pt x 752.8125pt>
-File: Confusion Matrix.png Graphic file (type png)
-<use Confusion Matrix.png>
-Package pdftex.def Info: Confusion Matrix.png  used on input line 225.
-(pdftex.def)             Requested size: 252.0pt x 133.66248pt.
-<F2 Figure Comparisons.png, id=36, 992.70876pt x 721.69624pt>
+Package pdftex.def Info: Comprehensive Metrics Dashboard.png  used on input line 258.
+(pdftex.def)             Requested size: 252.0pt x 219.8818pt.
+<Late_fusion_dashboard.png, id=35, 941.4372pt x 823.3962pt>
+File: Late_fusion_dashboard.png Graphic file (type png)
+<use Late_fusion_dashboard.png>
+Package pdftex.def Info: Late_fusion_dashboard.png  used on input line 265.
+(pdftex.def)             Requested size: 252.0pt x 220.39764pt.
+ [4 <./fusion_weight_analysis.png> <./Comprehensive Metrics Dashboard.png> <./Late_fusion_dashboard.png>]
+<F2 Figure Comparisons.png, id=42, 992.70876pt x 721.69624pt>
 File: F2 Figure Comparisons.png Graphic file (type png)
 <use F2 Figure Comparisons.png>
-Package pdftex.def Info: F2 Figure Comparisons.png  used on input line 235.
+Package pdftex.def Info: F2 Figure Comparisons.png  used on input line 278.
 (pdftex.def)             Requested size: 252.0pt x 183.19868pt.
-<ROC Graphs.png, id=37, 1696.3375pt x 706.64pt>
+<ROC Graphs.png, id=43, 1696.3375pt x 706.64pt>
 File: ROC Graphs.png Graphic file (type png)
 <use ROC Graphs.png>
-Package pdftex.def Info: ROC Graphs.png  used on input line 244.
+Package pdftex.def Info: ROC Graphs.png  used on input line 287.
 (pdftex.def)             Requested size: 252.0pt x 104.96709pt.
- [4 <./fusion_weight_analysis.png> <./Comprehensive Metrics Dashboard.png> <./Confusion Matrix.png> <./F2 Figure Comparisons.png>]
-<Precision Recall Curves.png, id=45, 1696.3375pt x 706.64pt>
+<Precision Recall Curves.png, id=44, 1696.3375pt x 706.64pt>
 File: Precision Recall Curves.png Graphic file (type png)
 <use Precision Recall Curves.png>
-Package pdftex.def Info: Precision Recall Curves.png  used on input line 251.
+Package pdftex.def Info: Precision Recall Curves.png  used on input line 294.
 (pdftex.def)             Requested size: 252.0pt x 104.96709pt.
-<Patient Level Aggreg.png, id=46, 1795.70876pt x 1402.23875pt>
-File: Patient Level Aggreg.png Graphic file (type png)
-<use Patient Level Aggreg.png>
-Package pdftex.def Info: Patient Level Aggreg.png  used on input line 261.
-(pdftex.def)             Requested size: 252.0pt x 196.76141pt.
- [5 <./ROC Graphs.png> <./Precision Recall Curves.png> <./Patient Level Aggreg.png>] (./main.bbl
+ [5 <./F2 Figure Comparisons.png> <./ROC Graphs.png> <./Precision Recall Curves.png>] (./main.bbl
 ** WARNING: IEEEtran.bst: No hyphenation pattern has been
 ** loaded for the language `en'. Using the pattern for
 ** the default language instead.
@@ -398,18 +388,18 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4476 strings out of 467533
- 70107 string characters out of 5423668
- 497916 words of memory out of 5000000
+ 4475 strings out of 467533
+ 70155 string characters out of 5423668
+ 495108 words of memory out of 5000000
  33330 multiletter control sequences out of 15000+600000
- 667476 words of font info for 115 fonts, out of 8000000 for 9000
+ 672974 words of font info for 130 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,10n,65p,1002b,337s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,11n,65p,1194b,348s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (7 pages, 5055461 bytes).
+Output written on main.pdf (7 pages, 5351823 bytes).
 PDF statistics:
- 136 PDF objects out of 1000 (max. 8388607)
+ 134 PDF objects out of 1000 (max. 8388607)
  74 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 
