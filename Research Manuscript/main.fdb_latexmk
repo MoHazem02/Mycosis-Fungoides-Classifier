@@ -1,21 +1,20 @@
 # Fdb version 4
-["bibtex main"] 1771508625.62623 "main.aux" "main.bbl" "main" 1771509143.59135 0
-  "./references.bib" 1771322368 7032 6e76794262349d4f283de6c179edbead ""
+["bibtex main"] 1772146308.61367 "main.aux" "main.bbl" "main" 1772146314.91663 0
+  "./references.bib" 1772146277 7912 d9946fdafc15ee27db688b441ed6a802 ""
   "d:/texlive/2025/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1769324320 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "main.aux" 1771509142 6691 4716f5616953641007bc6ee7d7072939 "pdflatex"
+  "main.aux" 1772146314 6593 7754d63a0d7f4b0d69574fe6a42816fc "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1771509140.6468 "c:/Users/Mohamed Hazem/Graduation Project/Dr. Rushdy/CLPD Dr. Kariman/Mycosis-Fungoides-Classifier/Research Manuscript/main.tex" "main.pdf" "main" 1771509143.59181 0
+["pdflatex"] 1772146311.93078 "c:/Users/Mohamed Hazem/Graduation Project/Dr. Rushdy/CLPD Dr. Kariman/Mycosis-Fungoides-Classifier/Research Manuscript/main.tex" "main.pdf" "main" 1772146314.9171 0
   "Comprehensive Metrics Dashboard.png" 1771322285 292535 c18990bb64a171e048c19a3a59c89eaf ""
-  "F2 Figure Comparisons.png" 1769378468 64957 fd313e2bb40d29dea1026a0b84b098dc ""
   "HSV_Ratio.png" 1771083478 3173687 83bfacfd5f1b941c2f4ee3a7704791f5 ""
   "IEEEtran.cls" 1769378468 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
   "Late_fusion_dashboard.png" 1771322307 232289 498f942944cfed4e6298e1518c2ac1c7 ""
   "Precision Recall Curves.png" 1769378469 144246 f76c8bde359fbf992cc2f24edf5bdb71 ""
   "ROC Graphs.png" 1769378468 171979 861434523aeeb548686c9374554fc84e ""
-  "c:/Users/Mohamed Hazem/Graduation Project/Dr. Rushdy/CLPD Dr. Kariman/Mycosis-Fungoides-Classifier/Research Manuscript/main.tex" 1771509140 31211 13877a19247f6f7d9163e87efd2e289b ""
+  "c:/Users/Mohamed Hazem/Graduation Project/Dr. Rushdy/CLPD Dr. Kariman/Mycosis-Fungoides-Classifier/Research Manuscript/main.tex" 1772146310 31265 01e56688cd20b3ac7b0f9f594b60a410 ""
   "d:/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc" 1769322428 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "d:/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1769323328 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "d:/texlive/2025/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1769321807 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -106,9 +105,9 @@
   "d:/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1769331628 3636153 ce30dbc8b71c742a49e620b8b348555b ""
   "d:/texlive/2025/texmf.cnf" 1769331468 713 e69b156964470283e0530f5060668171 ""
   "fusion_weight_analysis.png" 1769378468 217625 b7a3456302a9eceb52a77cb013618b4b ""
-  "main.aux" 1771509142 6691 4716f5616953641007bc6ee7d7072939 "pdflatex"
-  "main.bbl" 1771508625 3835 4b4e375e979133508735b3eef29f4324 "bibtex main"
-  "main.tex" 1771509140 31211 13877a19247f6f7d9163e87efd2e289b ""
+  "main.aux" 1772146314 6593 7754d63a0d7f4b0d69574fe6a42816fc "pdflatex"
+  "main.bbl" 1772146308 4371 bb6e69105210b1d93226122f2a1d5f56 "bibtex main"
+  "main.tex" 1772146310 31265 01e56688cd20b3ac7b0f9f594b60a410 ""
   (generated)
   "main.aux"
   "main.log"

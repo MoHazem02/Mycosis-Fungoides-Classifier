@@ -16,7 +16,7 @@
 
 \begin{document}
 
-\title{Context Over Detail: A Deep Learning Approach for Mycosis Fungoides using Low-Magnification Histopathology
+\title{Context Over Detail: A Deep Learning Approach for Mycosis Fungoides Detection in Low-Magnification Histopathological Images
 }
 
 \author{
@@ -27,10 +27,11 @@ Nada Omar\textsuperscript{1},
 Omar Khaled\textsuperscript{1}, 
 Tarek Waleed\textsuperscript{1}, \\
 Marwa Mohamed Fawzy\textsuperscript{2}, 
+Aya Fahim\textsuperscript{2}, 
 Rania M. Mogawer\textsuperscript{2}, 
-Ahmed Mourad\textsuperscript{2}, 
-Kariman Mansour\textsuperscript{2}, and 
-Muhammad Rushdi\textsuperscript{1}
+Ahmed Mourad \textsuperscript{2}, \\ 
+Kariman Mansour\textsuperscript{2},
+and Muhammad Rushdi\textsuperscript{1}
 }
 \vspace{0.15cm} % Adds a tiny bit of breathing room before the affiliations
 \IEEEauthorblockA{\textsuperscript{1}\textit{Department of Systems and Biomedical Engineering, Faculty of Engineering} \\
@@ -43,11 +44,13 @@ Muhammad Rushdi\textsuperscript{1}
 \maketitle
 
 \begin{abstract}
-Mycosis Fungoides (MF) is a rare form of cutaneous T-cell lymphoma that is often misdiagnosed in early stages \cite{beatty2025_early_mf_diagnosis} due to 
+Mycosis fungoides (MF) is a rare form of cutaneous T-cell lymphoma that is often misdiagnosed in early stages due to 
 its visual similarity to benign inflammatory dermatoses. Early and accurate diagnosis is critical for improving patient outcomes. 
-In this study, we propose a deep learning-based framework for automated MF classification from histopathological skin images. 
-The proposed approach leverages convolutional neural networks to distinguish MF from other lymphoproliferative skin conditions. 
-Experimental results demonstrate promising performance, achieving competitive accuracy and sensitivity, highlighting the potential of CNNs as a supportive tool for dermatological decision-making. \\
+In this paper, we propose a deep learning framework for automated MF detection from low-magnification histopathological skin images. 
+The proposed approach leverages convolutional neural networks (CNNs) to distinguish MF from other lymphoproliferative skin conditions. 
+Experimental results on a dataset of 3,755 images (2433 MF; 1322 Non-MF) demonstrate promising performance, 
+achieving competitive accuracy (77.1\%) and sensitivity (86.3\%), highlighting the potential of CNNs as a supportive tool for 
+decision making in dermatology.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -58,38 +61,40 @@ Mycosis Fungoides, Deep Learning, Histopathology, Medical Image Analysis, Clinic
 % =====================
 \section{Introduction}
 Mycosis Fungoides (MF) is a type of skin lymphoma characterized by malignant proliferation of skin-homing T 
-lymphocytes and is considered the most common primary cutaneous lymphoma (CL), making up almost 50\% of all cases \cite{willemze2005}. Despite its prevalence among Cutaneous 
-T-cell Lymphomas (CTCLs), MF remains a rare disease with an estimated incidence of 0.5 cases per 100,000 person-years \cite{willemze2005}. 
+lymphocytes and is considered the most common primary cutaneous lymphoma (CL), making up almost 50\% of all cases \cite{willemze2005}. Despite its prevalence among utaneous 
+T-cell lymphomas (CTCLs), MF remains a rare disease with an estimated incidence of 0.5 cases per 100,000 person-years \cite{willemze2005}. 
 The clinical presentation of MF is highly variable, often manifesting as erythematous patches, plaques, or tumors that can easily be mistaken for 
 benign inflammatory skin conditions such as eczema or psoriasis. This diagnostic ambiguity contributes to significant delays in accurate diagnosis, 
 with studies reporting an average time to diagnosis of 3-6 years from symptom onset \cite{beatty2025_early_mf_diagnosis}.
-MF remains challenging to diagnose, particularly in early stages, where clinical presentation often mimics benign skin disorders such as eczema or psoriasis.
+MF remains challenging to diagnose, particularly in early stages, where clinical presentations often mimic benign skin disorders such as eczema or psoriasis.
 
-Recent advances in deep learning have shown significant promise in medical image analysis, particularly in dermatology. However, most existing studies 
+Recent advances in deep learning have shown significant promise in medical image 
+analysis \cite{litjens2017deep}, particularly in dermatology \cite{esteva2017dermatologist}. 
+However, most existing studies 
 focus on common skin cancers such as melanoma, while rare diseases like MF remain underexplored. This work aims to address this gap by developing and evaluating a 
-deep learning-based system for MF classification using clinical images.
+deep-learning-based system for MF detection in histopathological skin images.
 
-The main contributions of this work are summarized as follows:
+The main contributions of this work can be summarized as follows:
 \begin{itemize}
-    \item A multi-scale modeling approach leveraging ResNet50 architectures trained on images at 10$\times$ and 20$\times$ magnifications.
-    \item A patient-level prediction strategy based on mean aggregation of patch-level outputs.
+    \item A multi-scale MF modeling approach leveraging ResNet50 architectures trained on histopathological images at 10$\times$ and 20$\times$ magnifications.
+    \item A patient-level MF detection strategy based on mean aggregation of patch-level outputs.
     \item A weighted late-fusion model for multi-magnification decision integration using Brier score analysis.
-    \item Evaluation using recall-oriented metrics, with model selection driven by validation F$_2$-score to prioritize sensitivity in malignant disease detection.
+    \item Performance evaluation using recall-oriented metrics, with model selection driven by validation F$_2$-score to prioritize sensitivity in malignant disease detection.
 \end{itemize}
 
 % =====================
 % 2. Related Work
 % =====================
 \section{Related Work}
-Previous research in dermatological image analysis has primarily focused on melanoma detection and benign versus malignant lesion classification. 
+Previous research in dermatological image analysis has primarily focused on melanoma detection and benign-versus-malignant lesion classification. 
 Studies employing convolutional neural networks (CNNs) have demonstrated dermatologist-level performance in some tasks \cite{Doeleman2024-MF}. 
-However, literature addressing MF specifically remains limited, largely due to dataset scarcity, subtle histopathological features, 
+However, literature addressing MF specifically remains limited, largely due to dataset scarcity, subtlety  of  histopathological features, 
 and high inter-observer variability.
 
 Recent works have explored AI-based approaches for lymphoproliferative skin diseases, yet MF is often excluded or significantly underrepresented, underscoring the 
 need for targeted investigation into AI-assisted MF diagnosis.
 
-Almost all recent studies rely on digitized Whole-Slide Images (WSIs) for histopathological analysis. In contrast, to address the lack of digital slide 
+Almost all recent studies rely on digitized whole-slide images (WSIs) for histopathological analysis. In contrast, to address the lack of digital slide 
 scanners prevalent in resource-limited countries, our framework operates on conventional microscopic images acquired at fixed magnifications rather than WSIs. 
 This setting reflects real-world clinical constraints and represents a novel direction that is largely absent from recent literature. 
 Contemporary approaches predominantly employ weakly supervised deep learning frameworks, such as clustering-constrained attention multiple instance 
@@ -112,9 +117,16 @@ while the non-MF cohort comprises 93 patients spanning other lymphoproliferative
 pityriasis lichenoides et varioliformis acuta and chronica (PLEVA/PLC) (749 images, 57 patients), T-cell dyscrasia (122 images, 9 patients), and pseudolymphoma (160 images, 11 patients). 
 This heterogeneous non-MF group reflects real-world diagnostic challenges encountered in clinical practice.
 
-The dataset was partitioned at the patient level into training, validation, and test sets to prevent data leakage, with 171 patients allocated for training, 36 for validation, and 35 for testing. 
-Images were available at two magnification levels, 10x and 20x, and were processed into patches for model training. 
-The 20x dataset consisted of 88,974 training patches, 18,079 validation patches, and 15,996 test patches, while the 10x dataset comprised 44,865 training patches, 8,669 validation patches, and 8,077 test patches.
+The dataset was partitioned at the patient level into training, validation, and test sets to prevent data 
+leakage, with 171 patients allocated for training, 36 for validation, and 35 for testing. 
+Images were acquired using a standard optical microscope. 
+Throughout this manuscript, the magnification levels "10x" and "20x" refer specifically to the 
+power of the objective lens (located near the slide). Because the microscope utilizes a fixed 10x 
+eyepiece lens (located near the camera/observer), these objective magnifications correspond to total 
+optical magnifications of 100x and 200x, respectively. The acquired images were subsequently processed 
+into patches for model training. The 20x dataset consisted of 88,974 training patches, 18,079 validation patches, 
+and 15,996 test patches, while the 10x dataset comprised 44,865 training patches, 8,669 validation patches, 
+and 8,077 test patches.
 
 Due to the private nature of the dataset and institutional constraints, the images are not publicly available.
 
@@ -225,7 +237,7 @@ As illustrated in Figure \ref{fig:fusion_analysis}, we performed a grid search f
 % =====================
 \section{Results}
 
-The proposed deep learning framework was evaluated on a held-out test set of 35 patients, comprising 8,077 patches at 10$\times$ magnification and 15,996 patches at 20$\times$ magnification. As summarized in Table \ref{tab:results}, the system achieved a maximum patient-level accuracy of 77.14\% and an F$_2$-score of 84.82\% using the late-fusion model.
+The proposed deep learning framework was evaluated on a held-out test set of 35 patients, comprising 8,077 patches at 10$\times$ magnification and 15,996 patches at 20$\times$ magnification. As summarized in Table \ref{tab:results}, the system achieved a maximum magnification-level accuracy of 77.14\% and an F$_2$-score of 84.82\% using the late-fusion model.
 
 \begin{table}[htbp]
 \caption{Quantitative Performance Summary (Test Set, N=35)}
@@ -236,17 +248,15 @@ The proposed deep learning framework was evaluated on a held-out test set of 35 
 % Adjust column spacing to fit the extra column
 \setlength{\tabcolsep}{4pt} 
 
-\begin{tabular}{l c c c c c}
+\begin{tabular}{l c c c}
 \toprule
- & \multicolumn{2}{c}{\textbf{10$\times$ Model}} & \multicolumn{2}{c}{\textbf{20$\times$ Model}} & \textbf{Late Fusion} \\
-\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-6}
-\textbf{Metric} & \textit{Patch} & \textit{Patient} & \textit{Patch} & \textit{Patient} & \textit{Patient} \\
+ & \textbf{10$\times$ Model} & \textbf{20$\times$ Model} & \textbf{Late Fusion} \\
 \midrule
-Accuracy & 0.6714 & \textbf{0.7714} & 0.6657 & 0.7429 & \textbf{0.7714} \\
-F$_2$-Score & 0.7134 & \textbf{0.8482} & 0.6907 & 0.7477 & \textbf{0.8482} \\
-Sensitivity & 0.7030 & \textbf{0.8636} & 0.6670 & 0.7273 & \textbf{0.8636} \\
-Specificity & 0.7030 & 0.8636 & 0.6670 & 0.7273 & 0.6154 \\
-ROC-AUC & 0.7236 & 0.7867 & 0.7420 & \textbf{0.7972} & \textbf{0.7972} \\
+Accuracy & \textbf{0.7714} & 0.7429 & \textbf{0.7714} \\
+F$_2$-Score & \textbf{0.8482} & 0.7477 & \textbf{0.8482} \\
+Sensitivity & \textbf{0.8636} & 0.7273 & \textbf{0.8636} \\
+Specificity & 0.8636 & 0.7273 & 0.6154 \\
+ROC-AUC & 0.7867 & \textbf{0.7972} & \textbf{0.7972} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -271,14 +281,9 @@ This improvement is further detailed in the comparative performance dashboard (F
 
 
 \subsection{Sensitivity and Clinical Relevance}
-Given the clinical imperative to minimize missed diagnoses, we prioritized the F$_2$-score (which emphasizes recall). Figure \ref{fig:f2_analysis} highlights that the 10$\times$ model achieves a superior F$_2$-score of 0.848 compared to 0.748 for the 20$\times$ model. This suggests that architectural changes visible at lower magnification are highly indicative of MF.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{F2 Figure Comparisons.png}
-    \caption{F$_2$ Score Analysis ($\beta=2$).}
-    \label{fig:f2_analysis}
-\end{figure}
+Given the clinical imperative to minimize missed diagnoses, we prioritized the F$_2$-score (which emphasizes recall). 
+The 10$\times$ model achieves a superior F$_2$-score of 0.848 compared to 0.748 
+for the 20$\times$ model. This suggests that architectural changes visible at lower magnification are highly indicative of MF.
 
 This result is corroborated by the Receiver Operating Characteristic (ROC) and Precision-Recall (PR) curves (Fig. \ref{fig:roc} and Fig. \ref{fig:pr}). The patient-level curves (solid lines) consistently envelop the patch-level curves (shaded areas), demonstrating superior discriminatory power across all decision thresholds.
 
