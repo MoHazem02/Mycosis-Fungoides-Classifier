@@ -5,3 +5,4 @@ optuna_mf.db
 deployment/__pycache__/*
 deployment/test_report.py
 /deployment/dist/*
+Experiments/patch_cache_exp
