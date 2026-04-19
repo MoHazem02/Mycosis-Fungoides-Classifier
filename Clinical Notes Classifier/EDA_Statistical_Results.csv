@@ -1,0 +1,24 @@
+Feature,Type,Is_Skewed,Test_Used,P_Value,Significant,N_Valid,N_Categories
+macules,Categorical,,Chi-Squared,0.0,Yes,499.0,2.0
+bx1_morph,Categorical,,Chi-Squared,0.0,Yes,499.0,7.0
+papules,Categorical,,Chi-Squared,0.0,Yes,499.0,2.0
+age,Continuous,True,Mann-Whitney U,0.0,Yes,,
+color,Categorical,,Chi-Squared,0.0,Yes,498.0,5.0
+patch,Categorical,,Chi-Squared,0.0,Yes,499.0,2.0
+bx2_morph,Categorical,,Chi-Squared,0.0,Yes,499.0,8.0
+visit_type,Categorical,,Chi-Squared,0.0,Yes,499.0,3.0
+duration_months,Continuous,True,Mann-Whitney U,0.0,Yes,,
+plaque,Categorical,,Chi-Squared,0.0,Yes,498.0,2.0
+current_ttt,Categorical,,Chi-Squared,0.0,Yes,499.0,2.0
+scales,Categorical,,Chi-Squared,0.0,Yes,499.0,2.0
+site_head_neck,Categorical,,Chi-Squared,0.0001,Yes,498.0,2.0
+site_ll,Categorical,,Chi-Squared,0.009,Yes,498.0,2.0
+course,Categorical,,Chi-Squared,0.01,Yes,495.0,6.0
+bx2_site,Categorical,,Chi-Squared,0.0327,Yes,499.0,9.0
+bx1_site,Categorical,,Chi-Squared,0.0731,No,499.0,9.0
+nodule,Categorical,,Chi-Squared,0.2007,No,499.0,2.0
+sex,Categorical,,Chi-Squared,0.5116,No,499.0,2.0
+symptomatic,Categorical,,Chi-Squared,0.6562,No,499.0,2.0
+site_trunk,Categorical,,Chi-Squared,0.7829,No,498.0,2.0
+site_ul,Categorical,,Chi-Squared,0.8019,No,498.0,2.0
+site_buttocks,Categorical,,Chi-Squared,0.9292,No,499.0,2.0
