@@ -1,0 +1,60 @@
+\relax 
+\citation{willemze2005}
+\citation{willemze2005}
+\citation{beatty2025_early_mf_diagnosis}
+\citation{litjens2017deep}
+\citation{esteva2017dermatologist}
+\@writefile{toc}{\contentsline {title}{Context Over Detail: A Deep Learning Approach for Mycosis Fungoides Detection in Low-Magnification Histopathological Images}{1}{}\protected@file@percent }
+\@writefile{toc}{\authcount {1}}
+\@writefile{toc}{\contentsline {author}{Anonymous Authors}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{}\protected@file@percent }
+\citation{Doeleman2024-MF}
+\citation{Lu2021}
+\citation{zhang2025standardizing, vaidya2025molecular}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Materials and Methods}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Dataset}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Preprocessing}{3}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Different foreground ratios for patches of a sample tif image}}{4}{}\protected@file@percent }
+\newlabel{fig:HSV_Ratio}{{1}{4}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Model Architecture and Training Protocol}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Backbone Selection and Hyperparameter Optimization}{4}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Optimal Hyperparameters Selected via Optuna}}{5}{}\protected@file@percent }
+\newlabel{tab:hyperparams}{{1}{5}{}{table.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Metric Selection and Checkpointing}{5}{}\protected@file@percent }
+\newlabel{eq:f2_score}{{1}{5}{}{equation.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Training Strategy}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Validation Protocol and Aggregation Performance}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Patient-Level Prediction via Mean Aggregation}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Multi-Magnification Fusion Strategy}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Late Fusion Approach}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Weighted Score Aggregation and Clinical Justification}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Optimization of Fusion Weight}{6}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Optimization of the multi-magnification fusion weight ($\alpha $). The top-left panel demonstrates that the lowest Brier Score (indicating optimal calibration) is achieved at $\alpha =0.65$. The remaining panels illustrate the corresponding trade-offs in Accuracy, Sensitivity/Specificity, and ROC-AUC, confirming that this weight maintains high sensitivity while maximizing predictive reliability.}}{7}{}\protected@file@percent }
+\newlabel{fig:fusion_analysis}{{2}{7}{}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Patient-Level Aggregation Benefits}{7}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Quantitative Performance Summary (Test Set, N=35)}}{8}{}\protected@file@percent }
+\newlabel{tab:results}{{2}{8}{}{table.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Comprehensive Performance Dashboard. A side-by-side comparison of patch-level (dark blue) vs. patient-level (dark orange) metrics across both magnifications.}}{8}{}\protected@file@percent }
+\newlabel{fig:comprehensiveMetrics}{{3}{8}{}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Late fusion model performance comparing individual magnification models (10$\times $, 20$\times $) against the fused multi-scale approach. Late fusion combines predictions from both magnifications to leverage complementary information captured at different scales.}}{9}{}\protected@file@percent }
+\newlabel{fig:aggregation_comparison}{{4}{9}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Sensitivity and Clinical Relevance}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Receiver Operating Characteristic (ROC) Curves. The "step-like" nature of the patient-level curves is due to the discrete number of test patients (N=35), yet they show a clear improvement in Area Under the Curve (AUC) compared to patch-level inference.}}{10}{}\protected@file@percent }
+\newlabel{fig:roc}{{5}{10}{}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Precision-Recall Curves. The dominance of the patient-level curves (solid lines) confirms that the model maintains high precision even at higher recall levels, a critical trait for a screening tool.}}{10}{}\protected@file@percent }
+\newlabel{fig:pr}{{6}{10}{}{figure.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Discussion}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Architectural vs. Cellular Features and Patch Resolution}{10}{}\protected@file@percent }
+\citation{Doeleman2024-MF}
+\citation{Doeleman2024-MF}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}The Necessity of Whole-Slide Context}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Benchmarking and Clinical Reality}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Future Work}{12}{}\protected@file@percent }
+\citation{macenko2009}
+\citation{vahadane2016_stainnorm}
+\bibstyle{splncs04}
+\bibdata{references}
+\gdef \@abspage@last{13}
