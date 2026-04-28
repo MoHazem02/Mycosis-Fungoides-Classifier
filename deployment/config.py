@@ -32,8 +32,8 @@ BATCH_SIZE = 8  # Smaller batch for CPU inference
 CLASSIFICATION_THRESHOLD = 0.5
 
 # Paths (relative to deployment folder)
-MODEL_X10_FILENAME = "model_resnet50_x10.pth"
-MODEL_X20_FILENAME = "model_resnet50_x20.pth"
+MODEL_X10_FILENAME = "model_tf_efficientnet_b3_x10_5class.pth"
+MODEL_X20_FILENAME = "model_tf_efficientnet_b3_x20_5class.pth"
 
 # PDF Report Settings
 PDF_TITLE = "AI-Assisted Mycosis Fungoides Classification Report"
