@@ -124,10 +124,10 @@ class MFClassifier:
         Run inference on patches using a model.
         
         Returns:
-            Array of probabilities for positive class (Non-MF)
+            Array of shape (n_patches, n_classes) with probabilities for all classes
         """
         if not patches:
-            return np.array([])
+            return np.empty((0, config.NUM_CLASSES))
         
         all_probs = []
         batch_size = config.BATCH_SIZE
@@ -140,8 +140,8 @@ class MFClassifier:
                 
                 outputs = model(batch_tensor)
                 probs = F.softmax(outputs, dim=1)
-                # Probability of Non-MF (class 1)
-                all_probs.extend(probs[:, 1].cpu().numpy())
+                # Store all class probabilities
+                all_probs.extend(probs.cpu().numpy())
                 
                 if progress_callback:
                     batch_num = (i // batch_size) + 1
@@ -149,11 +149,19 @@ class MFClassifier:
         
         return np.array(all_probs)
     
-    def _aggregate_to_patient_level(self, patch_probs: np.ndarray) -> float:
-        """Aggregate patch probabilities to patient level using mean."""
+    def _aggregate_to_patient_level(self, patch_probs: np.ndarray) -> np.ndarray:
+        """
+        Aggregate patch probabilities to patient level using mean.
+        
+        Args:
+            patch_probs: Array of shape (n_patches, n_classes)
+            
+        Returns:
+            Array of shape (n_classes,) with aggregated probabilities
+        """
         if len(patch_probs) == 0:
-            return 0.5  # Uncertain if no patches
-        return float(np.mean(patch_probs))
+            return np.ones(config.NUM_CLASSES) / config.NUM_CLASSES  # Uniform if no patches
+        return np.mean(patch_probs, axis=0)
     
     def predict(
         self, 
@@ -211,26 +219,48 @@ class MFClassifier:
         x10_patient_prob = self._aggregate_to_patient_level(x10_patch_probs)
         x20_patient_prob = self._aggregate_to_patient_level(x20_patch_probs)
         
-        # Late fusion
+        # Late fusion - weighted average of class probabilities
         w = config.OPTIMAL_FUSION_WEIGHT
-        fused_prob = w * x10_patient_prob + (1 - w) * x20_patient_prob
+        fused_probs = w * x10_patient_prob + (1 - w) * x20_patient_prob
         
-        # Classification
-        predicted_class_idx = 1 if fused_prob >= config.CLASSIFICATION_THRESHOLD else 0
+        # Classification - get class with highest probability
+        predicted_class_idx = int(np.argmax(fused_probs))
         predicted_class = config.CLASS_NAMES[predicted_class_idx]
+        confidence = float(fused_probs[predicted_class_idx])
         
-        # MF probability (class 0)
-        mf_probability = 1 - fused_prob
-        nonmf_probability = fused_prob
+        # Binary classification: MF vs Non-MF
+        mf_prob = float(fused_probs[1])  # Class 1 = MF (Mycosis Fungoides)
+        non_mf_prob = float(fused_probs[0] + fused_probs[2] + fused_probs[3] + fused_probs[4])  # Sum of all Non-MF classes
+        is_mf = mf_prob > non_mf_prob
+        binary_prediction = 'MF' if is_mf else 'Non-MF'
+        binary_confidence = max(mf_prob, non_mf_prob)
+        
+        # Build class probabilities dictionary
+        class_probs = {
+            config.CLASS_NAMES[i]: float(fused_probs[i]) 
+            for i in range(config.NUM_CLASSES)
+        }
         
         results = {
             'patient_name': patient_name,
+            # Binary level
+            'binary_prediction': binary_prediction,
+            'binary_confidence': binary_confidence,
+            'mf_probability': mf_prob,
+            'non_mf_probability': non_mf_prob,
+            # Multi-class level
             'predicted_class': predicted_class,
-            'mf_probability': mf_probability,
-            'nonmf_probability': nonmf_probability,
-            'confidence': max(mf_probability, nonmf_probability),
-            'x10_probability': 1 - x10_patient_prob,  # MF probability
-            'x20_probability': 1 - x20_patient_prob,  # MF probability
+            'predicted_class_idx': predicted_class_idx,
+            'confidence': confidence,
+            'class_probabilities': class_probs,
+            'x10_probabilities': {
+                config.CLASS_NAMES[i]: float(x10_patient_prob[i])
+                for i in range(config.NUM_CLASSES)
+            },
+            'x20_probabilities': {
+                config.CLASS_NAMES[i]: float(x20_patient_prob[i])
+                for i in range(config.NUM_CLASSES)
+            },
             'fusion_weight': w,
             'n_x10_images': n_x10_images,
             'n_x20_images': n_x20_images,

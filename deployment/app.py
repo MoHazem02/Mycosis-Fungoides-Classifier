@@ -94,8 +94,24 @@ class MFClassifierApp(ctk.CTk):
         )
         self.subtitle_label.pack(pady=(0, 20))
         
+        # Create tabview
+        self.tabview = ctk.CTkTabview(self.main_frame)
+        self.tabview.pack(fill="both", expand=True, padx=0, pady=10)
+        
+        # Add tabs
+        self.tab_images = self.tabview.add("Images Classifier")
+        self.tab_clinical = self.tabview.add("Clinical Notes")
+        
+        # Configure tabs
+        self._create_images_classifier_tab()
+        self._create_clinical_notes_tab()
+    
+    def _create_images_classifier_tab(self):
+        """Create the Images Classifier tab UI."""
+        tab = self.tab_images
+        
         # Folder selection frame
-        self.folder_frame = ctk.CTkFrame(self.main_frame)
+        self.folder_frame = ctk.CTkFrame(tab)
         self.folder_frame.pack(fill="x", padx=20, pady=10)
         
         self.folder_label = ctk.CTkLabel(
@@ -135,7 +151,7 @@ class MFClassifierApp(ctk.CTk):
         
         # Analyze button
         self.analyze_button = ctk.CTkButton(
-            self.main_frame,
+            tab,
             text="🔬 Analyze Patient",
             font=ctk.CTkFont(size=16, weight="bold"),
             height=50,
@@ -147,7 +163,7 @@ class MFClassifierApp(ctk.CTk):
         self.analyze_button.pack(pady=15, padx=20, fill="x")
         
         # Progress section
-        self.progress_frame = ctk.CTkFrame(self.main_frame)
+        self.progress_frame = ctk.CTkFrame(tab)
         self.progress_frame.pack(fill="x", padx=20, pady=10)
         
         self.status_var = ctk.StringVar(value="Initializing classifier...")
@@ -163,15 +179,24 @@ class MFClassifierApp(ctk.CTk):
         self.progress_bar.set(0)
         
         # Results section
-        self.results_frame = ctk.CTkFrame(self.main_frame)
+        self.results_frame = ctk.CTkFrame(tab)
         self.results_frame.pack(fill="both", expand=True, padx=20, pady=10)
         
         self.results_title = ctk.CTkLabel(
             self.results_frame,
-            text="Classification Results",
+            text="Hierarchical Classification Results",
             font=ctk.CTkFont(size=18, weight="bold")
         )
         self.results_title.pack(pady=(15, 10))
+        
+        # Binary prediction title
+        self.binary_title = ctk.CTkLabel(
+            self.results_frame,
+            text="Level 1: Binary Classification (MF vs Non-MF)",
+            font=ctk.CTkFont(size=14, weight="bold"),
+            text_color="gray"
+        )
+        self.binary_title.pack(pady=(10, 5))
         
         # Prediction result
         self.prediction_var = ctk.StringVar(value="—")
@@ -191,51 +216,52 @@ class MFClassifierApp(ctk.CTk):
         )
         self.confidence_label.pack(pady=5)
         
-        # Probability details
-        self.prob_frame = ctk.CTkFrame(self.results_frame, fg_color="transparent")
-        self.prob_frame.pack(fill="x", padx=40, pady=15)
-        
-        # MF probability bar
-        self.mf_label = ctk.CTkLabel(
-            self.prob_frame,
-            text="MF Probability:",
-            font=ctk.CTkFont(size=12)
+        # Multi-class prediction title
+        self.multiclass_title = ctk.CTkLabel(
+            self.results_frame,
+            text="Level 2: Multi-Class Classification (5 Differential Diagnoses)",
+            font=ctk.CTkFont(size=14, weight="bold"),
+            text_color="gray"
         )
-        self.mf_label.grid(row=0, column=0, sticky="w", pady=5)
+        self.multiclass_title.pack(pady=(15, 5))
         
-        self.mf_progress = ctk.CTkProgressBar(self.prob_frame, width=300)
-        self.mf_progress.grid(row=0, column=1, padx=10, pady=5)
-        self.mf_progress.set(0)
+        # Probability details - scrollable frame for 5 classes
+        self.prob_scroll = ctk.CTkScrollableFrame(self.results_frame, fg_color="transparent")
+        self.prob_scroll.pack(fill="x", padx=40, pady=15)
         
-        self.mf_percent_var = ctk.StringVar(value="—")
-        self.mf_percent_label = ctk.CTkLabel(
-            self.prob_frame,
-            textvariable=self.mf_percent_var,
-            font=ctk.CTkFont(size=12, weight="bold"),
-            width=60
-        )
-        self.mf_percent_label.grid(row=0, column=2, pady=5)
-        
-        # Non-MF probability bar
-        self.nonmf_label = ctk.CTkLabel(
-            self.prob_frame,
-            text="Non-MF Probability:",
-            font=ctk.CTkFont(size=12)
-        )
-        self.nonmf_label.grid(row=1, column=0, sticky="w", pady=5)
-        
-        self.nonmf_progress = ctk.CTkProgressBar(self.prob_frame, width=300)
-        self.nonmf_progress.grid(row=1, column=1, padx=10, pady=5)
-        self.nonmf_progress.set(0)
-        
-        self.nonmf_percent_var = ctk.StringVar(value="—")
-        self.nonmf_percent_label = ctk.CTkLabel(
-            self.prob_frame,
-            textvariable=self.nonmf_percent_var,
-            font=ctk.CTkFont(size=12, weight="bold"),
-            width=60
-        )
-        self.nonmf_percent_label.grid(row=1, column=2, pady=5)
+        # Create progress bars for each class
+        self.class_progress_widgets = {}
+        for i in range(5):  # 5 classes
+            # Label
+            class_label_var = ctk.StringVar(value=f"Class {i}:")
+            class_label = ctk.CTkLabel(
+                self.prob_scroll,
+                textvariable=class_label_var,
+                font=ctk.CTkFont(size=12)
+            )
+            class_label.grid(row=i, column=0, sticky="w", pady=5, padx=5)
+            
+            # Progress bar
+            class_progress = ctk.CTkProgressBar(self.prob_scroll, width=300)
+            class_progress.grid(row=i, column=1, padx=10, pady=5)
+            class_progress.set(0)
+            
+            # Percentage label
+            class_percent_var = ctk.StringVar(value="—")
+            class_percent_label = ctk.CTkLabel(
+                self.prob_scroll,
+                textvariable=class_percent_var,
+                font=ctk.CTkFont(size=12, weight="bold"),
+                width=60
+            )
+            class_percent_label.grid(row=i, column=2, pady=5, padx=5)
+            
+            # Store references
+            self.class_progress_widgets[i] = {
+                'label_var': class_label_var,
+                'progress': class_progress,
+                'percent_var': class_percent_var
+            }
         
         # Save report button
         self.save_button = ctk.CTkButton(
@@ -257,6 +283,52 @@ class MFClassifierApp(ctk.CTk):
             text_color="gray"
         )
         self.details_label.pack(pady=(0, 10))
+    
+    def _create_clinical_notes_tab(self):
+        """Create the Clinical Notes Classifier tab UI (placeholder)."""
+        tab = self.tab_clinical
+        
+        # Placeholder content
+        placeholder_frame = ctk.CTkFrame(tab)
+        placeholder_frame.pack(fill="both", expand=True, padx=20, pady=20)
+        
+        placeholder_label = ctk.CTkLabel(
+            placeholder_frame,
+            text="Clinical Notes Classifier",
+            font=ctk.CTkFont(size=24, weight="bold")
+        )
+        placeholder_label.pack(pady=(20, 10))
+        
+        description_label = ctk.CTkLabel(
+            placeholder_frame,
+            text="This tab will be used for analyzing clinical notes and patient information.\n\nComing soon...",
+            font=ctk.CTkFont(size=14),
+            text_color="gray",
+            justify="center"
+        )
+        description_label.pack(pady=20)
+        
+        # Placeholder button
+        placeholder_button = ctk.CTkButton(
+            placeholder_frame,
+            text="📝 Upload Clinical Notes",
+            font=ctk.CTkFont(size=14),
+            height=40,
+            state="disabled"
+        )
+        placeholder_button.pack(pady=15, padx=20, fill="x")
+        
+        info_text = ctk.CTkLabel(
+            placeholder_frame,
+            text="This feature will allow you to:\n" +
+                 "• Analyze patient clinical notes\n" +
+                 "• Extract relevant medical information\n" +
+                 "• Generate clinical insights",
+            font=ctk.CTkFont(size=12),
+            text_color="gray",
+            justify="left"
+        )
+        info_text.pack(pady=20, padx=20, anchor="w")
     
     def _init_classifier_async(self):
         """Initialize classifier in background thread."""
@@ -314,10 +386,12 @@ class MFClassifierApp(ctk.CTk):
         # Reset results
         self.prediction_var.set("Analyzing...")
         self.confidence_var.set("")
-        self.mf_progress.set(0)
-        self.nonmf_progress.set(0)
-        self.mf_percent_var.set("—")
-        self.nonmf_percent_var.set("—")
+        
+        # Reset all class progress bars
+        for i in range(5):
+            self.class_progress_widgets[i]['progress'].set(0)
+            self.class_progress_widgets[i]['percent_var'].set("—")
+        
         self.details_var.set("")
         self.progress_bar.set(0)
         
@@ -342,39 +416,56 @@ class MFClassifierApp(ctk.CTk):
         threading.Thread(target=run_analysis, daemon=True).start()
     
     def _display_results(self, results: dict):
-        """Display prediction results in UI."""
-        # Update prediction label
+        """Display prediction results in UI with hierarchical classification."""
+        # Binary level prediction
+        binary_pred = results['binary_prediction']
+        binary_conf = results['binary_confidence'] * 100
+        mf_prob = results['mf_probability'] * 100
+        non_mf_prob = results['non_mf_probability'] * 100
+        
+        # Multi-class level prediction
         prediction = results['predicted_class']
-        if prediction == "MF":
-            self.prediction_var.set("🔴 MYCOSIS FUNGOIDES")
-            self.prediction_label.configure(text_color="#e74c3c")
-        else:
-            self.prediction_var.set("🟢 NON-MF")
-            self.prediction_label.configure(text_color="#27ae60")
-        
-        # Confidence
         confidence = results['confidence'] * 100
-        self.confidence_var.set(f"Confidence: {confidence:.1f}%")
         
-        # Probability bars
-        mf_prob = results['mf_probability']
-        nonmf_prob = results['nonmf_probability']
+        # Color for binary prediction
+        binary_color = "#e74c3c" if binary_pred == "MF" else "#3498db"  # Red for MF, Blue for Non-MF
         
-        self.mf_progress.set(mf_prob)
-        self.nonmf_progress.set(nonmf_prob)
-        self.mf_percent_var.set(f"{mf_prob*100:.1f}%")
-        self.nonmf_percent_var.set(f"{nonmf_prob*100:.1f}%")
+        # Display Binary Prediction (Level 1)
+        binary_text = f"{binary_pred}\nBinary Confidence: {binary_conf:.1f}%"
+        self.prediction_var.set(binary_text)
+        self.prediction_label.configure(text_color=binary_color)
         
-        # Color the progress bars
-        if mf_prob > nonmf_prob:
-            self.mf_progress.configure(progress_color="#e74c3c")
-            self.nonmf_progress.configure(progress_color="#95a5a6")
-        else:
-            self.mf_progress.configure(progress_color="#95a5a6")
-            self.nonmf_progress.configure(progress_color="#27ae60")
+        # Display Binary Accuracy as (MF%, Non-MF%)
+        self.confidence_var.set(f"Binary Accuracy: ({mf_prob:.1f}% MF, {non_mf_prob:.1f}% Non-MF)")
         
-        # Details
+        # Display all class probabilities
+        class_probs = results['class_probabilities']
+        
+        # Define colors for each class
+        class_colors = ["#e74c3c", "#3498db", "#2ecc71", "#f39c12", "#9b59b6"]
+        
+        for i in range(5):
+            # Get actual class name from results
+            class_name = list(class_probs.keys())[i]
+            prob = class_probs[class_name]
+            
+            # Update label with full class name
+            self.class_progress_widgets[i]['label_var'].set(f"{class_name}:")
+            
+            # Update progress bar
+            self.class_progress_widgets[i]['progress'].set(prob)
+            self.class_progress_widgets[i]['progress'].configure(progress_color=class_colors[i])
+            
+            # Update percentage - highlight the predicted class
+            percentage_text = f"{prob*100:.1f}%"
+            if class_name == prediction:
+                percentage_text += " ✓"  # Mark the predicted class
+            self.class_progress_widgets[i]['percent_var'].set(percentage_text)
+        
+        # Details - Include both binary and multi-class info
         details = (
+            f"Binary Prediction: {binary_pred} ({binary_conf:.1f}%) | "
+            f"Specific Class: {prediction} ({confidence:.1f}%)\n"
             f"x10: {results['n_x10_patches']} patches from {results['n_x10_images']} images | "
             f"x20: {results['n_x20_patches']} patches from {results['n_x20_images']} images | "
             f"Fusion weight: {results['fusion_weight']:.2f}"

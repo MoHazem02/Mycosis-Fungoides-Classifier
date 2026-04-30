@@ -3,9 +3,17 @@ Configuration settings for MF Classifier deployment.
 """
 
 # Model Architecture
-MODEL_ARCHITECTURE = "resnet50"
-NUM_CLASSES = 2
-CLASS_NAMES = ["MF", "Non-MF"]
+MODEL_ARCHITECTURE = "efficientnet_b3"
+NUM_CLASSES = 5
+# Classes are sorted alphabetically by the dataset loader
+CLASS_NAMES = ["B cell Lymphoma", "Mycosis Fungoides", "PLEVA-PLC", "T-cell dyscrasia", "pseudolymphoma"]
+
+# Binary classification mapping
+# MF = Class 1, Non-MF = Classes 0, 2, 3, 4
+BINARY_CLASS_MAP = {
+    'MF': 1,
+    'Non-MF': [0, 2, 3, 4]
+}
 
 # Model hyperparameters (from training)
 DROPOUT_X10 = 0.3979527105843245
@@ -14,7 +22,7 @@ DROPOUT_X20 = 0.2582534390245415
 # Late Fusion Settings
 # Optimal weight from Brier Score minimization
 # p_fused = w * p_x10 + (1 - w) * p_x20
-OPTIMAL_FUSION_WEIGHT = 0.65  
+OPTIMAL_FUSION_WEIGHT = 0.2 
 
 # Image Processing
 PATCH_SIZE = 512
