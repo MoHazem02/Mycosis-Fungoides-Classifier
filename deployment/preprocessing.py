@@ -72,7 +72,7 @@ def extract_patches_from_folder(
     """
     all_patches = []
     
-    # Find all .tif images
+    # Find all .tif images or jpg/png if no .tif found
     image_files = list(folder_path.glob('*.tif'))
     if not image_files:
         # Also check for other formats
@@ -120,13 +120,13 @@ def validate_patient_folder(folder_path: Path) -> Tuple[bool, str]:
         return False, "Missing 'x20' subfolder"
     
     # Check for images
-    x10_images = list(x10_folder.glob('*.tif')) + list(x10_folder.glob('*.tiff'))
-    x20_images = list(x20_folder.glob('*.tif')) + list(x20_folder.glob('*.tiff'))
+    x10_images = list(x10_folder.glob('*.tif')) + list(x10_folder.glob('*.tiff')) + list(x10_folder.glob('*.jpg')) + list(x10_folder.glob('*.png'))
+    x20_images = list(x20_folder.glob('*.tif')) + list(x20_folder.glob('*.tiff')) + list(x20_folder.glob('*.jpg')) + list(x20_folder.glob('*.png'))
     
     if len(x10_images) == 0:
-        return False, "No .tif images found in 'x10' folder"
+        return False, "No .tif or .jpg/.png images found in 'x10' folder"
     
     if len(x20_images) == 0:
-        return False, "No .tif images found in 'x20' folder"
+        return False, "No .tif or .jpg/.png images found in 'x20' folder"
     
     return True, f"Found {len(x10_images)} x10 images and {len(x20_images)} x20 images"

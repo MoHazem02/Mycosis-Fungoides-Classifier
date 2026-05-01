@@ -10,6 +10,8 @@ from typing import Optional
 import sys
 import os
 from PIL import Image, ImageTk
+import pandas as pd
+import joblib
 
 # Add current directory to path for imports when bundled
 if getattr(sys, 'frozen', False):
@@ -285,50 +287,148 @@ class MFClassifierApp(ctk.CTk):
         self.details_label.pack(pady=(0, 10))
     
     def _create_clinical_notes_tab(self):
-        """Create the Clinical Notes Classifier tab UI (placeholder)."""
+        """Create the Clinical Notes Classifier tab UI."""
         tab = self.tab_clinical
         
-        # Placeholder content
-        placeholder_frame = ctk.CTkFrame(tab)
-        placeholder_frame.pack(fill="both", expand=True, padx=20, pady=20)
+        # Main scrollable frame
+        self.clinical_scroll_frame = ctk.CTkScrollableFrame(tab)
+        self.clinical_scroll_frame.pack(fill="both", expand=True, padx=20, pady=20)
         
-        placeholder_label = ctk.CTkLabel(
-            placeholder_frame,
-            text="Clinical Notes Classifier",
+        # Title
+        title_label = ctk.CTkLabel(
+            self.clinical_scroll_frame,
+            text="Clinical Features Input",
             font=ctk.CTkFont(size=24, weight="bold")
         )
-        placeholder_label.pack(pady=(20, 10))
+        title_label.pack(pady=(0, 5))
         
-        description_label = ctk.CTkLabel(
-            placeholder_frame,
-            text="This tab will be used for analyzing clinical notes and patient information.\n\nComing soon...",
-            font=ctk.CTkFont(size=14),
-            text_color="gray",
-            justify="center"
-        )
-        description_label.pack(pady=20)
-        
-        # Placeholder button
-        placeholder_button = ctk.CTkButton(
-            placeholder_frame,
-            text="📝 Upload Clinical Notes",
-            font=ctk.CTkFont(size=14),
-            height=40,
-            state="disabled"
-        )
-        placeholder_button.pack(pady=15, padx=20, fill="x")
-        
-        info_text = ctk.CTkLabel(
-            placeholder_frame,
-            text="This feature will allow you to:\n" +
-                 "• Analyze patient clinical notes\n" +
-                 "• Extract relevant medical information\n" +
-                 "• Generate clinical insights",
+        subtitle_label = ctk.CTkLabel(
+            self.clinical_scroll_frame,
+            text="Enter clinical features for diagnosis prediction",
             font=ctk.CTkFont(size=12),
-            text_color="gray",
-            justify="left"
+            text_color="gray"
         )
-        info_text.pack(pady=20, padx=20, anchor="w")
+        subtitle_label.pack(pady=(0, 20))
+        
+        # Define encoding mappings
+        self.feature_mappings = {
+            'sex': {'Female': 0, 'Male': 1},
+            'course': {'Intermittent': 0, 'Progressive': 1, 'Regressive': 2, 'Remission And Excerbation': 3, 'Stationary': 4, 'Unknown': 5},
+            'color': {'Erythematous': 0, 'Hyperpigmented': 1, 'Hypopigmented': 2, 'Poikilodermatous': 3},
+            'bx1_site': {'Buttocks': 0, 'Face': 1, 'LL': 2, 'Neck': 3, 'No BX Site': 4, 'Scalp': 5, 'Trunk': 6, 'UL': 7, 'Unknown': 8},
+            'bx2_site': {'Buttocks': 0, 'Face': 1, 'LL': 2, 'Neck': 3, 'No BX Site': 4, 'Trunk': 5, 'UL': 6, 'Unknown': 7},
+            'bx1_morph': {'Macule': 0, 'No BX Morph': 1, 'Nodule': 2, 'Papule': 3, 'Patch': 4, 'Plaque': 5},
+            'bx2_morph': {'Macule': 0, 'No BX Morph': 1, 'Nodule': 2, 'Papule': 3, 'Patch': 4, 'Plaque': 5},
+            'current_ttt': {'No': 0, 'Yes': 1},
+            'visit_type': {'FU': 0, 'New': 1, 'Rec': 2},
+            'site_head_neck': {'No': 0, 'Yes': 1},
+            'site_ul': {'No': 0, 'Yes': 1},
+            'site_ll': {'No': 0, 'Yes': 1},
+            'site_trunk': {'No': 0, 'Yes': 1},
+            'site_buttocks': {'No': 0, 'Yes': 1},
+            'symptomatic': {'No': 0, 'Yes': 1},
+            'macules': {'No': 0, 'Yes': 1},
+            'patch': {'No': 0, 'Yes': 1},
+            'papules': {'No': 0, 'Yes': 1},
+            'plaque': {'No': 0, 'Yes': 1},
+            'nodule': {'No': 0, 'Yes': 1},
+            'scales': {'No': 0, 'Yes': 1}
+        }
+        
+        # Features form
+        self.clinical_inputs = {}
+        features = ['macules', 'bx1_morph', 'papules', 'age', 'color', 'patch',
+                   'bx2_morph', 'visit_type', 'duration_months', 'plaque', 'scales',
+                   'site_head_neck', 'site_ll', 'course', 'bx2_site', 'nodule']
+        
+        # Create input fields in a grid layout
+        self.input_grid_frame = ctk.CTkFrame(self.clinical_scroll_frame, fg_color="transparent")
+        self.input_grid_frame.pack(fill="x", pady=10)
+        
+        for idx, feature in enumerate(features):
+            row = idx // 2
+            col = idx % 2
+            
+            # Feature name label
+            label = ctk.CTkLabel(
+                self.input_grid_frame,
+                text=feature.replace('_', ' ').title() + ":",
+                font=ctk.CTkFont(size=11, weight="bold"),
+                anchor="w",
+                width=150
+            )
+            label.grid(row=row, column=col*2, sticky="w", padx=(10, 5), pady=8)
+            
+            # Create appropriate widget based on feature type
+            if feature in self.feature_mappings:
+                # Create dropdown for categorical features
+                options = list(self.feature_mappings[feature].keys())
+                dropdown = ctk.CTkComboBox(
+                    self.input_grid_frame,
+                    values=options,
+                    width=100,
+                    font=ctk.CTkFont(size=11),
+                    state="readonly"
+                )
+                dropdown.grid(row=row, column=col*2+1, sticky="w", padx=(5, 10), pady=8)
+                self.clinical_inputs[feature] = dropdown
+            else:
+                # Create numeric input field
+                entry = ctk.CTkEntry(
+                    self.input_grid_frame,
+                    placeholder_text="0",
+                    width=100,
+                    font=ctk.CTkFont(size=11)
+                )
+                entry.grid(row=row, column=col*2+1, sticky="w", padx=(5, 10), pady=8)
+                self.clinical_inputs[feature] = entry
+        
+        # Instructions
+        instructions = ctk.CTkLabel(
+            self.clinical_scroll_frame,
+            text="Note: Select from dropdown menus for categorical features. Enter numeric values (age in years, duration in months) for numeric fields.",
+            font=ctk.CTkFont(size=10),
+            text_color="gray",
+            justify="left",
+            wraplength=600
+        )
+        instructions.pack(pady=(20, 10), anchor="w", padx=10)
+        
+        # Predict button
+        predict_button = ctk.CTkButton(
+            self.clinical_scroll_frame,
+            text="🔍 Predict Diagnosis",
+            font=ctk.CTkFont(size=14, weight="bold"),
+            height=45,
+            fg_color="#27ae60",
+            hover_color="#219a52",
+            command=self._predict_clinical
+        )
+        predict_button.pack(pady=15, padx=10, fill="x")
+        
+        # Results frame
+        self.clinical_results_frame = ctk.CTkFrame(self.clinical_scroll_frame, fg_color="transparent")
+        self.clinical_results_frame.pack(fill="x", pady=10)
+        
+        # Diagnosis result
+        self.clinical_diag_var = ctk.StringVar(value="")
+        self.clinical_diag_label = ctk.CTkLabel(
+            self.clinical_results_frame,
+            textvariable=self.clinical_diag_var,
+            font=ctk.CTkFont(size=14),
+            text_color="gray"
+        )
+        self.clinical_diag_label.pack(pady=(10, 5))
+        
+        # Stage result (if MF)
+        self.clinical_stage_var = ctk.StringVar(value="")
+        self.clinical_stage_label = ctk.CTkLabel(
+            self.clinical_results_frame,
+            textvariable=self.clinical_stage_var,
+            font=ctk.CTkFont(size=14),
+            text_color="gray"
+        )
+        self.clinical_stage_label.pack(pady=(5, 10))
     
     def _init_classifier_async(self):
         """Initialize classifier in background thread."""
@@ -424,8 +524,19 @@ class MFClassifierApp(ctk.CTk):
         non_mf_prob = results['non_mf_probability'] * 100
         
         # Multi-class level prediction
-        prediction = results['predicted_class']
+        prediction = results['predicted_class'] 
         confidence = results['confidence'] * 100
+
+        if binary_pred == "Non-MF" and prediction == "MF":
+            # If binary says Non-MF but multi-class says MF, we take the second highest class
+            class_probs = results['class_probabilities']
+            sorted_classes = sorted(class_probs.items(), key=lambda x: x[1], reverse=True)
+            # Find the second highest class that is not MF
+            for class_name, prob in sorted_classes:
+                if class_name != "MF":
+                    prediction = class_name
+                    confidence = prob * 100
+                    break   
         
         # Color for binary prediction
         binary_color = "#e74c3c" if binary_pred == "MF" else "#3498db"  # Red for MF, Blue for Non-MF
@@ -489,6 +600,92 @@ class MFClassifierApp(ctk.CTk):
         self.analyze_button.configure(state="normal")
         self.select_button.configure(state="normal")
     
+    def _predict_clinical(self):
+        """Run clinical features prediction."""
+        try:
+            # Get input values
+            features = ['macules', 'bx1_morph', 'papules', 'age', 'color', 'patch',
+                       'bx2_morph', 'visit_type', 'duration_months', 'plaque', 'scales',
+                       'site_head_neck', 'site_ll', 'course', 'bx2_site', 'nodule']
+            
+            feature_values = []
+            for feature in features:
+                widget = self.clinical_inputs[feature]
+                value_str = widget.get().strip()
+                
+                if not value_str:
+                    messagebox.showerror("Error", f"Please select/enter a value for {feature}")
+                    return
+                
+                try:
+                    # Check if this is a categorical feature with mapping
+                    if feature in self.feature_mappings:
+                        # Map the dropdown selection to numeric value
+                        value = self.feature_mappings[feature][value_str]
+                    else:
+                        # Parse numeric value
+                        value = float(value_str)
+                    
+                    feature_values.append(value)
+                except (ValueError, KeyError) as e:
+                    messagebox.showerror("Error", f"Invalid value for {feature}.")
+                    return
+            
+            # Clear previous results
+            self.clinical_diag_var.set("Processing...")
+            self.clinical_stage_var.set("")
+            
+            def run_prediction():
+                try:
+                    # Create DataFrame with features
+                    X = pd.DataFrame([feature_values], columns=features)
+                    
+                    # Get model paths
+                    models_dir = Path(__file__).parent / "models"
+                    diagnosis_model_path = models_dir / "rf_model_diagnosis_mf.pkl"
+                    stage_model_path = models_dir / "rf_model_stage_mf.pkl"
+                    
+                    # Load and run diagnosis model
+                    diagnosis_bundle = joblib.load(diagnosis_model_path)
+                    X_diag = X[diagnosis_bundle['features']]
+                    X_imp_diag = diagnosis_bundle['imputer'].transform(X_diag)
+                    y_pred_enc = diagnosis_bundle['model'].predict(X_imp_diag)
+                    y_prob = diagnosis_bundle['model'].predict_proba(X_imp_diag)
+                    y_pred_labels = diagnosis_bundle['label_encoder'].inverse_transform(y_pred_enc)
+                    
+                    diagnosis = y_pred_labels[0]
+                    diagnosis_prob = y_prob[0][y_pred_enc[0]] * 100
+                    
+                    # Display diagnosis result
+                    diag_text = f"🔬 Diagnosis: {diagnosis} ({diagnosis_prob:.1f}%)"
+                    self.after(0, lambda: self.clinical_diag_var.set(diag_text))
+                    
+                    # If diagnosis is MF, run stage model
+                    if diagnosis == "MF":
+                        stage_bundle = joblib.load(stage_model_path)
+                        X_stage = X[stage_bundle['features']]
+                        X_imp_stage = stage_bundle['imputer'].transform(X_stage)
+                        y_pred_enc_stage = stage_bundle['model'].predict(X_imp_stage)
+                        y_prob_stage = stage_bundle['model'].predict_proba(X_imp_stage)
+                        y_pred_labels_stage = stage_bundle['label_encoder'].inverse_transform(y_pred_enc_stage)
+                        
+                        stage = y_pred_labels_stage[0]
+                        stage_prob = y_prob_stage[0][y_pred_enc_stage[0]] * 100
+                        
+                        stage_text = f"📊 Stage: {stage} ({stage_prob:.1f}%)"
+                        self.after(0, lambda: self.clinical_stage_var.set(stage_text))
+                    else:
+                        self.after(0, lambda: self.clinical_stage_var.set(f"✓ Not MF diagnosis, stage model not applicable"))
+                    
+                except Exception as e:
+                    self.after(0, lambda: messagebox.showerror("Prediction Error", f"Error during prediction:\n{str(e)}"))
+                    self.after(0, lambda: self.clinical_diag_var.set("Error"))
+            
+            threading.Thread(target=run_prediction, daemon=True).start()
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Error processing input:\n{str(e)}")
+    
     def _save_report(self):
         """Save PDF report."""
         if not self.current_results:
@@ -511,8 +708,9 @@ class MFClassifierApp(ctk.CTk):
                 output_path = generate_report(self.current_results, Path(filepath))
                 self.status_var.set(f"✓ Report saved: {output_path.name}")
                 messagebox.showinfo("Success", f"Report saved successfully!\n\n{output_path}")
-            except Exception as e:
+            except Exception as e: # TODO solve the report problem 
                 messagebox.showerror("Error", f"Failed to save report:\n{str(e)}")
+               
 
 
 def main():
