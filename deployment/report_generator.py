@@ -2,6 +2,13 @@
 PDF Report Generator for MF Classification Results.
 """
 
+"""
+TODO:
+- Modify the report to include binary classification results (MF vs Non-MF) and 5-class probabilities to match the application UI
+- Make sure each prediction binary or 5-class has its correct confidence 
+- Rerun the result on the latest report generated (21 11-25_MF_Report) to verify the new report format and content
+"""
+
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle

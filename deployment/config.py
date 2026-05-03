@@ -24,8 +24,8 @@ DROPOUT_X20 = 0.4
 # p_fused = w * p_x10 + (1 - w) * p_x20
 OPTIMAL_FUSION_WEIGHT = 0.2 
 
-# Optimal threshold for x20 MF binary classification, derived via Youden's J statistic on the ROC curve (training set).
-X20_OPTIMAL_THRESHOLD: float = 0.8351 
+X20_OPTIMAL_THRESHOLD: float = 0.8351   # Youden's J from training ROC
+X10_THRESHOLD:         float = 0.5      # Standard threshold for x10
 
 # Image Processing
 PATCH_SIZE_10x = 512
