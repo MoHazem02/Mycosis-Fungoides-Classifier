@@ -108,7 +108,7 @@ def generate_report(results: Dict, output_path: Path) -> Path:
     prediction = results['predicted_class']
     confidence = results['confidence'] * 100
     
-    if prediction == "MF":
+    if prediction == "Mycosis Fungoides":
         result_color = colors.HexColor('#e74c3c')  # Red for MF
         result_text = f"<b>MYCOSIS FUNGOIDES (MF)</b>"
     else:
@@ -153,7 +153,7 @@ def generate_report(results: Dict, output_path: Path) -> Path:
     story.append(Paragraph("Probability Analysis", heading_style))
     
     mf_prob = results['mf_probability'] * 100
-    nonmf_prob = results['nonmf_probability'] * 100
+    nonmf_prob = results['non_mf_probability'] * 100
     
     prob_data = [
         ["Class", "Probability"],
@@ -179,8 +179,9 @@ def generate_report(results: Dict, output_path: Path) -> Path:
     # Model Details
     story.append(Paragraph("Analysis Details", heading_style))
     
-    x10_mf_prob = results['x10_probability'] * 100
-    x20_mf_prob = results['x20_probability'] * 100
+    # Extract MF probability from x10 and x20 probabilities dictionaries
+    x10_mf_prob = results['x10_probabilities'].get('Mycosis Fungoides', 0) * 100
+    x20_mf_prob = results['x20_probabilities'].get('Mycosis Fungoides', 0) * 100
     fusion_weight = results['fusion_weight']
     
     details_data = [

@@ -193,13 +193,13 @@ class MFClassifier:
         if progress_callback:
             progress_callback("Extracting x10 patches...")
         x10_folder = patient_folder / "x10"
-        x10_patches, n_x10_images = extract_patches_from_folder(x10_folder)
+        x10_patches, n_x10_images = extract_patches_from_folder(x10_folder, mag=10)
         
         # Extract patches from x20
         if progress_callback:
             progress_callback("Extracting x20 patches...")
         x20_folder = patient_folder / "x20"
-        x20_patches, n_x20_images = extract_patches_from_folder(x20_folder)
+        x20_patches, n_x20_images = extract_patches_from_folder(x20_folder, mag=20)
         
         # Run inference on x10 patches
         if progress_callback:

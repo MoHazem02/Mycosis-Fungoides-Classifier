@@ -12,8 +12,8 @@ import config
 
 def extract_patches_from_image(
     img_path: Path,
-    patch_size: int = config.PATCH_SIZE,
-    stride: int = config.PATCH_STRIDE,
+    patch_size: int,
+    stride: int,
     min_foreground_ratio: float = config.MIN_FOREGROUND_RATIO,
     max_patches: int = config.MAX_PATCHES_PER_IMAGE
 ) -> List[np.ndarray]:
@@ -55,9 +55,10 @@ def extract_patches_from_image(
     
     return patches
 
-
+# TODO - If folder is 10x use 10x parameters, else use 20x parameters
 def extract_patches_from_folder(
     folder_path: Path,
+    mag: int,
     progress_callback=None
 ) -> Tuple[List[np.ndarray], int]:
     """
@@ -65,6 +66,7 @@ def extract_patches_from_folder(
     
     Args:
         folder_path: Path to folder containing .tif images
+        mag: Magnification level (10 or 20)
         progress_callback: Optional callback(current, total) for progress updates
         
     Returns:
@@ -83,7 +85,10 @@ def extract_patches_from_folder(
     total_images = len(image_files)
     
     for i, img_path in enumerate(image_files):
-        patches = extract_patches_from_image(img_path)
+        if mag == 10:
+            patches = extract_patches_from_image(img_path, patch_size=config.PATCH_SIZE_10x, stride=config.PATCH_STRIDE_10x)
+        else:
+            patches = extract_patches_from_image(img_path, patch_size=config.PATCH_SIZE_20x, stride=config.PATCH_STRIDE_20x)
         all_patches.extend(patches)
         
         if progress_callback:

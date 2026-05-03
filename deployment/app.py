@@ -905,7 +905,7 @@ class MFClassifierApp(ctk.CTk):
                 output_path = generate_report(self.current_results, Path(filepath))
                 self.status_var.set(f"✓ Report saved: {output_path.name}")
                 messagebox.showinfo("Success", f"Report saved successfully!\n\n{output_path}")
-            except Exception as e: # TODO solve the report problem 
+            except Exception as e:
                 messagebox.showerror("Error", f"Failed to save report:\n{str(e)}")
                
 
