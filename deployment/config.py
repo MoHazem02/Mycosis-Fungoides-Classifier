@@ -25,7 +25,7 @@ DROPOUT_X20 = 0.4
 OPTIMAL_FUSION_WEIGHT = 0.2 
 
 X20_OPTIMAL_THRESHOLD: float = 0.8351   # Youden's J from training ROC
-X10_THRESHOLD:         float = 0.5      # Standard threshold for x10
+X10_OPTIMAL_THRESHOLD: float = 0.5   
 
 # Image Processing
 PATCH_SIZE_10x = 512
@@ -41,8 +41,8 @@ NORMALIZE_MEAN = [0.485, 0.456, 0.406]
 NORMALIZE_STD = [0.229, 0.224, 0.225]
 
 # Inference
-BATCH_SIZE = 8  # Smaller batch for CPU inference # TODO
-CLASSIFICATION_THRESHOLD = 0.5 # TODO
+BATCH_SIZE_X10 = 8
+BATCH_SIZE_X20 = 2  # 1024x1024 is massive for a CPU.
 
 # Paths (relative to deployment folder)
 MODEL_X10_FILENAME = "model_tf_efficientnet_b3_x10_5class.pth"

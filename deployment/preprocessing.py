@@ -55,7 +55,6 @@ def extract_patches_from_image(
     
     return patches
 
-# TODO - If folder is 10x use 10x parameters, else use 20x parameters
 def extract_patches_from_folder(
     folder_path: Path,
     mag: int,

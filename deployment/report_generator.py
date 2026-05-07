@@ -1,19 +1,17 @@
 """
 PDF Report Generator for MF Classification Results.
-"""
 
-"""
-TODO:
-- Modify the report to include binary classification results (MF vs Non-MF) and 5-class probabilities to match the application UI
-- Make sure each prediction binary or 5-class has its correct confidence 
-- Rerun the result on the latest report generated (21 11-25_MF_Report) to verify the new report format and content
+Generates a comprehensive PDF report including:
+- Malignant vs Benign classification
+- Individual class probabilities for all 5 differential diagnoses
+- Detailed analysis metrics
 """
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, PageBreak
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from pathlib import Path
 from datetime import datetime
@@ -111,31 +109,43 @@ def generate_report(results: Dict, output_path: Path) -> Path:
     # Classification Result
     story.append(Paragraph("Classification Result", heading_style))
     
-    # Result box with color based on prediction
+    # Determine Malignant vs Benign classification using the same display logic as the app.
+    MALIGNANT_CLASSES = {"B cell Lymphoma", "Mycosis Fungoides"}
     prediction = results['predicted_class']
-    confidence = results['confidence'] * 100
-    
-    if prediction == "Mycosis Fungoides":
-        result_color = colors.HexColor('#e74c3c')  # Red for MF
-        result_text = f"<b>MYCOSIS FUNGOIDES (MF)</b>"
-    else:
-        result_color = colors.HexColor('#27ae60')  # Green for Non-MF
-        result_text = f"<b>NON-MYCOSIS FUNGOIDES</b>"
+    if prediction == "MF":
+        prediction = "Mycosis Fungoides"
+    is_malignant = prediction in MALIGNANT_CLASSES
+    diagnosis_label = "Malignant" if is_malignant else "Benign"
+    diagnosis_color_hex = "#e74c3c" if is_malignant else "#3498db"
+    diagnosis_color = colors.HexColor(diagnosis_color_hex)
+
+    class_probs = results['class_probabilities']
+    malignant_prob = sum(v for k, v in class_probs.items() if k in MALIGNANT_CLASSES) * 100
+    benign_prob = 100 - malignant_prob
+    displayed_confidence = malignant_prob if is_malignant else benign_prob
+    diagnosis_text = (
+        f"<b>{diagnosis_label}: {prediction}</b><br/>"
+        f"Confidence: {displayed_confidence:.1f}%"
+    )
     
     result_style = ParagraphStyle(
         'Result',
         parent=styles['Normal'],
         fontSize=18,
         alignment=TA_CENTER,
-        textColor=colors.white,
-        backColor=result_color,
-        borderPadding=15
+        leading=24,
+        textColor=diagnosis_color,
+        borderColor=diagnosis_color,
+        borderWidth=1.5,
+        borderPadding=15,
+        backColor=colors.HexColor('#f8f9fa')
     )
     
-    result_data = [[Paragraph(result_text, result_style)]]
+    result_data = [[Paragraph(diagnosis_text, result_style)]]
     result_table = Table(result_data, colWidths=[5*inch])
     result_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, -1), result_color),
+        ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor('#f8f9fa')),
+        ('BOX', (0, 0), (-1, -1), 1.5, diagnosis_color),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('TOPPADDING', (0, 0), (-1, -1), 20),
@@ -147,29 +157,29 @@ def generate_report(results: Dict, output_path: Path) -> Path:
     story.append(Spacer(1, 15))
     
     # Confidence
-    confidence_text = f"Confidence: <b>{confidence:.1f}%</b>"
+    confidence_text = (
+        f"Classification: <font color='{diagnosis_color_hex}'><b>{diagnosis_label}</b></font> | "
+        f"Predicted Class: <b>{prediction}</b> ({displayed_confidence:.1f}% confidence)"
+    )
     story.append(Paragraph(confidence_text, ParagraphStyle(
         'Confidence',
         parent=styles['Normal'],
-        fontSize=14,
+        fontSize=12,
         alignment=TA_CENTER
     )))
     story.append(Spacer(1, 20))
     
-    # Probability Details
-    story.append(Paragraph("Probability Analysis", heading_style))
-    
-    mf_prob = results['mf_probability'] * 100
-    nonmf_prob = results['non_mf_probability'] * 100
-    
-    prob_data = [
-        ["Class", "Probability"],
-        ["Mycosis Fungoides (MF)", f"{mf_prob:.1f}%"],
-        ["Non-MF", f"{nonmf_prob:.1f}%"],
+    # Binary Classification (Malignant vs Benign)
+    story.append(Paragraph("Binary Classification Analysis", heading_style))
+
+    binary_data = [
+        ["Classification", "Probability"],
+        ["Malignant", f"{malignant_prob:.1f}%"],
+        ["Benign", f"{benign_prob:.1f}%"],
     ]
     
-    prob_table = Table(prob_data, colWidths=[3*inch, 2*inch])
-    prob_table.setStyle(TableStyle([
+    binary_table = Table(binary_data, colWidths=[3*inch, 2*inch])
+    binary_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#34495e')),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
@@ -177,24 +187,62 @@ def generate_report(results: Dict, output_path: Path) -> Path:
         ('FONTSIZE', (0, 0), (-1, -1), 11),
         ('ALIGN', (1, 0), (1, -1), 'CENTER'),
         ('GRID', (0, 0), (-1, -1), 1, colors.grey),
+        ('TEXTCOLOR', (0, 1), (-1, 1), colors.HexColor('#e74c3c')),
+        ('TEXTCOLOR', (0, 2), (-1, 2), colors.HexColor('#3498db')),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 10),
         ('TOPPADDING', (0, 0), (-1, -1), 10),
     ]))
+    story.append(binary_table)
+    story.append(PageBreak())
+    
+    # Detailed Classification (5-Class Probabilities)
+    story.append(Paragraph("Detailed Classification (5 Differential Diagnoses)", heading_style))
+    
+    # Build probability data for all 5 classes
+    prob_data = [["Diagnosis", "Classification", "Probability"]]
+    predicted_row_idx = None
+    for class_name in class_probs.keys():
+        class_prob = class_probs[class_name] * 100
+        classification = "Malignant" if class_name in MALIGNANT_CLASSES else "Benign"
+        if class_name == prediction:
+            predicted_row_idx = len(prob_data)
+        prob_data.append([class_name, classification, f"{class_prob:.1f}%"])
+    
+    prob_table_style = [
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#34495e')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
+        ('GRID', (0, 0), (-1, -1), 1, colors.grey),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+        ('TOPPADDING', (0, 0), (-1, -1), 8),
+    ]
+
+    for row_idx, row in enumerate(prob_data[1:], start=1):
+        row_color = colors.HexColor('#e74c3c') if row[1] == "Malignant" else colors.HexColor('#2ecc71')
+        prob_table_style.append(('TEXTCOLOR', (1, row_idx), (-1, row_idx), row_color))
+
+    if predicted_row_idx is not None:
+        prob_table_style.extend([
+            ('BACKGROUND', (0, predicted_row_idx), (-1, predicted_row_idx), colors.HexColor('#ecf0f1')),
+            ('FONTNAME', (0, predicted_row_idx), (-1, predicted_row_idx), 'Helvetica-Bold'),
+        ])
+
+    prob_table = Table(prob_data, colWidths=[2.2*inch, 1.3*inch, 1.5*inch])
+    prob_table.setStyle(TableStyle(prob_table_style))
     story.append(prob_table)
     story.append(Spacer(1, 20))
     
     # Model Details
     story.append(Paragraph("Analysis Details", heading_style))
     
-    # Extract MF probability from x10 and x20 probabilities dictionaries
-    x10_mf_prob = results['x10_probabilities'].get('Mycosis Fungoides', 0) * 100
-    x20_mf_prob = results['x20_probabilities'].get('Mycosis Fungoides', 0) * 100
-    fusion_weight = results['fusion_weight']
+    # Extract model probabilities and fusion details
+    fusion_weight = results['fusion_weight_x10']
     
     details_data = [
         ["Parameter", "Value"],
-        ["x10 Model MF Probability", f"{x10_mf_prob:.1f}%"],
-        ["x20 Model MF Probability", f"{x20_mf_prob:.1f}%"],
         ["x10 Images Analyzed", str(results['n_x10_images'])],
         ["x20 Images Analyzed", str(results['n_x20_images'])],
         ["x10 Patches Extracted", str(results['n_x10_patches'])],

@@ -210,7 +210,7 @@ class MFClassifierApp(ctk.CTk):
         # Binary prediction title
         self.binary_title = ctk.CTkLabel(
             self.results_frame,
-            text="Level 1: Binary Classification (MF vs Non-MF)",
+            text="Classification: Malignant vs Benign",
             font=ctk.CTkFont(size=14, weight="bold"),
             text_color="gray"
         )
@@ -237,7 +237,7 @@ class MFClassifierApp(ctk.CTk):
         # Multi-class prediction title
         self.multiclass_title = ctk.CTkLabel(
             self.results_frame,
-            text="Level 2: Multi-Class Classification (5 Differential Diagnoses)",
+            text="Detailed Classification (5 Differential Diagnoses)",
             font=ctk.CTkFont(size=14, weight="bold"),
             text_color="gray"
         )
@@ -249,9 +249,10 @@ class MFClassifierApp(ctk.CTk):
         
         # Create progress bars for each class
         self.class_progress_widgets = {}
-        for i in range(5):  # 5 classes
+        classes = ["B cell Lymphoma", "Mycosis Fungoides", "PLEVA-PLC", "T-cell dyscrasia", "pseudolymphoma"]
+        for i in range(len(classes)):
             # Label
-            class_label_var = ctk.StringVar(value=f"Class {i}:")
+            class_label_var = ctk.StringVar(value=f"{classes[i]}:")
             class_label = ctk.CTkLabel(
                 self.prob_scroll,
                 textvariable=class_label_var,
@@ -431,16 +432,15 @@ class MFClassifierApp(ctk.CTk):
  
         Parameters
         ----------
-        diagnosis   "MF" or "Non-MF"
-        stage       Stage label if MF, e.g. "Patch-Plaque" or "Tumor"
+        diagnosis   "Malignant" or "Benign"
         confidence  Probability from predict_proba (0.0–1.0), optional
         """
         # Clear previous result
         for w in self.clinical_results_frame.winfo_children():
             w.destroy()
  
-        is_mf  = "mf" in diagnosis.lower()
-        accent = _GREEN if is_mf else _SLATE
+        is_malignant = "malignant" in diagnosis.lower()
+        accent = ("#e74c3c", "#c0392b") if is_malignant else _SLATE  # Red for Malignant, Slate for Benign
  
         # ── Card shell ────────────────────────────────────────────────────
         card = ctk.CTkFrame(
@@ -453,9 +453,9 @@ class MFClassifierApp(ctk.CTk):
         card.columnconfigure(0, weight=1)
  
         # Coloured header strip
-        hdr = ctk.CTkFrame(card, fg_color=accent, corner_radius=10)
+        hdr = ctk.CTkFrame(card, fg_color=accent[0], corner_radius=10)
         hdr.pack(fill="x", padx=6, pady=(6, 0))
-        icon = "✅" if is_mf else "🔵"
+        icon = "⚠️" if is_malignant else "✓"
         ctk.CTkLabel(
             hdr,
             text=f"  {icon}  Prediction Result",
@@ -486,13 +486,13 @@ class MFClassifierApp(ctk.CTk):
             pb.set(confidence)
             r += 1
  
-        # Divider + stage (MF only)
-        if is_mf and stage:
+        # Divider + stage (Malignant only)
+        if is_malignant and stage:
             ctk.CTkFrame(body, height=1, fg_color=_DIVIDER).grid(
                 row=r, column=0, columnspan=3, sticky="ew", pady=(6, 8)
             )
             r += 1
-            self._cn_result_row(body, r, "Stage of MF", stage, accent[0])
+            self._cn_result_row(body, r, "Stage", stage, accent[0])
  
     # ─────────────────────────────────────────────────────────────────────────
     #  Private helpers
@@ -724,78 +724,46 @@ class MFClassifierApp(ctk.CTk):
         threading.Thread(target=run_analysis, daemon=True).start()
     
     def _display_results(self, results: dict):
-        """Display prediction results in UI with hierarchical classification."""
-        # Binary level prediction
-        binary_pred = results['binary_prediction']
-        binary_conf = results['binary_confidence'] * 100
-        mf_prob = results['mf_probability'] * 100
-        non_mf_prob = results['non_mf_probability'] * 100
-        
-        # Multi-class level prediction
-        prediction = results['predicted_class'] 
-        confidence = results['confidence'] * 100
+        MALIGNANT_CLASSES = {"B cell Lymphoma", "Mycosis Fungoides"} 
 
-        if binary_pred == "Non-MF" and prediction == "MF":
-            # If binary says Non-MF but multi-class says MF, we take the second highest class
-            class_probs = results['class_probabilities']
-            sorted_classes = sorted(class_probs.items(), key=lambda x: x[1], reverse=True)
-            # Find the second highest class that is not MF
-            for class_name, prob in sorted_classes:
-                if class_name != "MF":
-                    prediction = class_name
-                    confidence = prob * 100
-                    break   
-        
-        # Color for binary prediction
-        binary_color = "#e74c3c" if binary_pred == "MF" else "#3498db"  # Red for MF, Blue for Non-MF
-        
-        # Display Binary Prediction (Level 1)
-        binary_text = f"{binary_pred}\nBinary Confidence: {binary_conf:.1f}%"
-        self.prediction_var.set(binary_text)
-        self.prediction_label.configure(text_color=binary_color)
-        
-        # Display Binary Accuracy as (MF%, Non-MF%)
-        self.confidence_var.set(f"Binary Accuracy: ({mf_prob:.1f}% MF, {non_mf_prob:.1f}% Non-MF)")
-        
-        # Display all class probabilities
+        prediction = results['predicted_class']
+        if prediction == "MF":
+            prediction = "Mycosis Fungoides"
+        is_malignant = prediction in MALIGNANT_CLASSES
+        diagnosis_label = "Malignant" if is_malignant else "Benign"
+        diagnosis_color = "#e74c3c" if is_malignant else "#3498db"
+
         class_probs = results['class_probabilities']
-        
-        # Define colors for each class
-        class_colors = ["#e74c3c", "#3498db", "#2ecc71", "#f39c12", "#9b59b6"]
-        
-        for i in range(5):
-            # Get actual class name from results
-            class_name = list(class_probs.keys())[i]
+        malignant_prob = sum(v for k, v in class_probs.items() if k in MALIGNANT_CLASSES) * 100
+        benign_prob = 100 - malignant_prob
+
+        diagnosis_text = f"{diagnosis_label}: {prediction}\n Confidence: {malignant_prob if is_malignant else benign_prob:.1f}%"
+        self.prediction_var.set(diagnosis_text)
+        self.prediction_label.configure(text_color=diagnosis_color)
+
+        class_names_list = list(class_probs.keys())  # built once
+        for i, class_name in enumerate(class_names_list):
             prob = class_probs[class_name]
-            
-            # Update label with full class name
+            color = "#e74c3c" if class_name in MALIGNANT_CLASSES else "#2ecc71"
+
             self.class_progress_widgets[i]['label_var'].set(f"{class_name}:")
-            
-            # Update progress bar
             self.class_progress_widgets[i]['progress'].set(prob)
-            self.class_progress_widgets[i]['progress'].configure(progress_color=class_colors[i])
-            
-            # Update percentage - highlight the predicted class
-            percentage_text = f"{prob*100:.1f}%"
-            if class_name == prediction:
-                percentage_text += " ✓"  # Mark the predicted class
+            self.class_progress_widgets[i]['progress'].configure(progress_color=color)
+
+            percentage_text = f"{prob*100:.1f}%" + (" ✓" if class_name == prediction else "")
             self.class_progress_widgets[i]['percent_var'].set(percentage_text)
-        
-        # Details - Include both binary and multi-class info
+
         details = (
-            f"Binary Prediction: {binary_pred} ({binary_conf:.1f}%) | "
-            f"Specific Class: {prediction} ({confidence:.1f}%)\n"
             f"x10: {results['n_x10_patches']} patches from {results['n_x10_images']} images | "
             f"x20: {results['n_x20_patches']} patches from {results['n_x20_images']} images | "
-            f"Fusion weight: {results['fusion_weight']:.2f}"
+            f"Fusion weight: {results['fusion_weight_x10']:.2f}"  # ✅ fixed key
         )
         self.details_var.set(details)
-        
-        # Enable save button
+
         self.save_button.configure(state="normal")
         self.progress_bar.set(1)
         self.status_var.set("✓ Analysis complete!")
-    
+
     def _handle_error(self, error_message: str):
         """Handle analysis error."""
         self.prediction_var.set("Error")
@@ -862,6 +830,9 @@ class MFClassifierApp(ctk.CTk):
                     
                     stage = None
                     
+                    # Convert diagnosis from "MF"/"Non-MF" to "Malignant"/"Benign"
+                    display_diagnosis = "Malignant" if diagnosis == "MF" else "Benign"
+                    
                     # If diagnosis is MF, run stage model
                     if diagnosis == "MF":
                         stage_bundle = joblib.load(stage_model_path)
@@ -871,8 +842,8 @@ class MFClassifierApp(ctk.CTk):
                         y_pred_labels_stage = stage_bundle['label_encoder'].inverse_transform(y_pred_enc_stage)
                         stage = y_pred_labels_stage[0]
                     
-                    # Display result using show_clinical_result
-                    self.after(0, lambda d=diagnosis, s=stage, c=diagnosis_prob: self.show_clinical_result(d, s, c))
+                    # Display result using show_clinical_result with Malignant/Benign
+                    self.after(0, lambda d=display_diagnosis, s=stage, c=diagnosis_prob: self.show_clinical_result(d, s, c))
                     
                 except Exception as e:
                     self.after(0, lambda: messagebox.showerror("Prediction Error", f"Error during prediction:\n{str(e)}"))
