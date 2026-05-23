@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.1.25)  23 MAY 2026 16:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.1.25)  23 MAY 2026 23:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -256,6 +256,9 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@thisruleclass=\count309
 \@lastruleclass=\count310
 \@thisrulewidth=\dimen195
+) (d:/texlive/2025/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip18
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 ) (d:/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count311
@@ -305,22 +308,22 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 36.
  (d:/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 71--72
+Underfull \hbox (badness 10000) in paragraph at lines 74--75
 []\OT1/ptm/m/n/10 A weighted late-fusion model in-te-grat-ing multi-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 71--72
+Underfull \hbox (badness 10000) in paragraph at lines 74--75
 \OT1/ptm/m/n/10 magnification de-ci-sions that ex-plic-itly pri-or-i-tizes
  []
 
 
-Underfull \hbox (badness 3471) in paragraph at lines 79--83
+Underfull \hbox (badness 3471) in paragraph at lines 82--86
 \OT1/ptm/m/n/10 pri-mar-ily fo-cused on melanoma de-tec-tion and benign-
  []
 
 
-Underfull \hbox (badness 2941) in paragraph at lines 79--83
+Underfull \hbox (badness 2941) in paragraph at lines 82--86
 \OT1/ptm/m/n/10 versus-malignant le-sion clas-si-fi-ca-tion. Stud-ies em-ploy-ing
  []
 
@@ -328,60 +331,56 @@ Underfull \hbox (badness 2941) in paragraph at lines 79--83
 
 
 ]
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 126.
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 148.
  (d:/texlive/2025/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-Underfull \hbox (badness 5431) in paragraph at lines 135--143
-[]\OT1/ptm/m/n/10 Foreground ex-trac-tion was ap-plied to re-move non-
- []
-
-
-Underfull \hbox (badness 1540) in paragraph at lines 135--143
-\OT1/ptm/m/n/10 informative back-ground re-gions prior to model train-ing.
- []
-
-<HSV_Ratio.png, id=13, 1438.173pt x 858.5676pt>
-File: HSV_Ratio.png Graphic file (type png)
-<use HSV_Ratio.png>
-Package pdftex.def Info: HSV_Ratio.png  used on input line 152.
+<Figures/HSV_Ratio.png, id=13, 1438.173pt x 858.5676pt>
+File: Figures/HSV_Ratio.png Graphic file (type png)
+<use Figures/HSV_Ratio.png>
+Package pdftex.def Info: Figures/HSV_Ratio.png  used on input line 175.
 (pdftex.def)             Requested size: 252.0pt x 150.43498pt.
-[2 <./HSV_Ratio.png>]
-<fusion_weight_analysis.png, id=21, 1004.553pt x 716.9184pt>
-File: fusion_weight_analysis.png Graphic file (type png)
-<use fusion_weight_analysis.png>
-Package pdftex.def Info: fusion_weight_analysis.png  used on input line 257.
-(pdftex.def)             Requested size: 252.0pt x 179.84175pt.
- [3]
-<Comprehensive Metrics Dashboard.png, id=33, 941.4372pt x 821.469pt>
-File: Comprehensive Metrics Dashboard.png Graphic file (type png)
-<use Comprehensive Metrics Dashboard.png>
-Package pdftex.def Info: Comprehensive Metrics Dashboard.png  used on input line 300.
-(pdftex.def)             Requested size: 252.0pt x 219.8818pt.
-<Late_fusion_dashboard.png, id=34, 941.4372pt x 823.3962pt>
-File: Late_fusion_dashboard.png Graphic file (type png)
-<use Late_fusion_dashboard.png>
-Package pdftex.def Info: Late_fusion_dashboard.png  used on input line 307.
-(pdftex.def)             Requested size: 252.0pt x 220.39764pt.
- [4 <./fusion_weight_analysis.png> <./Comprehensive Metrics Dashboard.png> <./Late_fusion_dashboard.png>]
-<ROC Graphs.png, id=42, 1696.3375pt x 706.64pt>
-File: ROC Graphs.png Graphic file (type png)
-<use ROC Graphs.png>
-Package pdftex.def Info: ROC Graphs.png  used on input line 345.
-(pdftex.def)             Requested size: 252.0pt x 104.96709pt.
-<Precision Recall Curves.png, id=43, 1696.3375pt x 706.64pt>
-File: Precision Recall Curves.png Graphic file (type png)
-<use Precision Recall Curves.png>
-Package pdftex.def Info: Precision Recall Curves.png  used on input line 352.
-(pdftex.def)             Requested size: 252.0pt x 104.96709pt.
- [5 <./ROC Graphs.png> <./Precision Recall Curves.png>] (./main.bbl
+ [2 <./Figures/HSV_Ratio.png>] [3]
+<Figures/Late_Fusion_Weight_Sweep.png, id=32, 714.7503pt x 426.393pt>
+File: Figures/Late_Fusion_Weight_Sweep.png Graphic file (type png)
+<use Figures/Late_Fusion_Weight_Sweep.png>
+Package pdftex.def Info: Figures/Late_Fusion_Weight_Sweep.png  used on input line 280.
+(pdftex.def)             Requested size: 252.0pt x 150.33282pt.
+ [4 <./Figures/Late_Fusion_Weight_Sweep.png>]
+<Figures/Comprehensive_Metrics_Dashboard.png, id=39, 940.9554pt x 821.7099pt>
+File: Figures/Comprehensive_Metrics_Dashboard.png Graphic file (type png)
+<use Figures/Comprehensive_Metrics_Dashboard.png>
+Package pdftex.def Info: Figures/Comprehensive_Metrics_Dashboard.png  used on input line 371.
+(pdftex.def)             Requested size: 252.0pt x 220.05913pt.
+<Figures/Late_Fusion_Dashboard.png, id=40, 940.9554pt x 823.878pt>
+File: Figures/Late_Fusion_Dashboard.png Graphic file (type png)
+<use Figures/Late_Fusion_Dashboard.png>
+Package pdftex.def Info: Figures/Late_Fusion_Dashboard.png  used on input line 378.
+(pdftex.def)             Requested size: 252.0pt x 220.63976pt.
+ [5 <./Figures/Comprehensive_Metrics_Dashboard.png> <./Figures/Late_fusion_dashboard.png>]
+<Figures/shap_importance_task1.png, id=46, 563.706pt x 527.571pt>
+File: Figures/shap_importance_task1.png Graphic file (type png)
+<use Figures/shap_importance_task1.png>
+Package pdftex.def Info: Figures/shap_importance_task1.png  used on input line 424.
+(pdftex.def)             Requested size: 252.0pt x 235.84305pt.
+<Figures/shap_beeswarm_task1.png, id=47, 542.025pt x 527.571pt>
+File: Figures/shap_beeswarm_task1.png Graphic file (type png)
+<use Figures/shap_beeswarm_task1.png>
+Package pdftex.def Info: Figures/shap_beeswarm_task1.png  used on input line 431.
+(pdftex.def)             Requested size: 252.0pt x 245.27773pt.
+<Figures/Feature_Importance_Stage_MF.png, id=48, 635.976pt x 346.896pt>
+File: Figures/Feature_Importance_Stage_MF.png Graphic file (type png)
+<use Figures/Feature_Importance_Stage_MF.png>
+Package pdftex.def Info: Figures/Feature_Importance_Stage_MF.png  used on input line 462.
+(pdftex.def)             Requested size: 252.0pt x 137.45381pt.
+ [6 <./Figures/shap_importance_task1.png> <./Figures/shap_beeswarm_task1.png> <./Figures/Feature_Importance_Stage_MF.png>] (./main.bbl
 ** WARNING: IEEEtran.bst: No hyphenation pattern has been
 ** loaded for the language `en'. Using the pattern for
 ** the default language instead.
 ** WARNING: IEEEtran.bst: No hyphenation pattern has been
 ** loaded for the language `en'. Using the pattern for
 ** the default language instead.
-[6])
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -393,27 +392,25 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[7
-
-] (./main.aux)
+[7] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4453 strings out of 467533
- 69666 string characters out of 5423668
- 495934 words of memory out of 5000000
- 33306 multiletter control sequences out of 15000+600000
+ 4547 strings out of 467533
+ 71644 string characters out of 5423668
+ 498723 words of memory out of 5000000
+ 33396 multiletter control sequences out of 15000+600000
  669021 words of font info for 121 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,9n,65p,1198b,278s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (7 pages, 5316773 bytes).
+ 57i,10n,65p,1195b,309s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (7 pages, 4711680 bytes).
 PDF statistics:
- 132 PDF objects out of 1000 (max. 8388607)
- 74 compressed objects within 1 object stream
+ 139 PDF objects out of 1000 (max. 8388607)
+ 77 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -9,7 +9,7 @@
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage{booktabs}
-\raggedbottom
+\usepackage{url}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
@@ -32,7 +32,7 @@
     in early stages due to its visual similarity to benign inflammatory dermatoses. 
     Early and accurate diagnosis is critical for improving patient outcomes. 
     In this paper, we propose a comprehensive diagnostic framework for automated MF detection 
-    that integrates multi-scale histopathological image analysis with a machine learning-based clinical classifier. 
+    that combines multi-scale histopathological image analysis with a machine learning-based clinical classifier. 
     The proposed approach leverages dual-magnification (10$\times$ and 20$\times$) convolutional neural networks (CNNs) 
     in a late-fusion ensemble to distinguish MF from other lymphoproliferative skin conditions, 
     complemented by a Random Forest classifier analyzing 16 clinical features. 
@@ -51,9 +51,12 @@
 % =====================
 \section{Introduction}
 Mycosis Fungoides (MF) is a type of skin lymphoma characterized by malignant proliferation of skin-homing T
-lymphocytes and is considered the most common primary cutaneous lymphoma (CL), making up almost 50\% of all cases \cite{willemze2005}. Despite its prevalence among utaneous
-T-cell lymphomas (CTCLs), MF remains a rare disease with an estimated incidence of 0.5 cases per 100,000 person-years \cite{willemze2005}.
-The clinical presentation of MF is highly variable, often manifesting as erythematous patches, plaques, or tumors that can easily be mistaken for
+lymphocytes and is considered the most common primary cutaneous lymphoma (CL), making up 
+almost 50\% of all cases \cite{willemze2005}. Despite its prevalence among cutaneous
+T-cell lymphomas (CTCLs), MF remains a rare disease with an estimated incidence of 0.5 cases per 
+100,000 person-years \cite{willemze2005}.
+The clinical presentation of MF is highly variable, often manifesting as erythematous patches, 
+plaques, or tumors that can easily be mistaken for
 benign inflammatory skin conditions such as eczema or psoriasis. This diagnostic ambiguity contributes to significant delays in accurate diagnosis,
 with studies reporting an average time to diagnosis of 3-6 years from symptom onset \cite{beatty2025_early_mf_diagnosis}.
 MF remains challenging to diagnose, particularly in early stages, where clinical presentations often mimic benign skin disorders such as eczema or psoriasis.
@@ -88,12 +91,12 @@ Almost all recent studies rely on digitized whole-slide images (WSIs) for histop
 scanners prevalent in resource-limited countries, our framework operates on conventional microscopic images acquired at fixed magnifications rather than WSIs.
 This setting reflects real-world clinical constraints and represents a novel direction that is largely absent from recent literature.
 Contemporary approaches predominantly employ weakly supervised deep learning frameworks, such as clustering-constrained attention multiple instance
-learning (CLAM) \cite{Lu2021} or toolkits such as Trident \cite{zhang2025standardizing, vaidya2025molecular}, which are designed to leverage WSIs.
+learning (CLAM) \cite{Lu2021} or toolkits such as Trident \cite{zhang2025standardizing,vaidya2025molecular}, which are designed to leverage WSIs.
 Our approach diverges from these paradigms by focusing on magnification-specific image analysis under practical acquisition conditions.
 
 
 % =====================
-% 3. Materials and Methods
+% 3. Materials and Methods  
 % =====================
 \section{Materials and Methods}
 
@@ -104,14 +107,32 @@ It consists of retrospective histopathological images captured from regions of i
 salient histopathological features discernible to a junior dermatologist, as well as associated clinical metadata. 
 The dataset comprises images from a total of 463 unique patients, yielding 6,257 images in total.
 
-Cases were categorized into two primary classes: Mycosis Fungoides (MF) and non-MF. 
-The MF cohort includes 310 patients (4,296 images), while the non-MF cohort comprises 
-153 patients (1,961 images) spanning other lymphoproliferative skin disorders, including 
-B-cell lymphoma (358 images, 18 patients), pityriasis lichenoides et varioliformis acuta 
-and chronica (PLEVA/PLC) (1,268 images, 108 patients), T-cell dyscrasia 
-(180 images, 15 patients), and pseudolymphoma (155 images, 11 patients). 
-This heterogeneous non-MF group reflects real-world diagnostic challenges encountered 
-in clinical practice.
+\begin{table}[htbp]
+    \centering
+    \caption{Distribution of patients and images across diagnostic categories.}
+    \label{tab:dataset_distribution}
+    \begin{tabular}{@{}lcc@{}}
+        \toprule
+        \textbf{Diagnostic Category} & \textbf{No. of Patients} & \textbf{No. of Images} \\        \midrule
+        \textbf{Mycosis Fungoides (MF)} & \textbf{311} & \textbf{4,306} \\
+        \midrule
+        \textbf{Non-MF Cohort (Total)} & \textbf{152} & \textbf{1,961} \\
+        \hspace{4mm} B-cell lymphoma & 18 & 358 \\
+        \hspace{4mm} PLEVA / PLC & 108 & 1,268 \\
+        \hspace{4mm} T-cell dyscrasia & 15 & 180 \\
+        \hspace{4mm} Pseudolymphoma & 11 & 155 \\
+        \midrule
+        \textbf{Total Dataset} & \textbf{463} & \textbf{6,267} \\
+        \bottomrule
+    \end{tabular}
+    
+    \vspace{1ex}
+    {\raggedright \footnotesize \textit{Note:} PLEVA/PLC = pityriasis lichenoides et varioliformis acuta and chronica.\par}
+\end{table}
+Cases were categorized into two primary classes: Mycosis Fungoides (MF) and a heterogeneous non-MF 
+cohort that reflects real-world diagnostic challenges encountered in clinical practice. 
+As detailed in Table \ref{tab:dataset_distribution}, this non-MF cohort spans several 
+lymphoproliferative skin disorders acting as clinical and histological mimics.
 
 The dataset was partitioned at the patient level into training, validation, and 
 test sets to prevent data leakage. The split consisted of 329 training patients, 67 validation patients, and 67 test patients. 
@@ -119,8 +140,9 @@ The acquired images were subsequently processed into patches for deep learning m
 The 20$\times$ dataset consisted of 23,062 training patches, 4,728 validation patches, and 4,320 test patches, 
 while the 10$\times$ dataset comprised 73,824 training patches, 14,804 validation patches, and 12,848 test patches.
 
-Due to the private nature of the dataset and institutional constraints, the images are not publicly available.
+Throughout this manuscript, the magnification levels ``10$\times$'' and ``20$\times$'' refer specifically to the power of the objective lens (located near the slide). Because the microscope utilizes a fixed 10$\times$ eyepiece lens (located near the camera/observer), these objective magnifications correspond to total optical magnifications of 100$\times$ and 200$\times$, respectively.
 
+Due to the private nature of the dataset and institutional constraints, the images are not publicly available.
 
 \subsection{Preprocessing}
 All input images were provided in \texttt{.tif} format and acquired at a native resolution of $2560 \times 1920$ pixels. 
@@ -129,27 +151,28 @@ We used a sliding window approach to extract diagnostically relevant patches.
 To capture appropriate spatial context, the extraction parameters were tailored to the optical magnification:
 \begin{itemize}
     \item \textbf{10$\times$ Magnification:} $512 \times 512$ pixel patches with a stride of 256 pixels (50\% overlap).
-    \item \textbf{20$\times$ Magnification:} $1024 \times 1024$ pixel native patches (subsequently resized to $512 \times 512$ for network input) with a stride of 512 pixels.
+    \item \textbf{20$\times$ Magnification:} Native $1024 \times 1024$ patches 
+    (stride 512) were extracted to match the physical field of view of the $10\times$ 
+    patches. \textit{These were subsequently downsampled to $512 \times 512$
+     for network input.} Despite this digital resizing, initial capture through a 
+     $20\times$ objective preserves superior optical resolution and cytological detail.
 \end{itemize}
 
-Foreground extraction was applied to remove non-informative background regions prior to model training. 
-An initial attempt based on conventional RGB thresholding—implemented by converting images to grayscale and applying a 
-mean-intensity threshold—proved insufficient due to staining variability and inconsistent background illumination. 
-Consequently, a more robust strategy was adopted by converting patches to the HSV color space and filtering background 
-regions based on saturation values. Specifically, the proportion of pixels with saturation greater than a predefined 
-threshold was computed for each patch, and patches with insufficient foreground content were discarded as shown in 
-Figure \ref{fig:HSV_Ratio}. A minimum foreground ratio of 0.285 was enforced, effectively suppressing background-dominated 
-patches while preserving diagnostically relevant tissue regions.
+To eliminate non-informative background prior to training, initial RGB mean-intensity 
+thresholding proved insufficient due to staining and illumination inconsistencies. 
+Consequently, a robust HSV saturation-based filtering strategy was adopted; patches 
+with a foreground pixel ratio below 28.5\% were discarded (Figure \ref{fig:HSV_Ratio}), 
+effectively suppressing background while preserving relevant tissue. 
+To enhance generalization and mitigate class imbalance, the training set exclusively 
+underwent spatial augmentations (random horizontal/vertical flips and limited rotations) 
+to exploit histological orientation-invariance, alongside photometric adjustments 
+(brightness, contrast, saturation, and hue) to account for staining variability. 
+Finally, augmented patches were converted to tensors and normalized using ImageNet 
+statistics.
 
-Data augmentation was applied exclusively to the training set to improve generalization and mitigate class imbalance. 
-Given the orientation-invariant nature of histopathological features, spatial transformations played a central role. 
-These included random horizontal and vertical flipping, as well as random rotations within a limited angular range. 
-Additional photometric augmentations, such as controlled variations in brightness, contrast, saturation, and hue, were 
-introduced to account for staining and acquisition variability. Following augmentation, patches were converted to tensor 
-representations and normalized using ImageNet statistics to align with pretrained network initialization.
 \begin{figure}
     \centering
-    \includegraphics[width=1\linewidth]{HSV_Ratio.png}
+    \includegraphics[width=1\linewidth]{Figures/HSV_Ratio.png}
     \caption{Different foreground ratios for patches of a sample tif image}
     \label{fig:HSV_Ratio}
 \end{figure}
@@ -167,7 +190,7 @@ The configurations for each magnification are summarized in Table \ref{tab:hyper
 \caption{Model Configuration and Hyperparameters}
 \label{tab:hyperparams}
 \centering
-\renewcommand{\arraystretch}{1.2}
+\renewcommand{\arraystretch}{1.1}
 \begin{tabular}{lcc}
 \toprule
 \textbf{Parameter} & \textbf{10$\times$ Model} & \textbf{20$\times$ Model} \\
@@ -182,16 +205,23 @@ Validation Metric & F$_2$-Score & F$_2$-Score \\
 \end{table}
 
 \subsubsection{Training Strategy and Augmentation}
-The models were trained using the AdamW optimizer with gradient clipping. 
-For the 10$\times$ architectural model, the learning rate was governed by cosine annealing with warm restarts, 
-and the network was trained using cross-entropy with focal loss weighting. To enhance generalization, augmentations 
-included random rotations ($\pm20^\circ$), horizontal and vertical flips, color jittering, and mixup. 
-Training was regularized with early stopping (patience of 15 epochs).
+Both the 10$\times$ architectural and 20$\times$ cytological models were 
+trained utilizing the AdamW optimizer with a static learning rate of 
+$2 \times 10^{-4}$ and a weight decay of 0.01. To address the severe class 
+imbalance inherent in the dataset, a dynamically weighted Cross-Entropy loss 
+function was applied to both branches. Class penalty weights were calculated 
+dynamically to be inversely proportional to their representation in the training 
+distribution, mathematically forcing the network to prioritize rare cytological 
+variants without requiring specialized oversampling techniques.
 
-The 20$\times$ cytological model employed a specialized sampling strategy, oversampling rare cytological 
-variants to ensure balanced exposure. The focal loss parameter ($\alpha$) was specifically weighted toward 
-ambiguous class pairs to improve discriminative power. Augmentations for this branch were restricted to elastic 
-distortions and color normalization to preserve critical cellular morphology.
+To enhance generalization, a shared spatial and color augmentation 
+pipeline was applied during training. This pipeline included random 
+horizontal and vertical flips, random rotations ($\pm15^\circ$), and 
+color jittering (brightness, contrast, and saturation variations of $\pm20\%$, 
+and hue variations of $\pm5\%$). Training leveraged Automatic Mixed Precision (AMP) 
+and gradient accumulation 
+(8 steps for the 20$\times$ model, 1 step for the 10$\times$ model) to optimize 
+memory utilization and stabilize batch gradients.
 
 \subsubsection{Metric Selection and Checkpointing}
 Given the critical nature of cancer diagnosis, minimizing False Negatives is paramount. 
@@ -204,29 +234,22 @@ twice as heavily as precision:
     \label{eq:f2_score}
 \end{equation}
 
-Conversely, because the 20$\times$ model is tasked with high-confidence cytological differentiation, 
-its checkpointing was governed by the ROC-AUC to maintain a strict balance between sensitivity and specificity.
+To ensure the networks prioritized minority class detection over sheer accuracy, 
+checkpointing for both the 10$\times$ and 20$\times$ models was strictly 
+governed by the macroscopic \textbf{F2-Score evaluated on the validation set.} 
+This metric was deliberately chosen to heavily penalize false negatives, 
+maintaining a high sensitivity for critical cytological differentiation.
 
-\subsubsection{Validation Protocol and Aggregation}
-To bridge the gap between model training and clinical utility, diagnostic performance was assessed at 
-the patient level on a held-out validation cohort comprising 67 patients 
-(totaling 14,804 patches at 10$\times$ and 4,728 patches at 20$\times$). 
-
-Raw patch-level outputs were aggregated to patient-level predictions using mean probability averaging. 
-This approach assumes that aggregate patch characteristics reflect overall patient pathology, providing robustness 
-against local artifacts and staining anomalies while preserving the diagnostic signal across the entire tissue sample.
-
-\subsection{Patient-Level Prediction via Mean Aggregation}
-Model inference was initially performed at the patch level. To obtain clinically meaningful predictions at the patient level, patch-level probabilities corresponding to the same patient were aggregated using mean aggregation.
-
-Given a patient $p$ with $N_p$ patches and predicted probabilities $\{s_1, s_2, \ldots, s_{N_p}\}$, the patient-level score $S_p$ was computed as:
+\subsection{Patient-Level Prediction and Decision Thresholding}
+Model inference was initially performed at the patch level. To obtain clinically meaningful predictions at the patient level, patch-level probabilities corresponding to the same patient were aggregated using mean aggregation. Given a patient $p$ with $N_p$ patches and predicted probabilities $\{s_1, s_2, \ldots, s_{N_p}\}$, the patient-level score $S_p$ was computed as:
 \begin{equation}
     S_p = \frac{1}{N_p} \sum_{i=1}^{N_p} s_i
 \end{equation}
 
-Mean aggregation was selected due to its simplicity, robustness to noise, and interpretability in a clinical context.
+\subsubsection{Threshold Optimization via Youden's J Statistic}
+Threshold analysis revealed fundamentally different probability distributions between the architectural (10$\times$) and cytological (20$\times$) models. While the 10$\times$ model was naturally balanced at a 0.5 decision boundary, the 20$\times$ model exhibited a severe conservative bias at the same threshold, yielding an unacceptable MF sensitivity of just 43.48\%. A systematic threshold sweep demonstrated that the 20$\times$ model's true discriminatory power was shifted heavily to the right of the probability axis. By applying Youden's J statistic ($J = \text{Sensitivity} + \text{Specificity} - 1$), an optimal threshold of 0.8351 was identified for the 20$\times$ model, which restored clinical viability by maximizing overall accuracy to 83.58\% and elevating MF sensitivity to 89.13\% without collapsing Non-MF detection. This substantial discrepancy between the two models' operating points necessitated the piecewise-linear probability calibration applied in the subsequent late-fusion pipeline (Section~\ref{sec:fusion}).
 
-\subsection{Multi-Magnification Fusion Strategy}
+\subsection{Multi-Magnification Fusion Strategy}\label{sec:fusion}
 
 \subsubsection{Late Fusion Approach}
 To integrate complementary diagnostic features captured at different scales, we employed a \textit{late fusion} strategy. Unlike early fusion, which concatenates feature vectors prior to classification, late fusion aggregates the probabilistic predictions of independent models. This approach allows each network to specialize in the specific histological patterns visible at its respective magnification—capturing architectural disarray at $10\times$ and cellular atypia at $20\times$—without the risk of feature-space contamination.
@@ -254,17 +277,65 @@ all subsequent evaluations, yielding an optimal Sensitivity of 0.8913 and ROC-AU
 
 \begin{figure}
     \centering
-    \includegraphics[width=1\linewidth]{fusion_weight_analysis.png}
+    \includegraphics[width=1\linewidth]{Figures/Late_Fusion_Weight_Sweep.png}
     \caption{Optimization of the multi-magnification fusion weight ($\alpha$). The top-left panel demonstrates that the lowest Brier Score (indicating optimal calibration) is achieved at $\alpha=0.60$. The remaining panels illustrate the corresponding trade-offs in Accuracy, Sensitivity/Specificity, and ROC-AUC, confirming that the selected clinical weight ($\alpha=0.20$) maintains high sensitivity while maximizing predictive reliability.}
     \label{fig:fusion_analysis}
 \end{figure}
 
+\begin{table}[htbp]
+    \centering
+    \caption{Univariate statistical analysis of clinical features ranked by $p$-value. Features with $p < 0.05$ were selected; Nodule was retained despite $p > 0.05$ for its staging value (see text).}
+    \label{tab:clinical_univariate}
+    \begin{tabular}{@{}lllc@{}}
+        \toprule
+        \textbf{Clinical Feature} & \textbf{Data Type} & \textbf{Statistical Test} & \textbf{$p$-value} \\
+        \midrule
+        \multicolumn{4}{c}{\textit{Selected Features (Significant)}} \\
+        \midrule
+        Macules & Categorical & Chi-Squared & $<0.001$ \\
+        Biopsy 1 Morphology & Categorical & Chi-Squared & $<0.001$ \\
+        Papules & Categorical & Chi-Squared & $<0.001$ \\
+        Age & Continuous & Mann-Whitney U & $<0.001$ \\
+        Color & Categorical & Chi-Squared & $<0.001$ \\
+        Patch & Categorical & Chi-Squared & $<0.001$ \\
+        Biopsy 2 Morphology & Categorical & Chi-Squared & $<0.001$ \\
+        Visit Type & Categorical & Chi-Squared & $<0.001$ \\
+        Duration (Months) & Continuous & Mann-Whitney U & $<0.001$ \\
+        Plaque & Categorical & Chi-Squared & $<0.001$ \\
+        Scales & Categorical & Chi-Squared & $<0.001$ \\
+        Nodule$^{\dagger}$ & Categorical & Chi-Squared & $0.2007$ \\
+        Site: Head/Neck & Categorical & Chi-Squared & $0.0001$ \\
+        Site: Lower Limbs & Categorical & Chi-Squared & $0.0090$ \\
+        Disease Course & Categorical & Chi-Squared & $0.0100$ \\
+        Biopsy 2 Site & Categorical & Chi-Squared & $0.0397$ \\
+        \midrule
+        \multicolumn{4}{c}{\textit{Excluded Features (Not Significant)}} \\
+        \midrule
+        Biopsy 1 Site & Categorical & Chi-Squared & $0.0718$ \\
+        Sex & Categorical & Chi-Squared & $0.4065$ \\
+        Symptomatic & Categorical & Chi-Squared & $0.6562$ \\
+        Site: Trunk & Categorical & Chi-Squared & $0.7829$ \\
+        Site: Upper Limbs & Categorical & Chi-Squared & $0.8019$ \\
+        Site: Buttocks & Categorical & Chi-Squared & $0.9292$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
 \subsection{Clinical Features Classifier}
-To complement the histopathological image analysis, a machine learning module was developed to evaluate structured patient metadata. A total of 16 features were selected based on univariate statistical significance and clinical relevance, encompassing demographics (e.g., age), disease history (duration, visit type, course), anatomic distribution (head/neck, lower limbs), and lesion morphology (color, macules, patches, papules, plaques, nodules, scales, and biopsy findings). 
+To complement the histopathological image analysis, a machine learning module was developed to evaluate structured patient metadata drawn from a separate clinical cohort of 499 patients (353 MF, 146 Non-MF). Within the MF cohort, 326 patients presented at the Patch--Plaque stage and 27 at the Tumor stage, enabling a hierarchical two-task prediction pipeline.
 
-Missing continuous values were addressed using median imputation, while categorical variables underwent label encoding. To account for class imbalance, the positive class weight was adjusted. We systematically compared three distinct algorithms using 5-fold stratified cross-validation: XGBoost (to capture non-linear feature interactions and robustness to missing data), Random Forest (for superior generalization via ensemble averaging and minimal hyperparameter sensitivity), and Logistic Regression (as a linear, probabilistic baseline). This rigorous evaluation aimed to identify the most robust complementary clinical signal for MF diagnosis.
+Univariate statistical analysis was performed on 22 clinical variables to identify the most discriminative features for MF diagnosis. Continuous variables were assessed using the Mann-Whitney U test due to skewed distributions, while categorical variables were evaluated via Chi-Squared tests. As detailed in Table~\ref{tab:clinical_univariate}, 16 features demonstrated statistical significance ($p < 0.05$) and were selected for model training. These encompass demographics (age), disease history (duration, visit type, course), anatomic distribution (head/neck, lower limbs), and lesion morphology (color, macules, patches, papules, plaques, scales, and biopsy findings).
 
+Notably, the \textit{Nodule} feature ($p = 0.2007$) is statistically insignificant for the binary MF vs.\ Non-MF diagnosis task. However, it was deliberately retained because it carries critical prognostic value for intra-MF staging: the presence of nodules is a near-deterministic indicator of the Tumor stage, functioning as an almost rule-based marker. Excluding it would sacrifice essential staging information for a marginal gain in diagnostic feature parsimony.
 
+\subsubsection{Two-Task Prediction Pipeline}
+The clinical classifier operates as a sequential two-task pipeline:
+\begin{enumerate}
+    \item \textbf{Task~1 --- Diagnosis (MF vs.\ Non-MF):} All 499 patient records are used to predict whether a patient has MF or a non-MF lymphoproliferative condition. All 16 selected features are utilized.
+    \item \textbf{Task~2 --- Stage of MF (Patch--Plaque vs.\ Tumor):} For patients classified as MF in Task~1, a second model predicts the clinical stage. This model operates on the 353 MF patient records and leverages the same feature set, where the \textit{Nodule} feature now becomes highly discriminative.
+\end{enumerate}
+
+During preprocessing, missing continuous values were addressed using median imputation, and categorical variables underwent label encoding. Positive class weights were adjusted to mitigate class imbalance. Three distinct algorithms were systematically compared using 5-fold stratified cross-validation: XGBoost, Random Forest (300 estimators, max depth 6), and Logistic Regression. Random Forest was selected as the primary model for both tasks based on overall cross-validation performance.
 
 % =====================
 % 4. Results
@@ -278,7 +349,7 @@ The proposed deep learning framework was evaluated on a held-out test set of 67 
 \caption{Quantitative Performance Summary (Test Set, N=67 Patients)}
 \label{tab:results}
 \centering
-\renewcommand{\arraystretch}{1.2}
+\renewcommand{\arraystretch}{1.1}
 \setlength{\tabcolsep}{4pt} 
 \begin{tabular}{l c c c}
 \toprule
@@ -295,69 +366,110 @@ ROC-AUC & 0.8685 & 0.8509 & \textbf{0.8778} \\
 \subsection{Patient-Level Aggregation Benefits}
 A key finding of this study is the significant performance gain achieved through patient-level aggregation. As illustrated in the comprehensive dashboard (Fig. \ref{fig:comprehensiveMetrics}), every metric improved when moving from patch-level predictions to patient-level consensus.
 
-\begin{figure}[H]
+\begin{figure}[!t]
     \centering
-    \includegraphics[width=1\linewidth]{Comprehensive Metrics Dashboard.png}
+    \includegraphics[width=1\linewidth]{Figures/Comprehensive_Metrics_Dashboard.png}
     \caption{Comprehensive Performance Dashboard. A side-by-side comparison of patch-level (dark blue) vs. patient-level (dark orange) metrics across both magnifications.}
     \label{fig:comprehensiveMetrics}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[!t]
     \centering
-    \includegraphics[width=1\linewidth]{Late_fusion_dashboard.png}
-    \caption{Late fusion model performance comparing individual magnification models (10$\times$, 20$\times$) against the fused multi-scale approach. Late fusion combines predictions from both magnifications to leverage complementary information captured at different scales.}
+    \includegraphics[width=1\linewidth]{Figures/Late_Fusion_Dashboard.png}
+    \caption{Late fusion model performance comparing individual magnification models (10$\times$, 20$\times$) against the fused multi-scale approach.}
     \label{fig:aggregation_comparison}
 \end{figure}
 
-This improvement is further detailed in the comparative performance dashboard (Fig. \ref{fig:aggregation_comparison}), which illustrates the metric shifts across magnifications and aggregation levels. The transition from patch-level to patient-level inference yields substantial gains across the board. Notably, the late fusion strategy successfully synthesizes the diagnostic strengths of both individual models: it maintains the exceptional sensitivity (0.8913) and F$_2$-score (0.8874) of the 20$\times$ patient-level model, while simultaneously maintaining a robust ROC-AUC (0.8778) and Accuracy (83.58\%). By relying heavily on the 20$\times$ model's cytological precision ($\alpha=0.20$), the late fusion effectively maximizes the detection of True Positives. In the clinical context of Mycosis Fungoides screening, prioritizing sensitivity ensures that ambiguous but potentially malignant cases are not missed, confirming the robustness of integrating detailed cellular features with broader tissue context.
-
+This improvement is further detailed in Fig. \ref{fig:aggregation_comparison}. The late fusion maintains the exceptional sensitivity (0.8913) and F$_2$-score (0.8874) of the 20$\times$ patient-level model, while achieving a robust ROC-AUC (0.8778) and Accuracy (83.58\%). By relying heavily on the 20$\times$ model's cytological precision ($\alpha=0.20$), the late fusion effectively maximizes the detection of True Positives, ensuring that ambiguous but potentially malignant cases are not missed.
 
 \subsection{Sensitivity and Clinical Relevance}
 Given the clinical imperative to minimize missed diagnoses, we prioritized the F$_2$-score (which emphasizes recall).
 The 20$\times$ model achieves a superior F$_2$-score of 0.8874 compared to 0.8222 for the 10$\times$ model. This confirms that while low-power architectural changes are helpful, the high-magnification cellular details—such as hyperchromatic and cerebriform nuclei—are the most critical and discriminative indicators of MF.
 
 \subsection{Clinical Features Classifier Results}
-The clinical machine learning module demonstrated exceptional predictive power. In 5-fold stratified cross-validation on the 499 patient records, the Random Forest model emerged as the dominant classifier. As detailed in Table \ref{tab:clinical_results}, Random Forest achieved the highest Accuracy (96.6\%), Precision (94.8\%), F$_2$-Score (0.939), and ROC-AUC (0.995). While XGBoost exhibited marginally higher sensitivity (94.5\% vs 93.8\%), the Random Forest model's superior precision and overall discrimination capability established it as the optimal clinical model. Logistic Regression served as a strong linear baseline but underperformed the tree-based ensembles, highlighting the non-linear interactions within clinical presentations of MF.
+The clinical machine learning module demonstrated exceptional predictive power across both tasks.
+
+\subsubsection{Task~1: Diagnosis (MF vs.\ Non-MF)}
+In 5-fold stratified cross-validation on the 499 patient records, the Random Forest model emerged as the dominant classifier. As detailed in Table~\ref{tab:clinical_task1}, Random Forest achieved the highest Accuracy (96.6\%), Precision (94.8\%), F$_2$-Score (0.939), and ROC-AUC (0.995). While XGBoost exhibited marginally higher sensitivity (94.5\% vs.\ 93.8\%), the Random Forest model's superior precision and overall discrimination capability established it as the optimal clinical model. Logistic Regression served as a strong linear baseline but underperformed the tree-based ensembles, highlighting the non-linear feature interactions within clinical presentations of MF.
 
 \begin{table}[htbp]
-\caption{Clinical Classifier Performance (5-Fold Stratified CV)}
-\label{tab:clinical_results}
+\caption{Task~1: MF vs.\ Non-MF Diagnosis (5-Fold Stratified CV)}
+\label{tab:clinical_task1}
 \centering
-\renewcommand{\arraystretch}{1.2}
-\setlength{\tabcolsep}{4pt} 
+\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{l c c c}
 \toprule
-\textbf{Metric} & \textbf{XGBoost} & \textbf{Random Forest} & \textbf{Logistic Regression} \\
+\textbf{Metric} & \textbf{XGBoost} & \textbf{Random Forest} & \textbf{Logistic Reg.} \\
 \midrule
-Accuracy & 0.956 & \textbf{0.966} & 0.950 \\
-Precision & 0.908 & \textbf{0.948} & 0.915 \\
-Sensitivity & \textbf{0.945} & 0.938 & 0.918 \\
-F$_2$-Score & 0.937 & \textbf{0.939} & 0.916 \\
-ROC-AUC & 0.994 & \textbf{0.995} & 0.985 \\
+Accuracy    & 0.956              & \textbf{0.966}          & 0.950 \\
+Precision   & 0.908              & \textbf{0.948}          & 0.915 \\
+Sensitivity & \textbf{0.945}     & 0.938                   & 0.918 \\
+F$_2$-Score & 0.937              & \textbf{0.939}          & 0.916 \\
+ROC-AUC     & 0.994              & \textbf{0.995}          & 0.985 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-This result is corroborated by the Receiver Operating Characteristic (ROC) and Precision-Recall (PR) curves (Fig. \ref{fig:roc} and Fig. \ref{fig:pr}). The patient-level curves (solid lines) consistently envelop the patch-level curves (shaded areas), demonstrating superior discriminatory power across all decision thresholds.
+SHAP (SHapley Additive exPlanations) analysis was performed to interpret the 
+Random Forest diagnosis model. As shown in Fig.~\ref{fig:shap_importance_task1}, 
+the top contributing features include macules, biopsy morphology, age, and disease 
+duration—providing clinically interpretable explanations for individual predictions.
+The corresponding SHAP beeswarm plot (Fig.~\ref{fig:shap_beeswarm_task1}) reveals 
+the directional impact of each feature on the model's output, providing clinically 
+interpretable explanations for individual predictions.
 
-\begin{figure}[H]
+\begin{figure}[!t]
     \centering
-    \includegraphics[width=1\linewidth]{ROC Graphs.png}
-    \caption{Receiver Operating Characteristic (ROC) Curves. The "step-like" nature of the patient-level curves is due to the discrete number of test patients (N=35), yet they show a clear improvement in Area Under the Curve (AUC) compared to patch-level inference.}
-    \label{fig:roc}
+    \includegraphics[width=1\linewidth]{Figures/shap_importance_task1.png}
+    \caption{SHAP feature importance for Task~1 (MF vs.\ Non-MF). Features ranked by mean absolute SHAP value.}
+    \label{fig:shap_importance_task1}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[!t]
     \centering
-    \includegraphics[width=1\linewidth]{Precision Recall Curves.png}
-    \caption{Precision-Recall Curves. The dominance of the patient-level curves (solid lines) confirms that the model maintains high precision even at higher recall levels, a critical trait for a screening tool.}
-    \label{fig:pr}
+    \includegraphics[width=1\linewidth]{Figures/shap_beeswarm_task1.png}
+    \caption{SHAP beeswarm plot for Task~1. Each dot represents a single patient; color indicates feature value (red = high, blue = low), and horizontal position shows the SHAP value (impact on prediction).}
+    \label{fig:shap_beeswarm_task1}
 \end{figure}
+
+\subsubsection{Task~2: Stage of MF (Patch--Plaque vs.\ Tumor)}
+For intra-MF staging on the 353 MF patient records, all three models achieved high accuracy ($>$95\%), reflecting the strong discriminative power of lesion morphology features at this stage. As shown in Table~\ref{tab:clinical_task2}, Random Forest again achieved the highest Accuracy (97.7\%) and F$_2$-Score (0.855), while XGBoost maintained competitive performance. Logistic Regression exhibited a marked decline in sensitivity (52.7\%) and F$_2$-Score (0.532) for this task, underscoring the importance of non-linear models for capturing the complex interactions between staging features.
+
+\begin{table}[htbp]
+\caption{Task~2: Stage of MF --- Patch--Plaque vs.\ Tumor (5-Fold Stratified CV)}
+\label{tab:clinical_task2}
+\centering
+\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l c c c}
+\toprule
+\textbf{Metric} & \textbf{XGBoost} & \textbf{Random Forest} & \textbf{Logistic Reg.} \\
+\midrule
+Accuracy    & 0.972              & \textbf{0.977}          & 0.952 \\
+Precision   & 0.828              & \textbf{0.870}          & 0.700 \\
+Sensitivity & \textbf{0.860}     & \textbf{0.860}          & 0.527 \\
+F$_2$-Score & 0.843              & \textbf{0.855}          & 0.532 \\
+ROC-AUC     & \textbf{0.990}     & 0.987                   & 0.968 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Feature importance analysis for the staging task (Fig.~\ref{fig:fi_stage}) reveals that the \textit{Nodule} feature is the single most important predictor, confirming the clinical rationale for its retention despite its lack of statistical significance in the diagnosis task. This finding aligns with the well-established dermatological principle that the presence of nodules/tumors is a hallmark of advanced-stage MF.
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=1\linewidth]{Figures/Feature_Importance_Stage_MF.png}
+    \caption{Feature importance for Task~2 (Stage of MF). The \textit{Nodule} feature dominates, confirming its near-deterministic role in identifying the Tumor stage.}
+    \label{fig:fi_stage}
+\end{figure}
+
+
+
 
 % =====================
 % 6. Discussion
 % =====================
-\section{Discussion}
 \section{Discussion}
 \subsection{Cellular Detail within Architectural Context}
 A key finding of this study is the superior performance of the 20$\times$ model (F$_2$=0.8874) compared to the 10$\times$ model (F$_2$=0.8222). In histopathology, higher magnification typically yields better resolution of cellular atypia, such as hyperchromatic and irregular cerebriform nuclei, which are hallmark cytological features of Mycosis Fungoides. Our empirical results strongly support this established dermatopathologic principle, demonstrating that high-resolution cellular detail is the primary driver of accurate algorithmic diagnosis.
@@ -365,54 +477,45 @@ A key finding of this study is the superior performance of the 20$\times$ model 
 However, Mycosis Fungoides is also defined by architectural patterns, such as epidermotropism and the formation of Pautrier's microabscesses, which are more readily apparent at lower magnifications. Our multi-scale late-fusion approach successfully mimics the workflow of a human pathologist by combining both perspectives. By assigning 80\% of the decision weight to the 20$\times$ cytological model and 20\% to the 10$\times$ architectural model, the framework explicitly prioritizes definitive cellular evidence while still benefiting from the broader architectural context, resulting in a highly sensitive and reliable diagnostic tool.
 
 \subsection{The Necessity of Whole-Slide Context}
-The success of the patient-level aggregation strategy highlights the diffuse nature of
-Mycosis Fungoides. Because MF features are rarely restricted to a few isolated "hotspots"
-and are instead spread subtly across the tissue, relying on the collective signal
-of the entire sample is crucial. By utilizing mean aggregation, the model effectively
-integrates the probabilistic signal from all extracted patches. This approach acts as a
-digital analog to a pathologist comprehensively scanning the whole tissue slide before
-making a final diagnostic decision, ensuring that widespread, subtle architectural cues
-are fully leveraged.
+The success of patient-level aggregation highlights the diffuse nature of MF: features are spread subtly across the tissue rather than concentrated in isolated hotspots. Mean aggregation integrates the probabilistic signal from all patches, acting as a digital analog to a pathologist scanning the entire slide before rendering a diagnosis.
+
 \subsection{Benchmarking and Clinical Reality}
-While our deep learning framework demonstrates high diagnostic potential, it is crucial to acknowledge that diagnosing Mycosis Fungoides solely from histopathological images is a simplified proxy for clinical reality. In practice, dermatologists and pathologists rely on a multimodal synthesis of visual data, patient history, and clinical presentation (e.g., lesion morphology, duration) to render a definitive diagnosis. The reliance on image data alone in this study likely imposes a performance ceiling; we hypothesize that integrating tabular clinical metadata in future iterations will significantly enhance diagnostic precision and reduce false positives.
-
-Despite this limitation, our model's performance is highly competitive with recent state-of-the-art benchmarks. Doeleman et al. \cite{Doeleman2024-MF} compared a weakly supervised deep learning model against three expert pathologists. They reported that their highest performance was achieved at $200\times$ magnification ($0.50$ $\mu$m/pixel), yielding a mean Area Under the Curve (AUC) of $0.827 \pm 0.044$ and a mean balanced accuracy of $76.2 \pm 3.9\%$.
-
-In comparison, our $10\times$ model achieved a patient-level accuracy of $77.1\%$ and a sensitivity of $86.4\%$. Notably, our framework effectively matches the accuracy of expert pathologists reported in \cite{Doeleman2024-MF}.
+Diagnosing MF solely from histopathological images is a simplified proxy for clinical reality, where pathologists synthesize visual data with patient history and clinical presentation. Despite this limitation, our framework is competitive with recent benchmarks. Doeleman et al. \cite{Doeleman2024-MF} reported a mean AUC of $0.827 \pm 0.044$ and balanced accuracy of $76.2 \pm 3.9\%$ at $200\times$ magnification using a weakly supervised model compared against three expert pathologists. Our late-fusion model achieves a patient-level accuracy of 83.58\% and sensitivity of 89.13\%, effectively surpassing these benchmarks at substantially lower magnifications.
 % =====================
 % 7. Conlcusion
 % =====================
 \section{Conclusion}
-This work presents a comprehensive, multimodal machine learning framework for the automated screening of Mycosis Fungoides. By rigorously optimizing TF-EfficientNet-B3 architectures and employing a multi-scale patient-level fusion strategy, we achieved a diagnostic sensitivity of 89.13\% and an Accuracy of 83.58\% on histological images. Furthermore, by integrating a dedicated Random Forest classifier for clinical features, we demonstrated that patient metadata yields exceptional predictive accuracy (96.6\%) independently.
-
-Our results demonstrate that prioritizing high-resolution cytological details (20$\times$) while still incorporating broad architectural context (10$\times$) yields the most robust image-based triage tool.
-
-Our key contributions include:
+This work presents a comprehensive, multimodal machine learning framework for automated MF screening. Our key contributions are:
 \begin{enumerate}
-    \item \textbf{Dominance of Cytological Details:} We proved that the 20$\times$ model's capacity to resolve fine cellular atypia significantly outperforms the broader 10$\times$ architectural view. By allocating 80\% weight to the 20$\times$ model, we maximize sensitivity, proving high magnification is critical for accurate differential diagnosis.
-    
-    \item \textbf{Complementary Clinical AI:} We established that a robust machine learning module analyzing just 16 structured clinical features can achieve extraordinary diagnostic performance (93.8\% sensitivity, 96.6\% accuracy). This proves that while histopathology is the gold standard, algorithmic analysis of clinical metadata is a highly reliable parallel modality.
-
-    \item \textbf{Multi-Scale Patient-Level Late Fusion:} We designed a late-fusion protocol that integrates predictions across multiple magnifications. By systematically combining the cytological detail captured at 20$\times$ with the broader architectural context from the 10$\times$ model, our patient-level consensus approach achieved optimal performance. 
+    \item \textbf{Cytological Detail Dominance:} The 20$\times$ model's capacity to resolve fine cellular atypia significantly outperforms the broader 10$\times$ view. By allocating 80\% fusion weight to the 20$\times$ model, the late-fusion ensemble achieves 89.13\% sensitivity and 83.58\% accuracy, proving that high magnification is critical for accurate differential diagnosis.
+    \item \textbf{Complementary Clinical AI:} A Random Forest classifier analyzing 16 structured clinical features achieves 93.8\% sensitivity and 96.6\% accuracy independently, demonstrating that algorithmic analysis of patient metadata is a highly reliable parallel modality to histopathology.
+    \item \textbf{Multi-Scale Patient-Level Fusion:} The late-fusion protocol systematically combines cytological detail (20$\times$) with architectural context (10$\times$) via patient-level mean aggregation, achieving optimal screening performance.
 \end{enumerate}
 % =====================
 % 8. Discussion
 % =====================
 \section{Future Work}
-To evolve this framework from a promising prototype into a robust clinical decision-support system, future research will address four critical limitations:
+To evolve this framework from a promising prototype into a robust clinical 
+decision-support system, future research will address two critical limitations:
 
 \begin{enumerate}
-    \item \textbf{Deep Multimodal Fusion:} While this study developed independent deep learning and clinical machine learning models, future iterations will explore end-to-end multimodal architectures. Integrating the histopathological feature extractors directly with the clinical tabular data via cross-attention mechanisms is expected to yield a unified model that surpasses the performance of the independent branches.
+    \item \textbf{Deep Multimodal Fusion:} While this study developed independent 
+    deep learning and clinical machine learning models, future iterations will 
+    explore end-to-end multimodal architectures. 
+    Integrating the histopathological feature extractors directly with the clinical 
+    tabular data via cross-attention mechanisms is expected to yield a unified model 
+    that surpasses the performance of the independent branches.
 
-    \item \textbf{Stain Normalization and Augmentation:} To ensure the model generalizes across different laboratories and scanners, we will implement rigorous stain normalization techniques (e.g., Macenko \cite{macenko2009} or Vahadane \cite{vahadane2016_stainnorm} methods) in the preprocessing pipeline. This will mitigate the impact of color variations in H\&E staining that can currently confound the classifier.
+    \item \textbf{Stain Normalization and Augmentation:} To ensure the model 
+    generalizes across different laboratories and scanners, future work will incorporate 
+    rigorous stain normalization techniques (e.g., Macenko \cite{macenko2009} 
+    or Vahadane \cite{vahadane2016_stainnorm} methods) in the preprocessing pipeline. 
+    This will mitigate the impact of color variations in H\&E staining that can 
+    currently confound the classifier.
 
 \end{enumerate}
 
-
 \bibliographystyle{IEEEtran}
 \bibliography{references}
-
-\vspace{12pt}
-
 
 \end{document}
