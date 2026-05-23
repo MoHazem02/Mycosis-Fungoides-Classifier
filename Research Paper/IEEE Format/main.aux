@@ -15,40 +15,44 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Different foreground ratios for patches of a sample tif image}}{2}{}\protected@file@percent }
 \newlabel{fig:HSV_Ratio}{{1}{2}{}{figure.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Model Architecture and Training Protocol}{2}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}1}Backbone Selection and Hyperparameter Optimization}{2}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Optimal Hyperparameters Selected via Optuna}}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}1}Dual-Magnification Architecture}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}2}Training Strategy and Augmentation}{2}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Model Configuration and Hyperparameters}}{3}{}\protected@file@percent }
 \newlabel{tab:hyperparams}{{I}{3}{}{table.1}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}2}Metric Selection and Checkpointing}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}3}Metric Selection and Checkpointing}{3}{}\protected@file@percent }
 \newlabel{eq:f2_score}{{1}{3}{}{equation.1}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}3}Training Strategy}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}4}Validation Protocol and Aggregation Performance}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}4}Validation Protocol and Aggregation}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Patient-Level Prediction via Mean Aggregation}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}Multi-Magnification Fusion Strategy}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-E}1}Late Fusion Approach}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-E}2}Weighted Score Aggregation and Clinical Justification}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-E}3}Optimization of Fusion Weight}{3}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Optimization of the multi-magnification fusion weight ($\alpha $). The top-left panel demonstrates that the lowest Brier Score (indicating optimal calibration) is achieved at $\alpha =0.65$. The remaining panels illustrate the corresponding trade-offs in Accuracy, Sensitivity/Specificity, and ROC-AUC, confirming that this weight maintains high sensitivity while maximizing predictive reliability.}}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-F}}Clinical Features Classifier}{3}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Optimization of the multi-magnification fusion weight ($\alpha $). The top-left panel demonstrates that the lowest Brier Score (indicating optimal calibration) is achieved at $\alpha =0.60$. The remaining panels illustrate the corresponding trade-offs in Accuracy, Sensitivity/Specificity, and ROC-AUC, confirming that the selected clinical weight ($\alpha =0.20$) maintains high sensitivity while maximizing predictive reliability.}}{4}{}\protected@file@percent }
 \newlabel{fig:fusion_analysis}{{2}{4}{}{figure.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Results}{4}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Quantitative Performance Summary (Test Set, N=35)}}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Deep Learning Image Analysis Results}{4}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Quantitative Performance Summary (Test Set, N=67 Patients)}}{4}{}\protected@file@percent }
 \newlabel{tab:results}{{II}{4}{}{table.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Patient-Level Aggregation Benefits}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Patient-Level Aggregation Benefits}{4}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Comprehensive Performance Dashboard. A side-by-side comparison of patch-level (dark blue) vs. patient-level (dark orange) metrics across both magnifications.}}{4}{}\protected@file@percent }
 \newlabel{fig:comprehensiveMetrics}{{3}{4}{}{figure.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Late fusion model performance comparing individual magnification models (10$\times $, 20$\times $) against the fused multi-scale approach. Late fusion combines predictions from both magnifications to leverage complementary information captured at different scales.}}{4}{}\protected@file@percent }
 \newlabel{fig:aggregation_comparison}{{4}{4}{}{figure.4}{}}
-\citation{Doeleman2024-MF}
-\citation{Doeleman2024-MF}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Sensitivity and Clinical Relevance}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Sensitivity and Clinical Relevance}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Clinical Features Classifier Results}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Clinical Classifier Performance (5-Fold Stratified CV)}}{5}{}\protected@file@percent }
+\newlabel{tab:clinical_results}{{III}{5}{}{table.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Receiver Operating Characteristic (ROC) Curves. The "step-like" nature of the patient-level curves is due to the discrete number of test patients (N=35), yet they show a clear improvement in Area Under the Curve (AUC) compared to patch-level inference.}}{5}{}\protected@file@percent }
 \newlabel{fig:roc}{{5}{5}{}{figure.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Precision-Recall Curves. The dominance of the patient-level curves (solid lines) confirms that the model maintains high precision even at higher recall levels, a critical trait for a screening tool.}}{5}{}\protected@file@percent }
 \newlabel{fig:pr}{{6}{5}{}{figure.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Discussion}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Architectural vs. Cellular Features and Patch Resolution}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}The Necessity of Whole-Slide Context}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Benchmarking and Clinical Reality}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Discussion}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Cellular Detail within Architectural Context}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}The Necessity of Whole-Slide Context}{5}{}\protected@file@percent }
+\citation{Doeleman2024-MF}
+\citation{Doeleman2024-MF}
 \citation{macenko2009}
 \citation{vahadane2016_stainnorm}
 \bibstyle{IEEEtran}
@@ -60,9 +64,11 @@
 \bibcite{Doeleman2024-MF}{5}
 \bibcite{Lu2021}{6}
 \bibcite{zhang2025standardizing}{7}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Benchmarking and Clinical Reality}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Future Work}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
 \bibcite{vaidya2025molecular}{8}
 \bibcite{macenko2009}{9}
 \bibcite{vahadane2016_stainnorm}{10}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Future Work}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
-\gdef \@abspage@last{6}
+\gdef \@abspage@last{7}

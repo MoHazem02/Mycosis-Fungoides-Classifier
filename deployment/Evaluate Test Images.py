@@ -28,14 +28,16 @@ import config
 
 
 # ── Configuration ────────────────────────────────────────────────────────────
-TEST_DATA_ROOT = Path("G:/My Drive/CLPD-MF-Dataset/test file")
+TEST_DATA_ROOT = Path("G:/My Drive/CLPD-MF-Dataset/smart phone")
 
 # Mapping of folder paths to ground truth labels
 LABEL_MAPPING = {
     "MF": 1,                                    # Mycosis Fungoides
-    "NON-MF/PL-Spectrum": 2,                    # PLEVA-PLC
-    "NON-MF/Pseudo-Lymphoma": 4,                # pseudolymphoma
-    "NON-MF/T-Cell dyscrasia": 3,               # T-cell dyscrasia
+    "Non-MF/PL-Spectrum": 2,                    # PLEVA-PLC
+    "Non-MF/pseudolymphoma": 4,                 # pseudolymphoma
+    "Non-MF/T-Cell dyscrasia": 3,               # T-cell dyscrasia
+    "Non-MF/other" : 3
+
 }
 
 CLASS_NAMES = config.CLASS_NAMES  # ["B cell Lymphoma", "Mycosis Fungoides", "PLEVA-PLC", "T-cell dyscrasia", "pseudolymphoma"]
@@ -60,6 +62,8 @@ def get_test_folders() -> dict:
     test_folders = {}
     
     for folder_path_str, label in LABEL_MAPPING.items():
+        if folder_path_str != "Non-MF/other":
+            continue
         folder_path = TEST_DATA_ROOT / folder_path_str
         
         if not folder_path.exists():
@@ -134,8 +138,9 @@ def run_evaluation():
             predicted_classes.append(pred_class_name)
             confidences.append(confidence)
             
-            # Determine if correct
-            is_correct = pred_class_idx == true_label
+            # Determine if correct (any non-MF prediction is correct for NON-MF samples)
+            # is_correct = pred_class_idx == true_label
+            is_correct = pred_class_idx != 1
             status = "✓" if is_correct else "✗"
             
             # Log result

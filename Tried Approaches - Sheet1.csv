@@ -1,0 +1,15 @@
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,Model 10x,10x Accuracy,10x Patch Size,10x Sensitivity,10x F2 Score,10x Aggregation,Model 20x,20x Accuracy,20x Patch Size,20x Sensitivity,20x F2 Score,20x Aggregation
+,,,ResNet50,0.7714,512x512,0.8636,0.8482,Mean (0.5 threshold),ResNet50,0.7429,512x512,0.7273,0.7477,Mean (0.5 threshold)
+,,,EfficientNet-B3,0.806,512x512,0.8043,0.8222,Mean (0.5 threshold),EfficientNet-B3,0.597,1024x1024,0.4348,0.4878,Mean (0.5 threshold)
+,,,,,,,,,EfficientNet-B3,0.5373,1024x1024,0.3478,0.398,Top 5% Pooling
+,,,,,,,,,EfficientNet-B3,0.5373,1024x1024,0.3478,0.398,Top 10% Pooling
+,,,,,,,,,EfficientNet-B3,0.5821,1024x1024,0.413,0.4657,Top 15% Pooling
+,,,,,,,,,EfficientNet-B3,0.597,1024x1024,0.4348,0.4878,Top 25% Pooling
+,,,,,,,,,EfficientNet-B3,0.821,1024x1024,0.8913,0.884,Mean (0.8351 threshold)

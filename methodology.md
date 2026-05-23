@@ -112,9 +112,9 @@ Where:
 
 **Justification:** This approach assumes that aggregate patch characteristics reflect overall patient pathology, providing robustness against local artifacts while preserving diagnostic signal across the tissue sample.
 
-**Output:** Patient-level probability vectors:
-- $\mathbf{P}_{10x} = [p^{10x}_0, p^{10x}_1, p^{10x}_2, p^{10x}_3, p^{10x}_4] \in [0,1]^5$
-- $\mathbf{P}_{20x} = [p^{20x}_0, p^{20x}_1, p^{20x}_2, p^{20x}_3, p^{20x}_4] \in [0,1]^5$
+**Output:** While the individual models can output 5-class probability vectors, for the purpose of the binary fusion (MF vs Non-MF), we extract the scalar **Non-MF probability** for each patient:
+- $P^{10x}_{\text{non-MF}} \in [0,1]$
+- $P^{20x}_{\text{non-MF}} \in [0,1]$
 
 ---
 
@@ -176,11 +176,11 @@ p_{20x}^{\text{non-MF}} \cdot \dfrac{0.5}{0.8351} & \text{if } p_{20x}^{\text{no
 
 ### 4.3 Weighted Fusion via Brier Score Optimization
 
-The calibrated probabilities are combined via weighted averaging:
+The calibrated Non-MF probabilities are combined via weighted averaging:
 
-$$P_{\text{fused}}(c) = w \cdot P_{10x}(c) + (1-w) \cdot P_{20x}^{\text{cal}}(c)$$
+$$P_{\text{fused}}^{\text{non-MF}} = w \cdot P_{10x}^{\text{non-MF}} + (1-w) \cdot P_{20x}^{\text{non-MF, cal}}$$
 
-The optimal weight $w^*$ was determined by minimizing the **Brier Score** (mean squared prediction error):
+The Brier Score (mean squared prediction error) was tracked to measure calibration:
 
 $$\text{BS} = \frac{1}{N} \sum_{i=1}^{N} (P_{\text{fused},i} - y_i)^2$$
 
@@ -188,40 +188,44 @@ $$\text{BS} = \frac{1}{N} \sum_{i=1}^{N} (P_{\text{fused},i} - y_i)^2$$
 - Incorrect predictions
 - Overconfident correct predictions
 
-In medical AI, this prevents dangerous overconfidence in predictions.
+In medical AI, this prevents dangerous overconfidence in predictions. While the strictly optimal weight minimizing the Brier Score was found to be $w = 0.60$ (Brier: 0.1401), a **clinical golden weight** of $w^* = 0.20$ was manually selected to prioritize sensitivity.
 
 #### 4.3.1 Weight Sweep Results
 
-Systematic evaluation across $w \in [0.0, 1.0]$:
+Systematic evaluation across $w \in [0.0, 1.0]$ with step 0.05. A subset of key intervals is shown:
 
-| Weight | Brier ↓ | Accuracy ↑ | Sensitivity (MF) | Specificity (MF) |
-|---|---|---|---|---|
-| 0.00 | 0.0832 | 87.65% | 78.43% | 92.31% |
-| 0.10 | 0.0754 | 88.24% | 79.41% | 92.86% |
-| **0.20** | **0.0712** | **88.82%** | **82.35%** | **93.41%** |
-| 0.30 | 0.0745 | 88.53% | 82.35% | 92.86% |
-| 0.40 | 0.0798 | 87.94% | 82.35% | 91.76% |
-| 0.50 | 0.0856 | 87.35% | 82.35% | 90.66% |
+| Weight | Brier Score | Accuracy | Sensitivity (MF) | Specificity (MF) | ROC-AUC | F2 (MF) |
+|---|---|---|---|---|---|---|
+| 0.00 | 0.1526 | 82.09% | 89.13% | 89.13% | 0.8509 | 0.8836 |
+| 0.10 | 0.1486 | 83.58% | 89.13% | 89.13% | 0.8634 | 0.8874 |
+| **0.20** | **0.1455** | **83.58%** | **89.13%** | **89.13%** | **0.8778** | **0.8874** |
+| 0.40 | 0.1413 | 77.61% | 80.43% | 80.43% | 0.8882 | 0.8150 |
+| *0.60* | *0.1401* | *79.10%* | *80.43%* | *80.43%* | *0.8861* | *0.8186* |
+| 0.80 | 0.1418 | 80.60% | 80.43% | 80.43% | 0.8789 | 0.8222 |
+| 1.00 | 0.1466 | 80.60% | 80.43% | 80.43% | 0.8685 | 0.8222 |
 
-**Selected Weight:** $w^* = 0.20$
+**Selected Clinical Weight:** $w^* = 0.20$
 
 **Interpretation:**
 - **20% contribution** from 10× architectural model
 - **80% contribution** from 20× cytological model
-- **Clinical reasoning**: While architectural patterns provide context, cytological details are more distinctive for MF diagnosis
-- **Performance**: Achieves minimum Brier score (0.0712) with strong sensitivity (82.35%) and specificity (93.41%)
+- **Clinical reasoning**: While architectural patterns provide context, cytological details are more distinctive for MF diagnosis. The weight $w = 0.20$ maximizes MF Sensitivity (89.13%) and F2-Score (0.8874) without compromising overall Accuracy (83.58%), providing the safest clinical threshold.
+- **Performance at w=0.20**: Brier: 0.1455 | Acc: 83.58% | Sens: 89.13% | Spec: 89.13% | AUC: 0.8778
 
 ---
 
 ## 5. Multi-Class Prediction Logic
 
+> [!NOTE]
+> The late fusion pipeline primarily focuses on the binary MF vs Non-MF decision using the fused scalar probabilities. The multi-class refinement described below is a theoretical capability of the underlying individual models (which can output 5-class vectors), but it is not applied during the scalar late fusion step.
+
 ### 5.1 Binary Decision (MF vs Non-MF)
 
-Using fused probability at class index 1 (MF):
+Using the fused Non-MF probability:
 
 $$\hat{y} = \begin{cases}
-\text{MF} & \text{if } P_{\text{fused}}(1) \leq 0.5 \\
-\text{Non-MF} & \text{if } P_{\text{fused}}(1) > 0.5
+\text{MF} & \text{if } P_{\text{fused}}^{\text{non-MF}} \leq 0.5 \\
+\text{Non-MF} & \text{if } P_{\text{fused}}^{\text{non-MF}} > 0.5
 \end{cases}$$
 
 ### 5.2 Multi-Class Refinement
@@ -249,15 +253,16 @@ For Non-MF cases, the specific disease mimic is determined:
 
 A complementary classifier was trained on patient metadata to leverage diagnostic information beyond histology.
 
-#### 6.1.1 Feature Selection (15 Selected Features)
+#### 6.1.1 Feature Selection (16 Selected Features)
 
-Univariate feature screening (chi-squared for categorical, t-tests for continuous, $p < 0.05$) on a larger initial pool yielded 15 predictive features:
+Univariate feature screening on a larger initial pool yielded 16 predictive features (used after filtering down to numeric representations):
 
 | Feature | Type | Domain | Values/Description |
 |---|---|---|---|
 | **Age** | Continuous | Demographics | Patient age (years) |
 | **Duration (Months)** | Continuous | Disease history | Disease duration in months |
 | **Course** | Categorical | Disease trajectory | Progressive, Stationary, Remitting, etc. |
+| **Visit Type** | Categorical | Visit context | New, Follow-up, Recurrent |
 | **Site: Head and Neck** | Binary | Anatomic distribution | Head/Neck involvement (Yes/No) |
 | **Site: Lower Limbs** | Binary | Limb involvement | Upper/Lower limb (Yes/No) |
 | **Lesion Color** | Categorical | Lesion phenotype | Erythematous, Hyperpigmented, etc. |
@@ -362,17 +367,17 @@ $$F_2 = \frac{5 \cdot \text{Precision} \cdot \text{Sensitivity}}{4 \cdot \text{P
 
 | Metric | XGBoost | Random Forest | Logistic Regression |
 |---|---|---|---|
-| **Accuracy** | 0.885 | 0.871 | 0.823 |
-| **Precision** | 0.842 | 0.815 | 0.761 |
-| **Sensitivity** | 0.887 | 0.856 | 0.798 |
-| **F2-Score** | 0.879 | 0.848 | 0.794 |
-| **ROC-AUC** | 0.923 | 0.909 | 0.878 |
+| **Accuracy** | 0.956 | **0.966** | 0.950 |
+| **Precision** | 0.908 | **0.948** | 0.915 |
+| **Sensitivity** | **0.945** | 0.938 | 0.918 |
+| **F2-Score** | 0.937 | **0.939** | 0.916 |
+| **ROC-AUC** | 0.994 | **0.995** | 0.985 |
 
 **Key Findings:**
-- **Random Forest dominant**: Superior generalization and minimal hyperparameter sensitivity
-- **Sensitivity differential**: 3.1% higher MF detection (0.887 vs 0.856)—critical for reducing false negatives
-- **ROC-AUC**: Robust discrimination ability (0.909) across all probability thresholds
-- **Selected Model**: **Random Forest** chosen as primary clinical classifier for its reliability and interpretability
+- **Random Forest dominant**: Random Forest outperforms other models on 4 out of 5 metrics (Accuracy, Precision, F2-Score, and ROC-AUC), making it the strongest overall model.
+- **High Discrimination**: Random Forest achieves an exceptional ROC-AUC of 0.995 and Accuracy of 0.966.
+- **Sensitivity**: XGBoost has slightly higher sensitivity (0.945 vs 0.938), but Random Forest's superior precision (0.948 vs 0.908) makes it a more balanced and reliable classifier.
+- **Selected Model**: **Random Forest** chosen as the primary clinical classifier for its reliability, superior generalization, and interpretability.
 
 #### 6.3.3 Feature Importance Analysis
 
@@ -439,7 +444,7 @@ The complete diagnostic system operates via a four-stage pipeline:
          │                           │
          ├─10x Model            Random Forest
          │ (EfficientNet-B3)      (300 trees)
-         │                      Features: 15
+         │                      Features: 16
          ├─20x Model                 │
          │ (EfficientNet-B3)     MF vs Non-MF
          │                           │
@@ -447,7 +452,7 @@ The complete diagnostic system operates via a four-stage pipeline:
                   │
          ┌────────▼────────┐
          │  Late Fusion    │
-         │  (w=0.20)       │
+         │  w=0.20 (clinic)│
          │  Calibration    │
          └────────┬────────┘
                   │
@@ -482,7 +487,7 @@ The complete diagnostic system operates via a four-stage pipeline:
 | **Dual-Magnification Architecture** | Complementary 10× (architecture) and 20× (cytology) models capture multi-scale pathology |
 | **Youden's J Thresholding** | Optimal decision thresholds (0.50, 0.8351) derived from ROC analysis rather than default 0.5 |
 | **Probability Recalibration** | Novel piecewise-linear transformation enables meaningful weighted averaging of differently-calibrated model outputs |
-| **Brier Score Optimization** | Weight selection (w=0.20) minimizes calibration error, preferred over accuracy for medical applications |
+| **Clinical Weight Selection** | While Brier score optimization found w=0.60, a clinical golden weight (w=0.20) was manually selected to prioritize and maximize sensitivity. |
 | **Hierarchical Classification** | Binary MF/Non-MF decision followed by multi-class mimic differentiation |
 | **Clinico-Histologic Integration** | Late fusion of deep learning image analysis with machine learning-based clinical features classifier |
 | **Rigorous Model Selection** | Three-model comparison (XGBoost vs Random Forest vs Logistic Regression); Random Forest selected for robustness and interpretability |
@@ -499,7 +504,7 @@ The complete diagnostic system operates via a four-stage pipeline:
 - **GPU Support:** CUDA 12.1 (with CPU fallback)
 
 **Data Specifications:**
-- **Total patients:** 462
+- **Total patients:** 499 (353 MF, 146 Non-MF)
   - **Training set:** 328 patients
   - **Validation set:** 67 patients (used for threshold optimization and hyperparameter tuning)
   - **Test set:** 148 patients (67 + 81 from separate test cohorts)
@@ -530,8 +535,8 @@ The complete diagnostic system operates via a four-stage pipeline:
 | **Threshold (10×)** | Youden's J | θ = 0.50 | Balanced sensitivity/specificity |
 | **Threshold (20×)** | Youden's J | θ = 0.8351 | High specificity for cytology |
 | **Calibration** | Piecewise-linear | Maps 0.8351 → 0.5 | Enables valid fusion |
-| **Fusion** | Weighted averaging | w = 0.20 (10×), w = 0.80 (20×) | Brier: 0.0712, Acc: 88.82% |
-| **Clinical** | Random Forest | 15 features, max_depth: 6, 300 trees | Sensitivity: 88.7%, Accuracy: 88.5% |
+| **Fusion** | Weighted averaging | w = 0.20 (clinical) | Brier: 0.1455, Acc: 83.58%, Sens: 89.13% |
+| **Clinical** | Random Forest | 16 features, max_depth: 6, 300 trees | Sensitivity: 93.8%, Accuracy: 96.6% |
 | **Binary Decision** | Threshold | θ = 0.5 | Separates MF vs Non-MF |
 | **Multi-class** | Argmax masking | Mask MF, select max | Differentiates 5 classes |
 
