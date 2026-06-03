@@ -441,7 +441,7 @@ class MFClassifierApp(ctk.CTk):
  
         Parameters
         ----------
-        diagnosis   "Malignant" or "Benign"
+        diagnosis   "Malignant" or "Non-Malignant"
         confidence  Probability from predict_proba (0.0–1.0), optional
         """
         # Clear previous result
@@ -449,7 +449,7 @@ class MFClassifierApp(ctk.CTk):
             w.destroy()
  
         is_malignant = "malignant" in diagnosis.lower()
-        accent = ("#e74c3c", "#c0392b") if is_malignant else _SLATE  # Red for Malignant, Slate for Benign
+        accent = ("#e74c3c", "#c0392b") if is_malignant else _SLATE  # Red for Malignant, Slate for Non-Malignant
  
         # ── Card shell ────────────────────────────────────────────────────
         card = ctk.CTkFrame(
@@ -735,19 +735,21 @@ class MFClassifierApp(ctk.CTk):
     
     def _display_results(self, results: dict):
         MALIGNANT_CLASSES = {"B cell Lymphoma", "Mycosis Fungoides"} 
-
-        prediction = results['predicted_class']
-        if prediction == "MF":
-            prediction = "Mycosis Fungoides"
-        is_malignant = prediction in MALIGNANT_CLASSES
-        diagnosis_label = "Malignant" if is_malignant else "Benign"
-        diagnosis_color = "#e74c3c" if is_malignant else "#3498db"
-
         class_probs = results['class_probabilities']
         malignant_prob = sum(v for k, v in class_probs.items() if k in MALIGNANT_CLASSES) * 100
-        benign_prob = 100 - malignant_prob
+        Non_Malignant_prob = 100 - malignant_prob
+        
+        if malignant_prob > 50.0:
+            prediction = max(MALIGNANT_CLASSES, key=lambda k: class_probs.get(k, 0))
+        else:
+            non_malignant_classes = set(class_probs.keys()) - MALIGNANT_CLASSES
+            prediction = max(non_malignant_classes, key=lambda k: class_probs.get(k, 0))
 
-        diagnosis_text = f"{diagnosis_label}: {prediction}\n Confidence: {malignant_prob if is_malignant else benign_prob:.1f}%"
+        is_malignant = prediction in MALIGNANT_CLASSES
+        diagnosis_label = "Malignant" if is_malignant else "Non-Malignant"
+        diagnosis_color = "#e74c3c" if is_malignant else "#3498db"
+
+        diagnosis_text = f"{diagnosis_label}: {prediction}\n Confidence: {malignant_prob if is_malignant else Non_Malignant_prob:.1f}%"
         self.prediction_var.set(diagnosis_text)
         self.prediction_label.configure(text_color=diagnosis_color)
 
@@ -840,8 +842,8 @@ class MFClassifierApp(ctk.CTk):
                     
                     stage = None
                     
-                    # Convert diagnosis from "MF"/"Non-MF" to "Malignant"/"Benign"
-                    display_diagnosis = "Malignant" if diagnosis == "MF" else "Benign"
+                    # Convert diagnosis from "MF"/"Non-MF" to "Malignant"/"Non-Malignant"
+                    display_diagnosis = "Malignant" if diagnosis == "MF" else "Non-Malignant"
                     
                     # If diagnosis is MF, run stage model
                     if diagnosis == "MF":
@@ -852,7 +854,7 @@ class MFClassifierApp(ctk.CTk):
                         y_pred_labels_stage = stage_bundle['label_encoder'].inverse_transform(y_pred_enc_stage)
                         stage = y_pred_labels_stage[0]
                     
-                    # Display result using show_clinical_result with Malignant/Benign
+                    # Display result using show_clinical_result with Malignant/Non-Malignant
                     self.after(0, lambda d=display_diagnosis, s=stage, c=diagnosis_prob: self.show_clinical_result(d, s, c))
                     
                 except Exception as e:

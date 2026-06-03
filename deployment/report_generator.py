@@ -2,7 +2,7 @@
 PDF Report Generator for MF Classification Results.
 
 Generates a comprehensive PDF report including:
-- Malignant vs Benign classification
+- Malignant vs Non-Malignant classification
 - Individual class probabilities for all 5 differential diagnoses
 - Detailed analysis metrics
 """
@@ -109,19 +109,24 @@ def generate_report(results: Dict, output_path: Path) -> Path:
     # Classification Result
     story.append(Paragraph("Classification Result", heading_style))
     
-    # Determine Malignant vs Benign classification using the same display logic as the app.
+    # Determine Malignant vs Non-Malignant classification using the same display logic as the app.
     MALIGNANT_CLASSES = {"B cell Lymphoma", "Mycosis Fungoides"}
-    prediction = results['predicted_class']
-    if prediction == "MF":
-        prediction = "Mycosis Fungoides"
-    is_malignant = prediction in MALIGNANT_CLASSES
-    diagnosis_label = "Malignant" if is_malignant else "Benign"
-    diagnosis_color_hex = "#e74c3c" if is_malignant else "#3498db"
-    diagnosis_color = colors.HexColor(diagnosis_color_hex)
-
+    
     class_probs = results['class_probabilities']
     malignant_prob = sum(v for k, v in class_probs.items() if k in MALIGNANT_CLASSES) * 100
     benign_prob = 100 - malignant_prob
+
+    if malignant_prob > 50.0:
+        prediction = max(MALIGNANT_CLASSES, key=lambda k: class_probs.get(k, 0))
+    else:
+        non_malignant_classes = set(class_probs.keys()) - MALIGNANT_CLASSES
+        prediction = max(non_malignant_classes, key=lambda k: class_probs.get(k, 0))
+
+    is_malignant = prediction in MALIGNANT_CLASSES
+    diagnosis_label = "Malignant" if is_malignant else "Non-Malignant"
+    diagnosis_color_hex = "#e74c3c" if is_malignant else "#3498db"
+    diagnosis_color = colors.HexColor(diagnosis_color_hex)
+
     displayed_confidence = malignant_prob if is_malignant else benign_prob
     diagnosis_text = (
         f"<b>{diagnosis_label}: {prediction}</b><br/>"
@@ -169,13 +174,13 @@ def generate_report(results: Dict, output_path: Path) -> Path:
     )))
     story.append(Spacer(1, 20))
     
-    # Binary Classification (Malignant vs Benign)
+    # Binary Classification (Malignant vs Non-Malignant)
     story.append(Paragraph("Binary Classification Analysis", heading_style))
 
     binary_data = [
         ["Classification", "Probability"],
         ["Malignant", f"{malignant_prob:.1f}%"],
-        ["Benign", f"{benign_prob:.1f}%"],
+        ["Non-Malignant", f"{benign_prob:.1f}%"],
     ]
     
     binary_table = Table(binary_data, colWidths=[3*inch, 2*inch])
@@ -203,7 +208,7 @@ def generate_report(results: Dict, output_path: Path) -> Path:
     predicted_row_idx = None
     for class_name in class_probs.keys():
         class_prob = class_probs[class_name] * 100
-        classification = "Malignant" if class_name in MALIGNANT_CLASSES else "Benign"
+        classification = "Malignant" if class_name in MALIGNANT_CLASSES else "Non-Malignant"
         if class_name == prediction:
             predicted_row_idx = len(prob_data)
         prob_data.append([class_name, classification, f"{class_prob:.1f}%"])
