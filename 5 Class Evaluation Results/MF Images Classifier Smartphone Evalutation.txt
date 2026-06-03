@@ -1,0 +1,123 @@
+Running predictions...
+--------------------------------------------------------------------------------
+[  1/79] ✓ 224 7-25 A                                    | True: Mycosis Fungoides    → Pred: MF                   (56.27%)
+[  2/79] ✗ 192 7-25 A                                    | True: Mycosis Fungoides    → Pred: T-cell dyscrasia     (50.07%)
+[  3/79] ✗ 190 7-25                                      | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (52.56%)
+[  4/79] ✓ 175 7-25                                      | True: Mycosis Fungoides    → Pred: MF                   (53.99%)
+[  5/79] ✓ 174 7-25                                      | True: Mycosis Fungoides    → Pred: MF                   (50.32%)
+[  6/79] ✓ 143-144 7-25 A                                | True: Mycosis Fungoides    → Pred: MF                   (54.81%)
+[  7/79] ✓ 116 8-25 A                                    | True: Mycosis Fungoides    → Pred: MF                   (57.55%)
+[  8/79] ✓ 104 7-25 A                                    | True: Mycosis Fungoides    → Pred: MF                   (51.48%)
+[  9/79] ✓ 81-82 6-25 A                                  | True: Mycosis Fungoides    → Pred: MF                   (52.66%)
+[ 10/79] ✓ 72-73 8-25 A                                  | True: Mycosis Fungoides    → Pred: MF                   (58.46%)
+[ 11/79] ✓ 67 6-25 A                                     | True: Mycosis Fungoides    → Pred: MF                   (50.28%)
+[ 12/79] ✓ 39-40 8-25 A                                  | True: Mycosis Fungoides    → Pred: MF                   (55.40%)
+[ 13/79] ✓ 34 7-25                                       | True: Mycosis Fungoides    → Pred: MF                   (51.85%)
+[ 14/79] ✓ 33-34 8-25 A                                  | True: Mycosis Fungoides    → Pred: MF                   (53.35%)
+[ 15/79] ✗ 12 6-25                                       | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (52.52%)
+[ 16/79] ✓ 1 7-25                                        | True: Mycosis Fungoides    → Pred: MF                   (54.12%)
+[ 17/79] ✗ 71 9-25                                       | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (58.39%)
+[ 18/79] ✗ 106 9-25                                      | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (51.52%)
+[ 19/79] ✗ 112 9-25                                      | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (54.22%)
+[ 20/79] ✓ 113 9-25                                      | True: Mycosis Fungoides    → Pred: MF                   (53.29%)
+[ 21/79] ✓ 37 9-25                                       | True: Mycosis Fungoides    → Pred: MF                   (53.92%)
+[ 22/79] ✗ 54 9-25                                       | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (72.13%)
+[ 23/79] ✗ 180 9-25                                      | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (92.71%)
+[ 24/79] ✗ 181 9-25                                      | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (66.83%)
+[ 25/79] ✗ 197 11-25                                     | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (85.58%)
+[ 26/79] ✗ 158 12-25                                     | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (51.72%)
+[ 27/79] ✗ 124 11-25                                     | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (65.18%)
+[ 28/79] ✗ 123 11-25                                     | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (63.32%)
+[ 29/79] ✗ 121 11-25                                     | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (53.99%)
+[ 30/79] ✗ 120 11-25                                     | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (83.00%)
+[ 31/79] ✗ 77 11-25                                      | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (50.16%)
+[ 32/79] ✓ 72 1-26                                       | True: Mycosis Fungoides    → Pred: MF                   (64.20%)
+[ 33/79] ✗ 43 12-25                                      | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (77.95%)
+[ 34/79] ✗ 81 1-26                                       | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (71.65%)
+[ 35/79] ✗ 4 10-25                                       | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (64.97%)
+[ 36/79] ✗ 63 10-25 A                                    | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (51.08%)
+[ 37/79] ✗ 63 10-25 B                                    | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (50.15%)
+[ 38/79] ✗ 125 10-25 B                                   | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (56.05%)
+[ 39/79] ✗ 125 10-25 A                                   | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (60.25%)
+[ 40/79] ✗ 174 10-25                                     | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (72.65%)
+[ 41/79] ✓ 179 10-25                                     | True: Mycosis Fungoides    → Pred: MF                   (52.22%)
+[ 42/79] ✗ 220 10-25 A                                   | True: Mycosis Fungoides    → Pred: PLEVA-PLC            (60.01%)
+[ 43/79] ✓ 220 10-25 B                                   | True: Mycosis Fungoides    → Pred: MF                   (56.10%)
+[ 44/79] ✓ 33-34 8-25 B                                  | True: Mycosis Fungoides    → Pred: MF                   (54.91%)
+[ 45/79] ✓ 39-40 8-25 B                                  | True: Mycosis Fungoides    → Pred: MF                   (52.06%)
+[ 46/79] ✓ 67 6-25 B                                     | True: Mycosis Fungoides    → Pred: MF                   (53.72%)
+[ 47/79] ✓ 72-73 8-25 B                                  | True: Mycosis Fungoides    → Pred: MF                   (57.93%)
+[ 48/79] ✓ 81-82 6-25 B                                  | True: Mycosis Fungoides    → Pred: MF                   (55.95%)
+[ 49/79] ✓ 104 7-25 B                                    | True: Mycosis Fungoides    → Pred: MF                   (52.25%)
+[ 50/79] ✓ 116 8-25 B                                    | True: Mycosis Fungoides    → Pred: MF                   (57.55%)
+[ 51/79] ✓ 143-144 7-25 B                                | True: Mycosis Fungoides    → Pred: MF                   (53.60%)
+[ 52/79] ✓ 192 7-25 B                                    | True: Mycosis Fungoides    → Pred: MF                   (55.18%)
+[ 53/79] ✓ 224 7-25 B                                    | True: Mycosis Fungoides    → Pred: MF                   (54.65%)
+[ 54/79] ✓ 217 7-25                                      | True: PLEVA-PLC            → Pred: PLEVA-PLC            (51.00%)
+[ 55/79] ✗ 156 7-25                                      | True: PLEVA-PLC            → Pred: MF                   (51.92%)
+[ 56/79] ✓ 76 7-25                                       | True: PLEVA-PLC            → Pred: PLEVA-PLC            (50.33%)
+[ 57/79] ✗ 68-69 7-25 A                                  | True: PLEVA-PLC            → Pred: MF                   (54.63%)
+[ 58/79] ✓ 51 9-25                                       | True: PLEVA-PLC            → Pred: PLEVA-PLC            (63.58%)
+[ 59/79] ✓ 94 9-25 A                                     | True: PLEVA-PLC            → Pred: PLEVA-PLC            (81.74%)
+[ 60/79] ✓ 94 9-25 B                                     | True: PLEVA-PLC            → Pred: PLEVA-PLC            (75.39%)
+[ 61/79] ✓ 139 8-25                                      | True: PLEVA-PLC            → Pred: PLEVA-PLC            (86.75%)
+[ 62/79] ✓ 80 11-25                                      | True: PLEVA-PLC            → Pred: PLEVA-PLC            (84.66%)
+[ 63/79] ✓ 21 11-25                                      | True: PLEVA-PLC            → Pred: PLEVA-PLC            (58.35%)
+[ 64/79] ✓ 7 11-25                                       | True: PLEVA-PLC            → Pred: PLEVA-PLC            (77.19%)
+[ 65/79] ✗ 68-69 7-25 B                                  | True: PLEVA-PLC            → Pred: MF                   (51.08%)
+[ 66/79] ✗ 74 9-25                                       | True: pseudolymphoma       → Pred: MF                   (51.16%)
+[ 67/79] ✗ 59 8-25                                       | True: T-cell dyscrasia     → Pred: PLEVA-PLC            (50.79%)
+[ 68/79] ✗ 58 7-25                                       | True: T-cell dyscrasia     → Pred: PLEVA-PLC            (55.84%)
+[ 69/79] ✗ 45 8-25 A                                     | True: T-cell dyscrasia     → Pred: MF                   (52.36%)
+[ 70/79] ✗ 110 9-25                                      | True: T-cell dyscrasia     → Pred: PLEVA-PLC            (92.40%)
+[ 71/79] ✗ 32-33 1-26 A                                  | True: T-cell dyscrasia     → Pred: PLEVA-PLC            (88.38%)
+[ 72/79] ✗ 16 11-25 A                                    | True: T-cell dyscrasia     → Pred: PLEVA-PLC            (78.84%)
+[ 73/79] ✗ 1-2 10-25 A                                   | True: T-cell dyscrasia     → Pred: PLEVA-PLC            (54.47%)
+[ 74/79] ✗ 177 10-25                                     | True: T-cell dyscrasia     → Pred: MF                   (53.90%)
+[ 75/79] ✗ 8 10-25                                       | True: T-cell dyscrasia     → Pred: PLEVA-PLC            (83.44%)
+[ 76/79] ✗ 1-2 10-25 B                                   | True: T-cell dyscrasia     → Pred: PLEVA-PLC            (82.99%)
+[ 77/79] ✗ 16 11-25 B                                    | True: T-cell dyscrasia     → Pred: PLEVA-PLC            (77.07%)
+[ 78/79] ✗ 32-33 1-26 B                                  | True: T-cell dyscrasia     → Pred: PLEVA-PLC            (88.92%)
+[ 79/79] ✗ 45 8-25 B                                     | True: T-cell dyscrasia     → Pred: MF                   (50.14%)
+--------------------------------------------------------------------------------
+
+================================================================================
+Evaluation Results
+================================================================================
+
+Overall Accuracy: 46.84%
+
+Per-Class Metrics:
+--------------------------------------------------------------------------------
+Class                        Precision       Recall     F1-Score    Support
+--------------------------------------------------------------------------------
+B cell Lymphoma                  0.000        0.000        0.000          0
+Mycosis Fungoides                0.800        0.528        0.636         53
+PLEVA-PLC                        0.209        0.750        0.327         12
+T-cell dyscrasia                 0.000        0.000        0.000         13
+pseudolymphoma                   0.000        0.000        0.000          1
+--------------------------------------------------------------------------------
+Weighted Avg                     0.569        0.468        0.477         79
+
+Confusion Matrix:
+--------------------------------------------------------------------------------
+Predicted →         B cell LymphomaMycosis Fungoid      PLEVA-PLCT-cell dyscrasi pseudolymphoma
+B cell Lymphoma                   0              0              0              0              0
+Mycosis Fungoides                 0             28             24              1              0
+PLEVA-PLC                         0              3              9              0              0
+T-cell dyscrasia                  0              3             10              0              0
+pseudolymphoma                    0              1              0              0              0
+
+
+Binary Classification (MF vs Non-MF):
+--------------------------------------------------------------------------------
+Accuracy:  59.49%
+Precision: 0.800
+Recall:    0.528
+F1-Score:  0.636
+
+✓ Results saved to: c:\Users\Mohamed Hazem\Graduation Project\Dr. Rushdy\CLPD Dr. Kariman\Mycosis-Fungoides-Classifier\deployment\evaluation_results\test_evaluation_20260511_205836.json
+✓ Summary saved to: c:\Users\Mohamed Hazem\Graduation Project\Dr. Rushdy\CLPD Dr. Kariman\Mycosis-Fungoides-Classifier\deployment\evaluation_results\test_evaluation_summary_20260511_205836.csv
+
+================================================================================
+Evaluation Complete!

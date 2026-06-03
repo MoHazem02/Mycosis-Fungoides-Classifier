@@ -4,6 +4,8 @@
 
 A hierarchical deep learning framework was developed to diagnose Mycosis Fungoides (MF) and differentiate it from disease mimics using multi-magnification histopathological image analysis combined with clinical features. The system employs **late fusion** of two independent convolutional neural networks trained at different microscopic magnifications (10× and 20×), integrated with a machine learning-based clinical notes classifier.
 
+> **Magnification Terminology:** Throughout this document, "10×" and "20×" refer to the power of the **objective lens** (near the slide). The microscope uses a fixed 10× eyepiece lens (near the camera/observer), so these correspond to **total optical magnifications of 100× and 200×**, respectively.
+
 ---
 
 ## 2. Histopathological Image Analysis
@@ -69,13 +71,14 @@ A two-branch architecture was implemented with independent models trained for ea
 
 **Rationale:** The 10× magnification captures broader tissue architecture and glandular distribution patterns, enabling assessment of infiltration depth and architectural distortion characteristic of MF.
 
-**Training Configuration:**
-- Loss function: Cross-entropy with focal loss weighting
-- Optimizer: AdamW with gradient clipping
-- Learning rate: Cosine annealing with warm restart
-- Augmentations: Random rotation (±20°), H/V flips, color jittering, mixup
-- Validation metric: F2-score (emphasizing sensitivity)
-- Early stopping: Patience = 15 epochs
+**Training Configuration (shared with 20× model):**
+- Loss function: Dynamically weighted Cross-Entropy (class weights inversely proportional to training distribution)
+- Optimizer: AdamW (static learning rate: 2×10⁻⁴, weight decay: 0.01)
+- Augmentations: Random horizontal/vertical flips, random rotation (±15°), color jittering (brightness/contrast/saturation ±20%, hue ±5%)
+- Mixed precision: Automatic Mixed Precision (AMP)
+- Gradient accumulation: 1 step
+- Validation metric: F2-Score (emphasizing sensitivity)
+- Normalization: ImageNet statistics
 
 #### 2.2.2 20× Classifier (Cytological Features)
 
@@ -91,11 +94,13 @@ A two-branch architecture was implemented with independent models trained for ea
 
 **Rationale:** The 20× magnification emphasizes cytological details—nuclear morphology, chromatin patterns, mitotic figures, and immune infiltrates—essential for distinguishing MF from benign disease mimics.
 
-**Training Configuration:**
-- Augmentations: Elastic distortions, CLAHE (contrast enhancement), color normalization
-- Sampling strategy: Oversampling rare cytological variants
-- Focal loss α: Weighted toward ambiguous class pairs
-- Validation metric: ROC-AUC (balancing sensitivity and specificity)
+**Training Configuration (shared with 10× model):**
+- Loss function: Dynamically weighted Cross-Entropy (same as 10×)
+- Optimizer: AdamW (static learning rate: 2×10⁻⁴, weight decay: 0.01)
+- Augmentations: Same spatial and color augmentation pipeline as 10×
+- Mixed precision: Automatic Mixed Precision (AMP)
+- Gradient accumulation: 8 steps (to compensate for smaller batch size)
+- Validation metric: F2-Score (emphasizing sensitivity)
 
 ---
 
@@ -131,16 +136,17 @@ $$\theta^* = \arg\max_{\theta} J(\theta)$$
 ### 3.1 10× Model Threshold
 
 - **Optimal Threshold**: $\theta_{10x}^* = 0.50$
-- **Derivation**: ROC analysis on training set (N=487 patients)
+- **Derivation**: The 10× model was naturally balanced at a 0.5 decision boundary
 - **Decision Rule**: $P(\text{Non-MF}) > 0.50 \rightarrow \text{Non-MF}$; otherwise $\rightarrow \text{MF}$
-- **Sensitivity**: 82.35% | **Specificity**: 93.41%
+- **Test Set Performance**: Accuracy: 80.60% | Sensitivity: 80.43% | Specificity: 80.43%
 
 ### 3.2 20× Model Threshold
 
 - **Optimal Threshold**: $\theta_{20x}^* = 0.8351$
 - **Derivation**: Youden's J maximization on validation cohort
 - **Decision Rule**: $P(\text{Non-MF}) > 0.8351 \rightarrow \text{Non-MF}$; otherwise $\rightarrow \text{MF}$
-- **Sensitivity**: 84.21% | **Specificity**: 95.10%
+- **At default 0.5 threshold**: MF sensitivity was an unacceptable **43.48%** (severe conservative bias)
+- **Test Set Performance at 0.8351**: Accuracy: 83.58% | Sensitivity: 89.13% | Specificity: 89.13%
 
 **Clinical Interpretation:** The elevated 20× threshold (0.8351 vs 0.50) reflects that cytological mimicry is more prevalent; hence stronger confidence is required to exclude MF. This asymmetry protects against false negatives—critical in cancer diagnosis.
 
@@ -169,6 +175,18 @@ p_{20x}^{\text{non-MF}} \cdot \dfrac{0.5}{0.8351} & \text{if } p_{20x}^{\text{no
 1. Maps $[0, 0.8351] \rightarrow [0, 0.5]$ (stretching lower probabilities)
 2. Maps $[0.8351, 1.0] \rightarrow [0.5, 1.0]$ (stretching upper probabilities)
 3. Ensures $0.8351 \rightarrow 0.5$ (calibration point alignment)
+
+**The Simple Explanation & Real-World Example**
+
+Imagine you have two teachers grading the same exam.
+- **Teacher A (The 10x Model)** is a standard grader. If you get a 50%, you pass.
+- **Teacher B (The 20x Model)** is a notoriously harsh grader. Because their test is so skewed, their passing line is an 83.51%. If you get an 83.51%, you pass.
+
+If you want to average a student's grades from both teachers fairly, you cannot just add their raw scores together. A 75% means "Failing" to Teacher B, but "Passing" to Teacher A. Averaging them directly would ruin the math.
+
+To fix this, you have to recalibrate Teacher B's grades. You take their harsh passing line (83.51%) and mathematically stretch/shift it so it aligns with the standard passing line (50%). Now both teachers use 50% as the passing mark, and you can safely average their scores.
+
+The "Accuracy Drop" happens because when you stretch and bend Teacher B's grading scale to make it fit the standard scale, a student who was right on the borderline might slightly shift sides. In your data, exactly one borderline patient out of 67 flipped from correct to incorrect because of this stretching, dropping your accuracy from 83.58% (56/67 right) to 82.09% (55/67 right).
 
 **Result:** Both models now operate on comparable probability scales, enabling valid weighted fusion.
 
@@ -205,7 +223,6 @@ Systematic evaluation across $w \in [0.0, 1.0]$ with step 0.05. A subset of key 
 | 1.00 | 0.1466 | 80.60% | 80.43% | 80.43% | 0.8685 | 0.8222 |
 
 **Selected Clinical Weight:** $w^* = 0.20$
-
 **Interpretation:**
 - **20% contribution** from 10× architectural model
 - **80% contribution** from 20× cytological model
@@ -214,29 +231,13 @@ Systematic evaluation across $w \in [0.0, 1.0]$ with step 0.05. A subset of key 
 
 ---
 
-## 5. Multi-Class Prediction Logic
+## 5. Multi-Class Prediction and Binary Extraction
 
-> [!NOTE]
-> The late fusion pipeline primarily focuses on the binary MF vs Non-MF decision using the fused scalar probabilities. The multi-class refinement described below is a theoretical capability of the underlying individual models (which can output 5-class vectors), but it is not applied during the scalar late fusion step.
+### 5.1 Native Multi-Class Prediction
 
-### 5.1 Binary Decision (MF vs Non-MF)
+The deep learning models are trained as 5-class classifiers. At inference time, the model outputs a 5-class probability vector via a softmax activation. For patch-level and individual model evaluations, the predicted class is determined directly by selecting the class with the highest probability:
 
-Using the fused Non-MF probability:
-
-$$\hat{y} = \begin{cases}
-\text{MF} & \text{if } P_{\text{fused}}^{\text{non-MF}} \leq 0.5 \\
-\text{Non-MF} & \text{if } P_{\text{fused}}^{\text{non-MF}} > 0.5
-\end{cases}$$
-
-### 5.2 Multi-Class Refinement
-
-For Non-MF cases, the specific disease mimic is determined:
-
-**Algorithm:**
-1. **Mask MF class**: Set $P_{\text{fused}}(1) = -\infty$ to prevent MF assignment
-2. **Select maximum**: 
-   $$c^* = \arg\max_{c \in \{0,2,3,4\}} P_{\text{fused}}(c)$$
-3. **Assign**: Predicted class = $\text{CLASS\_NAMES}[c^*]$
+$$\hat{y}_{\text{multi}} = \arg\max_{c \in \{0,1,2,3,4\}} P(c)$$
 
 **Class Mapping** (5-way):
 - Index 0: **B-cell Lymphoma**
@@ -244,6 +245,22 @@ For Non-MF cases, the specific disease mimic is determined:
 - Index 2: **PLEVA-PLC**
 - Index 3: **T-cell dyscrasia**
 - Index 4: **Pseudolymphoma**
+
+### 5.2 Binary Extraction for Late Fusion
+
+While the models natively output 5 classes, the primary clinical objective and the late-fusion pipeline focus on the binary distinction between MF and Non-MF conditions. 
+
+To enable this binary fusion:
+1. The probabilities of all non-MF classes (Indices 0, 2, 3, 4) are summed (or extracted) to form a scalar $P_{\text{non-MF}}$ for each patch.
+2. These patch-level binary probabilities are mean-aggregated to form the patient-level $P_{\text{patient}}^{\text{non-MF}}$.
+3. The late-fusion pipeline then combines these binary probabilities across magnifications using the recalibration and weighting strategy described in Section 4.
+
+The final binary diagnostic decision is made using the fused scalar:
+
+$$\hat{y}_{\text{binary}} = \begin{cases}
+\text{MF} & \text{if } P_{\text{fused}}^{\text{non-MF}} \leq 0.5 \\
+\text{Non-MF} & \text{if } P_{\text{fused}}^{\text{non-MF}} > 0.5
+\end{cases}$$
 
 ---
 
@@ -255,28 +272,30 @@ A complementary classifier was trained on patient metadata to leverage diagnosti
 
 #### 6.1.1 Feature Selection (16 Selected Features)
 
-Univariate feature screening on a larger initial pool yielded 16 predictive features (used after filtering down to numeric representations):
+Univariate statistical analysis was performed on 22 clinical variables. Continuous variables were assessed using the Mann-Whitney U test (due to skewed distributions), and categorical variables were evaluated via Chi-Squared tests. Features with $p < 0.05$ were selected, yielding **15 statistically significant features**. One additional feature (Nodule, $p = 0.2007$) was deliberately retained for its staging value, bringing the total to **16 features**:
 
-| Feature | Type | Domain | Values/Description |
-|---|---|---|---|
-| **Age** | Continuous | Demographics | Patient age (years) |
-| **Duration (Months)** | Continuous | Disease history | Disease duration in months |
-| **Course** | Categorical | Disease trajectory | Progressive, Stationary, Remitting, etc. |
-| **Visit Type** | Categorical | Visit context | New, Follow-up, Recurrent |
-| **Site: Head and Neck** | Binary | Anatomic distribution | Head/Neck involvement (Yes/No) |
-| **Site: Lower Limbs** | Binary | Limb involvement | Upper/Lower limb (Yes/No) |
-| **Lesion Color** | Categorical | Lesion phenotype | Erythematous, Hyperpigmented, etc. |
-| **Macules** | Binary | Morphology | Presence (Yes/No) |
-| **Patch** | Binary | Morphology | Presence (Yes/No) |
-| **Papules** | Binary | Morphology | Presence (Yes/No) |
-| **Plaque** | Binary | Morphologic stage | Presence (Yes/No) |
-| **Nodule** | Binary | Morphologic stage | Presence (Yes/No) |
-| **Scales** | Binary | Surface features | Presence (Yes/No) |
-| **Biopsy 1 Morphology** | Categorical | Biopsy findings | Patch, Plaque, Nodule, Macule |
-| **Biopsy 2 Morphology** | Categorical | Biopsy findings | Patch, Plaque, Nodule, Macule |
-| **Biopsy 2 Site** | Categorical | Biopsy location | Multiple site options |
+| Feature | Type | Test Used | p-value | Domain |
+|---|---|---|---|---|
+| **Macules** | Categorical | Chi-Squared | < 0.001 | Morphology |
+| **Biopsy 1 Morphology** | Categorical | Chi-Squared | < 0.001 | Biopsy findings |
+| **Papules** | Categorical | Chi-Squared | < 0.001 | Morphology |
+| **Age** | Continuous | Mann-Whitney U | < 0.001 | Demographics |
+| **Lesion Color** | Categorical | Chi-Squared | < 0.001 | Lesion phenotype |
+| **Patch** | Categorical | Chi-Squared | < 0.001 | Morphology |
+| **Biopsy 2 Morphology** | Categorical | Chi-Squared | < 0.001 | Biopsy findings |
+| **Visit Type** | Categorical | Chi-Squared | < 0.001 | Visit context |
+| **Duration (Months)** | Continuous | Mann-Whitney U | < 0.001 | Disease history |
+| **Plaque** | Categorical | Chi-Squared | < 0.001 | Morphologic stage |
+| **Scales** | Categorical | Chi-Squared | < 0.001 | Surface features |
+| **Site: Head/Neck** | Categorical | Chi-Squared | 0.0001 | Anatomic distribution |
+| **Site: Lower Limbs** | Categorical | Chi-Squared | 0.009 | Anatomic distribution |
+| **Disease Course** | Categorical | Chi-Squared | 0.01 | Disease trajectory |
+| **Biopsy 2 Site** | Categorical | Chi-Squared | 0.0397 | Biopsy location |
+| **Nodule**† | Categorical | Chi-Squared | **0.2007** | Morphologic stage |
 
-**Selection Rationale:** Features selected based on both statistical significance and clinical plausibility (confirmed by dermatopathology experts).
+†**Nodule Retention Rationale:** Although statistically insignificant for the binary MF vs. Non-MF diagnosis task ($p = 0.2007$), the Nodule feature was deliberately retained because it carries critical prognostic value for intra-MF staging: the presence of nodules is a near-deterministic indicator of the Tumor stage, functioning as an almost rule-based marker. Excluding it would sacrifice essential staging information for a marginal gain in diagnostic feature parsimony.
+
+**Selection Rationale:** Features selected based on statistical significance ($p < 0.05$) and clinical plausibility (confirmed by dermatopathology experts).
 
 #### 6.1.2 Data Preprocessing
 
@@ -397,13 +416,29 @@ To provide interpretable feature rankings, feature importance was visualized usi
 | 4 | **age** | 0.11 | Demographic risk factor |
 | 5 | **duration_months** | 0.10 | Disease chronicity |
 
-**Stage of MF Prediction (Task 2):**
+#### 6.3.4 Results on Stage Task (Patch-Plaque vs Tumor)
+
+For patients classified as MF in Task 1, a second model predicts the clinical stage using the 353 MF patient records (326 Patch–Plaque, 27 Tumor):
+
+| Metric | XGBoost | Random Forest | Logistic Regression |
+|---|---|---|---|
+| **Accuracy** | 0.972 | **0.977** | 0.952 |
+| **Precision** | 0.828 | **0.870** | 0.700 |
+| **Sensitivity** | **0.860** | **0.860** | 0.527 |
+| **F2-Score** | 0.843 | **0.855** | 0.532 |
+| **ROC-AUC** | **0.990** | 0.987 | 0.968 |
+
+**Key Findings:**
+- **Random Forest** again achieves the highest Accuracy (97.7%), Precision (87.0%), and F2-Score (0.855).
+- **Logistic Regression** exhibits a dramatic decline in sensitivity (52.7%) and F2-Score (0.532), underscoring that non-linear models are essential for capturing staging feature interactions.
+
+#### 6.3.5 Stage Feature Importance
 
 For MF patients, feature importance in predicting disease stage (Patch-Plaque vs Tumor):
 
 ![!\[XGBoost Feature Importance - Stage of MF\](fi_Stage_of_MF.png)](<Clinical Notes Classifier/Graphs/fi_Stage_of_MF.png>)
 
-**Top Feature:** **nodule** is most predictive of advanced tumor stage (importance: 0.65), which aligns with nodular morphology being a hallmark of tumor-stage MF.
+**Top Feature:** **nodule** is the single most important predictor of advanced tumor stage (importance: 0.65), confirming the clinical rationale for its retention despite its lack of statistical significance in the diagnosis task ($p = 0.2007$). This aligns with the well-established dermatological principle that the presence of nodules/tumors is a hallmark of advanced-stage MF.
 
 **Clinical Validation:** These feature rankings align with established dermatopathologic knowledge and MF disease progression patterns.
 
@@ -425,7 +460,7 @@ The complete diagnostic system operates via a four-stage pipeline:
    $$P_{\text{fused}} = 0.20 \cdot P_{10x} + 0.80 \cdot P_{20x}^{\text{cal}}$$
 
 ### Stage 3: Clinical Integration
-1. Extract 15 clinical features
+1. Extract 16 clinical features
 2. Random Forest inference for supporting evidence
 3. Augment image-based confidence
 
@@ -504,20 +539,26 @@ The complete diagnostic system operates via a four-stage pipeline:
 - **GPU Support:** CUDA 12.1 (with CPU fallback)
 
 **Data Specifications:**
-- **Total patients:** 499 (353 MF, 146 Non-MF)
-  - **Training set:** 328 patients
+
+*Image Dataset (Histopathology):*
+- **Total patients:** 463 (311 MF, 152 Non-MF)
+  - **Training set:** 329 patients
   - **Validation set:** 67 patients (used for threshold optimization and hyperparameter tuning)
-  - **Test set:** 148 patients (67 + 81 from separate test cohorts)
+  - **Test set:** 67 patients
+- **Total images:** 6,267 (4,306 MF; 1,961 Non-MF)
+
+*Clinical Dataset (Patient Metadata):*
+- **Total patients:** 499 (353 MF [326 Patch–Plaque, 27 Tumor], 146 Non-MF)
 
 - **10× Magnification Patches:**
   - Training: 73,824 patches
   - Validation: 14,804 patches
-  - Test: 13,190 patches
+  - Test: 12,848 patches
 
 - **20× Magnification Patches:**
   - Training: 23,062 patches
   - Validation: 4,728 patches
-  - Test: 4,407 patches
+  - Test: 4,320 patches
 
 - **Test set composition:** Multiple disease subtypes (MF, PLEVA-PLC, T-cell dyscrasia, Pseudo-Lymphoma, B-cell Lymphoma)
 
@@ -529,8 +570,8 @@ The complete diagnostic system operates via a four-stage pipeline:
 
 | Component | Method | Key Parameter(s) | Performance |
 |---|---|---|---|
-| **10× Model** | EfficientNet-B3 | Input: 512×512, Dropout: 0.4 | Sensitivity: 82.35% |
-| **20× Model** | EfficientNet-B3 | Input: 512×512, Dropout: 0.4 | Sensitivity: 84.21% |
+| **10× Model** | EfficientNet-B3 | Input: 512×512, Dropout: 0.4 | Acc: 80.60%, Sens: 80.43%, F2: 0.8222 |
+| **20× Model** | EfficientNet-B3 | Input: 512×512, Dropout: 0.4 | Acc: 83.58%, Sens: 89.13%, F2: 0.8874 |
 | **Aggregation** | Mean pooling | Patch → Patient level | Preserves diagnostic signal |
 | **Threshold (10×)** | Youden's J | θ = 0.50 | Balanced sensitivity/specificity |
 | **Threshold (20×)** | Youden's J | θ = 0.8351 | High specificity for cytology |
@@ -538,7 +579,7 @@ The complete diagnostic system operates via a four-stage pipeline:
 | **Fusion** | Weighted averaging | w = 0.20 (clinical) | Brier: 0.1455, Acc: 83.58%, Sens: 89.13% |
 | **Clinical** | Random Forest | 16 features, max_depth: 6, 300 trees | Sensitivity: 93.8%, Accuracy: 96.6% |
 | **Binary Decision** | Threshold | θ = 0.5 | Separates MF vs Non-MF |
-| **Multi-class** | Argmax masking | Mask MF, select max | Differentiates 5 classes |
+| **Multi-class** | Argmax | Select max probability | Differentiates 5 classes natively |
 
 ---
 

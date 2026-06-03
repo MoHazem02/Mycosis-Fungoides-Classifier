@@ -10,15 +10,70 @@ from typing import List, Tuple
 import config
 
 
+def smart_crop_microscope(image_path):
+    """
+    Performs a 'smart crop' on a microscope image to remove large black borders
+    and isolate the circular illuminated field of view.
+    """
+    # 1. Read the image
+    img = cv2.imread(str(image_path))
+    if img is None:
+        raise ValueError(f"Could not load image at {image_path}")
+    
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    
+    # 2. Method 1: Contour Detection
+    # Convert to grayscale and apply slight Gaussian blur
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    
+    # Apply binary threshold
+    _, thresh = cv2.threshold(blurred, 15, 255, cv2.THRESH_BINARY)
+    
+    # Find contours
+    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    
+    if not contours:
+        return img_rgb
+        
+    # Find the largest contour
+    largest_contour = max(contours, key=cv2.contourArea)
+    
+    # Calculate bounding rectangle
+    x, y, w, h = cv2.boundingRect(largest_contour)
+    
+    # Crop the original image to this bounding box
+    cropped = img_rgb[y:y+h, x:x+w].copy()
+    
+    # 3. Method 2: Circular Masking (Cleanup)
+    # Create a circular mask matching the cropped bounding box
+    mask = np.zeros((h, w), dtype=np.uint8)
+    center = (w // 2, h // 2)
+    # The radius should fit within the bounding box
+    radius = min(w // 2, h // 2)
+    cv2.circle(mask, center, radius, 255, -1)
+    
+    # Apply the mask to the cropped image, converting remaining black corners to white
+    # Create a white background image
+    white_bg = np.ones_like(cropped) * 255
+    
+    # Where mask is 255, use the cropped image, else use white background
+    final_img = np.where(mask[..., None] == 255, cropped, white_bg)
+    
+    return final_img
+
+
 def extract_patches_from_image(
     img_path: Path,
     patch_size: int,
     stride: int,
     min_foreground_ratio: float = config.MIN_FOREGROUND_RATIO,
-    max_patches: int = config.MAX_PATCHES_PER_IMAGE
+    max_patches: int = config.MAX_PATCHES_PER_IMAGE,
+    is_smartphone: bool = False
 ) -> List[np.ndarray]:
     """
     Extract tissue patches from a histology image.
+    If is_smartphone is True, applies smart crop preprocessing and uses ratio 0.7.
     
     Args:
         img_path: Path to the image file
@@ -26,11 +81,23 @@ def extract_patches_from_image(
         stride: Stride between patches
         min_foreground_ratio: Minimum tissue content required
         max_patches: Maximum number of patches to extract
+        is_smartphone: Whether to use smartphone specific preprocessing
         
     Returns:
         List of patch arrays (RGB, uint8)
     """
-    img = Image.open(img_path).convert('RGB')
+    if is_smartphone:
+        try:
+            cropped_array = smart_crop_microscope(img_path)
+            img = Image.fromarray(cropped_array).convert('RGB')
+        except Exception as e:
+            print(f"Warning: Smart crop failed for {img_path}, using original image: {e}")
+            img = Image.open(img_path).convert('RGB')
+        
+        min_foreground_ratio = 0.7
+    else:
+        img = Image.open(img_path).convert('RGB')
+    
     W, H = img.size
     patches = []
     
@@ -58,7 +125,8 @@ def extract_patches_from_image(
 def extract_patches_from_folder(
     folder_path: Path,
     mag: int,
-    progress_callback=None
+    progress_callback=None,
+    is_smartphone: bool = False
 ) -> Tuple[List[np.ndarray], int]:
     """
     Extract patches from all images in a magnification folder.
@@ -86,9 +154,18 @@ def extract_patches_from_folder(
     
     for i, img_path in enumerate(image_files):
         if mag == 10:
-            patches = extract_patches_from_image(img_path, patch_size=config.PATCH_SIZE_10x, stride=config.PATCH_STRIDE_10x)
+            patch_size = config.SMARTPHONE_PATCH_SIZE_10x if is_smartphone else config.PATCH_SIZE_10x
+            stride = config.SMARTPHONE_PATCH_STRIDE_10x if is_smartphone else config.PATCH_STRIDE_10x
         else:
-            patches = extract_patches_from_image(img_path, patch_size=config.PATCH_SIZE_20x, stride=config.PATCH_STRIDE_20x)
+            patch_size = config.SMARTPHONE_PATCH_SIZE_20x if is_smartphone else config.PATCH_SIZE_20x
+            stride = config.SMARTPHONE_PATCH_STRIDE_20x if is_smartphone else config.PATCH_STRIDE_20x
+            
+        patches = extract_patches_from_image(
+            img_path, 
+            patch_size=patch_size, 
+            stride=stride, 
+            is_smartphone=is_smartphone
+        )
         all_patches.extend(patches)
         
         if progress_callback:

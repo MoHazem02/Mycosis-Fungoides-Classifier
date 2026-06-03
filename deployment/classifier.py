@@ -164,10 +164,11 @@ class MFClassifier:
         return np.mean(patch_probs, axis=0)
     
     def predict(
-    self,
-    patient_folder: Path,
-    progress_callback=None
-) -> Dict:
+        self,
+        patient_folder: Path,
+        is_smartphone: bool = False,
+        progress_callback=None
+    ) -> Dict:
         """
         Predict MF/Non-MF for a patient folder.
 
@@ -192,10 +193,10 @@ class MFClassifier:
         # ── Extract patches ───────────────────────────────────────────────────────
         if progress_callback:
             progress_callback("Extracting x10 patches...")
-        x10_patches, n_x10_images = extract_patches_from_folder(patient_folder / "x10", mag=10)
+        x10_patches, n_x10_images = extract_patches_from_folder(patient_folder / "x10", mag=10, is_smartphone=is_smartphone)
         if progress_callback:
             progress_callback("Extracting x20 patches...")
-        x20_patches, n_x20_images = extract_patches_from_folder(patient_folder / "x20", mag=20)
+        x20_patches, n_x20_images = extract_patches_from_folder(patient_folder / "x20", mag=20, is_smartphone=is_smartphone)
         # ── Run inference ─────────────────────────────────────────────────────────
         if progress_callback:
             progress_callback("Running x10 model inference...")

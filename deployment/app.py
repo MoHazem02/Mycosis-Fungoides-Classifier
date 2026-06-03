@@ -158,6 +158,15 @@ class MFClassifierApp(ctk.CTk):
         )
         self.select_button.pack(pady=(0, 15), padx=10, fill="x")
         
+        self.is_smartphone_var = ctk.BooleanVar(value=False)
+        self.smartphone_checkbox = ctk.CTkCheckBox(
+            self.folder_frame,
+            text="These are smartphone images",
+            variable=self.is_smartphone_var,
+            font=ctk.CTkFont(size=12)
+        )
+        self.smartphone_checkbox.pack(anchor="w", padx=10, pady=(0, 15))
+        
         # Info about expected structure
         self.info_label = ctk.CTkLabel(
             self.folder_frame,
@@ -708,6 +717,7 @@ class MFClassifierApp(ctk.CTk):
                 # Run prediction
                 results = self.classifier.predict(
                     self.selected_folder,
+                    is_smartphone=self.is_smartphone_var.get(),
                     progress_callback=lambda msg: self._update_status(msg)
                 )
                 

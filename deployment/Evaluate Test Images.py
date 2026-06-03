@@ -21,6 +21,10 @@ from sklearn.metrics import (
 import json
 import sys
 from datetime import datetime
+import cv2
+from PIL import Image
+import hashlib
+import gc
 
 # Import from deployment modules
 from classifier import MFClassifier
@@ -42,7 +46,6 @@ LABEL_MAPPING = {
 
 CLASS_NAMES = config.CLASS_NAMES  # ["B cell Lymphoma", "Mycosis Fungoides", "PLEVA-PLC", "T-cell dyscrasia", "pseudolymphoma"]
 
-
 def get_device() -> str:
     """Determine best device (cuda if available, else cpu)."""
     if torch.cuda.is_available():
@@ -62,8 +65,6 @@ def get_test_folders() -> dict:
     test_folders = {}
     
     for folder_path_str, label in LABEL_MAPPING.items():
-        if folder_path_str != "Non-MF/other":
-            continue
         folder_path = TEST_DATA_ROOT / folder_path_str
         
         if not folder_path.exists():
@@ -124,7 +125,7 @@ def run_evaluation():
         
         try:
             # Run prediction
-            prediction_result = classifier.predict(patient_folder)
+            prediction_result = classifier.predict(patient_folder, is_smartphone=True)
             
             # Extract results
             pred_class_idx = prediction_result['predicted_class_idx']
@@ -139,8 +140,7 @@ def run_evaluation():
             confidences.append(confidence)
             
             # Determine if correct (any non-MF prediction is correct for NON-MF samples)
-            # is_correct = pred_class_idx == true_label
-            is_correct = pred_class_idx != 1
+            is_correct = pred_class_idx == true_label
             status = "✓" if is_correct else "✗"
             
             # Log result
